@@ -1,0 +1,10 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>beer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <app-tracker-map></app-tracker-map>
+  <app-form-dynamic [dataObject]="trackerBeerDyn" (onSave)="onSave($event)"></app-form-dynamic> 
+</ion-content>

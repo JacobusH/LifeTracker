@@ -1,12 +1,40 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      Ionic Blankets
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-tabs>
+    <ion-tab label="One" icon="navigate" href="/tabs/(one:one)">
+      <ion-router-outlet name="one"></ion-router-outlet>
+    </ion-tab>
+    <ion-tab label="Two" icon="person" href="/tabs/(two:two)">
+      <ion-router-outlet name="two"></ion-router-outlet>
+    </ion-tab>
+    <ion-tab label="Three" icon="bookmarks" href="/tabs/(three:three)">
+      <ion-router-outlet name="three"></ion-router-outlet>
+    </ion-tab>
+  </ion-tabs>
+
 <ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the <a target="_blank" href="https://ionicframework.com/docs">docs</a> will be your guide.</p>
+  <button ion-button color="primary" menuToggle>Toggle Menu</button>
+  <ion-item tappable routerLink='/trackers'>Trackers</ion-item>
+
+  <div id="circles"></div>
+
+  <menu-wheel
+    [items]='[1, 2, 3, 4, 5, 6]'
+    [menuRadius]='50'
+    [itemRadius]='10'
+    style="position:absolute;">
+  </menu-wheel>
+
 </ion-content>
+
+@Input('items') items = ['item1', 'item2', 'item3', 'item4', 'item4', 'item5'];
+  @Input('menuRadius') radius: number = 50;
+  @Input('itemRadius') itemRadius = 50;
+  @Input('cX') cX: number = 0;
+  @Input('cY') cY: number = 0;

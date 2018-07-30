@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>trackers</ion-title>
+    <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content padding>
+    <div class="child-nav">
+        <div class="arrow-up"></div>
+          <nav>
+            <a routerLink='beer'>Beer</a>
+            <a routerLink='weed'>Weed</a>
+            <!-- <a routerLink='music'>Music</a>
+            <a routerLink='workout'>Workout</a> -->
+          </nav>
+      </div>
+      <router-outlet></router-outlet>
+
+  <agm-map [latitude]="lat" [longitude]="lng">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
+</ion-content>
+
