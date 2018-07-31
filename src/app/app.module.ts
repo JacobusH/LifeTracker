@@ -4,6 +4,11 @@ import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -13,11 +18,18 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule
+    AngularFireModule
+    , AngularFirestoreModule
+    , AngularFireStorageModule
+    , AngularFireAuthModule
+    , AngularFireModule.initializeApp(environment.firebase)
+    , BrowserModule
     , IonicModule.forRoot()
     , AppRoutingModule
     , SharedModule
@@ -26,9 +38,9 @@ import { AppRoutingModule } from './app-routing.module';
     , ReactiveFormsModule
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    , StatusBar
+    , SplashScreen
   ],
   bootstrap: [AppComponent]
 })
