@@ -20,4 +20,8 @@ export class BeerPage implements OnInit {
     
   }
 
+  onSave(event) {
+    
+  }
+
 }

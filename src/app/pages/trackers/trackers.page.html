@@ -9,19 +9,17 @@
 </ion-header>
 
 <ion-content padding>
-    <div class="child-nav">
-        <div class="arrow-up"></div>
-          <nav>
-            <a routerLink='beer'>Beer</a>
-            <a routerLink='weed'>Weed</a>
-            <!-- <a routerLink='music'>Music</a>
-            <a routerLink='workout'>Workout</a> -->
-          </nav>
-      </div>
-      <router-outlet></router-outlet>
-
-  <agm-map [latitude]="lat" [longitude]="lng">
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-  </agm-map>
+    <div class="child-nav"> 
+      <div class="arrow-up"></div>
+        <nav>
+          <a routerLink='beer'>Beer</a>
+          <a routerLink='weed'>Weed</a>
+          <!-- <a routerLink='music'>Music</a>
+          <a routerLink='workout'>Workout</a> -->
+        </nav>
+    </div>
+    <router-outlet></router-outlet>
+      
 </ion-content>
+
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ElementRef, NgZone,ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { } from 'googlemaps';
-import { MapsAPILoader } from '@agm/core';
+import { MapsAPILoader, AgmMarker, MarkerManager } from '@agm/core';
 
 @Component({
   selector: 'app-tracker-map',
@@ -12,7 +12,6 @@ export class MapComponent implements OnInit {
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
-  title: string = 'My first AGM project';
   lat: number = 51.678418;
   lng: number = 7.809007;
   zoom= 4;
@@ -20,7 +19,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { 
+    private ngZone: NgZone,
+    private markerManager: MarkerManager) { 
 
   }
 
@@ -35,7 +35,7 @@ export class MapComponent implements OnInit {
     // load Places autocomplete
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+        // types: ["address"]
       });
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
@@ -50,7 +50,14 @@ export class MapComponent implements OnInit {
           // set lat, lng, zoom
           this.lat = place.geometry.location.lat();
           this.lng = place.geometry.location.lng();
-          this.zoom = 12;
+          this.zoom = 15;
+
+          // make a marker at location
+          let mark = new AgmMarker(this.markerManager);
+          mark.latitude = this.lat;
+          mark.longitude = this.lng;
+          mark.visible = true;
+          mark.openInfoWindow = true;
         });
       });
     });
@@ -61,7 +68,7 @@ export class MapComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        this.zoom = 12;
+        this.zoom = 10;
       })
     }
   }
@@ -71,6 +78,9 @@ export class MapComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         // this.showPosition(position);
         console.log("position", position);
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+        this.zoom = 15;
       })
     } else {
       alert("Geolocation not supported by this browser");

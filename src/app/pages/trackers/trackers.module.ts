@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module'
 
 import { IonicModule } from '@ionic/angular';
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { TrackersPage } from './trackers.page';
@@ -43,6 +43,10 @@ const routes: Routes = [
     , MapComponent
     , BeerPage
     , WeedPage
+  ],
+  providers: [
+    GoogleMapsAPIWrapper
+    , MarkerManager
   ]
 })
 export class TrackersPageModule {}
