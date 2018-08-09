@@ -19,6 +19,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './guards/authGuard.service';
+import { UserService } from './services/user.service';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -43,6 +45,8 @@ import { environment } from '../environments/environment';
     , StatusBar
     , SplashScreen
     , AuthService
+    , AuthGuard
+    , UserService
   ],
   bootstrap: [AppComponent]
 })

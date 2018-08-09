@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -12,8 +13,9 @@ export class LoginPage implements OnInit {
 	loginError: string;
 
 	constructor(
-		private auth: AuthService,
-		fb: FormBuilder
+		private authService: AuthService,
+		fb: FormBuilder,
+		private router: Router
 	) {
 		this.loginForm = fb.group({
 			email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -25,9 +27,8 @@ export class LoginPage implements OnInit {
 
   }
 
-  login() {
+  emailLogin() {
     let data = this.loginForm.value;
-
 		if (!data.email) {
 			return;
 		}
@@ -36,11 +37,23 @@ export class LoginPage implements OnInit {
 			email: data.email,
 			password: data.password
 		};
-		this.auth.signInWithEmail(credentials)
+		this.authService.signInWithEmail(credentials)
 			.then(
 				() => { /* nav to user page */ },
 				error => this.loginError = error.message
 			);
-  }
+	}
+	
+	loginWithFacebook() {
+		this.authService.signInWithFacebook().then(user => {
+			this.router.navigate(['/trackers']);
+		});
+	}
+
+	loginWithGoogle() {
+		this.authService.signInWithGoogle().then(user => {
+			this.router.navigate(['/trackers']);
+		});
+	}
 
 }

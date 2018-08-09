@@ -1,41 +1,29 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blankets
+      Ionic Blankets and Pillows
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-tabs>
-    <ion-tab label="One" icon="navigate" href="/tabs/(one:one)">
-      <ion-router-outlet name="one"></ion-router-outlet>
-    </ion-tab>
-    <ion-tab label="Two" icon="person" href="/tabs/(two:two)">
-      <ion-router-outlet name="two"></ion-router-outlet>
-    </ion-tab>
-    <ion-tab label="Three" icon="bookmarks" href="/tabs/(three:three)">
-      <ion-router-outlet name="three"></ion-router-outlet>
-    </ion-tab>
-  </ion-tabs>
-
 <ion-content padding>
-  <button ion-button color="primary" menuToggle>Toggle Menu</button>
-  <ion-item tappable routerLink='/trackers'>Trackers</ion-item>
-  <ion-item tappable routerLink='/login'>Login</ion-item>
-
+<!--   
   <div id="circles"></div>
-
   <menu-wheel
     [items]='[1, 2, 3, 4, 5, 6]'
     [menuRadius]='50'
     [itemRadius]='10'
     style="position:absolute;">
-  </menu-wheel>
+  </menu-wheel> -->
 
 </ion-content>
 
-@Input('items') items = ['item1', 'item2', 'item3', 'item4', 'item4', 'item5'];
-  @Input('menuRadius') radius: number = 50;
-  @Input('itemRadius') itemRadius = 50;
-  @Input('cX') cX: number = 0;
-  @Input('cY') cY: number = 0;
+<ion-footer class="flex-space-around">
+    <ion-item tappable routerLink='/trackers'><ion-icon name="analytics"></ion-icon></ion-item>
+    <ion-item tappable routerLink='/login'><ion-icon name="key"></ion-icon></ion-item>
+    <ion-item tappable routerLink='/profile'><ion-icon name="person"></ion-icon></ion-item>
+  <!-- <button ion-button icon-end>
+      Right Icon
+      <ion-icon name="star"></ion-icon>
+    </button> -->
+</ion-footer>

@@ -6,8 +6,6 @@ export interface User {
     key: string,
     name: string,
     email: string,
-    password: string,
-    roles: Array<string>,
     isActive: boolean,
     createdAt: Date,
     updatedAt: Date
