@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackerBeer, trackerBeerDyn } from './tracker-beer.model';
+import { TrackerBeer, trackerBeerDyn } from './beer.model';
 
 @Component({
   selector: 'beer',

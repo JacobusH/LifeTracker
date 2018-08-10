@@ -40,9 +40,14 @@ export class AuthService {
     )
   }
 
-  signInWithEmail() {
-    const provider = new auth.EmailAuthProvider()
-    return this.oAuthLogin(provider);
+  createEmailUser(credentials) {
+    this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).catch(error => {
+      console.log('Email register error', error);
+    })
+  }
+
+  signInWithEmail(credentials) {
+    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
   }
 
   signInWithGoogle() {

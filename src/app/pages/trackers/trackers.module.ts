@@ -3,15 +3,23 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module'
+import { MatIconRegistry, MatIconModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
+import { MapComponent } from './components/map/map.component';
+import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
+
 import { TrackersPage } from './trackers.page';
-import { MapComponent } from './map/map.component';
-import { BeerPage } from './beer/beer.page'
-import { WeedPage } from './weed/weed.page'
+import { BeerPage } from './beer/beer.page';
+import { DrugsPage } from './drugs/drugs.page';
+import { FoodPage } from './food/food.page';
+import { MusicPage } from './music/music.page';
+import { WeedPage } from './weed/weed.page';
+import { WorkoutPage } from './workout/workout.page';
 
 import { routing } from './trackers.routing';
 
@@ -37,11 +45,18 @@ const routes: Routes = [
         libraries: ['places']
       })
     , AgmSnazzyInfoWindowModule
+    , MatIconModule
+    , HttpClientModule
   ],
   declarations: [
-    TrackersPage
+    TrackerTitleBarComponent
     , MapComponent
+    , TrackersPage
     , BeerPage
+    , DrugsPage
+    , FoodPage
+    , MusicPage
+    , WorkoutPage
     , WeedPage
   ],
   providers: [
