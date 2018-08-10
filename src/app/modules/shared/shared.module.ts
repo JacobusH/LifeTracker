@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+
 
 import { MenuWheelComponent } from './menu-wheel/menu-wheel.component';
 import { Menu } from '@ionic/angular';
@@ -11,8 +13,12 @@ import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
     CommonModule
     , FormsModule
     , ReactiveFormsModule
+    , IonicModule
   ],
-  declarations: [MenuWheelComponent, FormDynamicComponent],
+  declarations: [
+    MenuWheelComponent
+    , FormDynamicComponent
+  ],
   exports: [ 
     MenuWheelComponent 
     , FormDynamicComponent

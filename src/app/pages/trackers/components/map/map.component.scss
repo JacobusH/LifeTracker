@@ -7,20 +7,29 @@ agm-map {
     width: 100%;
 }
 
-.form-group {
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: 5px;
-    align-items: center;
-}
-
 .map-cont {
     position: relative;
 
+    .utils {
+        position: absolute;
+        z-index: 10;
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+    }
+    .form-group {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-bottom: 5px;
+        align-items: center;
+        width: 99%;
+    }
     #map-hide-btn {
         z-index: 101;
         position: absolute;
         right: -10px;
         top: -15px;
+        opacity: .7;
     }
+
 }

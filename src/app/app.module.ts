@@ -24,6 +24,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/authGuard.service';
 import { UserService } from './services/user.service';
+import { CFService } from './services/CFService.service';
+
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -48,6 +50,7 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    , CFService
     , StatusBar
     , SplashScreen
     , AuthService

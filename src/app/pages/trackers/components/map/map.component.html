@@ -1,19 +1,24 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<div class="form-group">
-  <ion-button (click)="findMe()">Find Me</ion-button>
-  <input id="autoSearch" #search 
-    placeholder="search for location" 
-    autocorrect="off" autocapitalize="off" 
-    spellcheck="off" type="text" class="form-control" 
-    [formControl]="searchControl">
-</div>
+
 
 <div class="map-cont">
-  <ion-button id="map-hide-btn" (click)="mapHidden = !mapHidden">
-    <ion-icon name="eye" *ngIf="mapHidden"></ion-icon>
-    <ion-icon name="eye-off" *ngIf="!mapHidden"></ion-icon>
-  </ion-button>
+    <ion-button id="map-hide-btn" (click)="mapHidden = !mapHidden">
+        <ion-icon name="eye" *ngIf="mapHidden"></ion-icon>
+        <ion-icon name="eye-off" *ngIf="!mapHidden"></ion-icon>
+      </ion-button>
+
+  <div class="utils" *ngIf="!mapHidden">
+    <div class="form-group">
+      <ion-button (click)="findMe()">Find Me</ion-button>
+      <input id="autoSearch" #search 
+        placeholder="search for location" 
+        autocorrect="off" autocapitalize="off" 
+        spellcheck="off" type="text" class="form-control" 
+        [formControl]="searchControl">
+    </div>
+  </div>
+  
   <agm-map *ngIf="!mapHidden" [latitude]="lat" [longitude]="lng" 
   [scrollwheel]="true" [zoom]="zoom">
     <agm-marker [latitude]="lat" [longitude]="lng">
