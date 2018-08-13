@@ -8,14 +8,7 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
 
-interface User {
-  uid: string;
-  email: string;
-  photoURL?: string;
-  displayName?: string;
-  favoriteColor?: string;
-}
-
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -74,10 +67,17 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`!Users/${user.uid}`);
 
     const data: User = {
-      uid: user.uid,
+      authID: user.uid,
+      key: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
+      authDisplayName: user.displayName,
+      name: user.displayName,
+      authPhotoUrl: user.photoURL,
+      authMethod: user.authMethod,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+
     }
 
     return userRef.set(data, { merge: true })

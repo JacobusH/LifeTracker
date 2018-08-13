@@ -23,7 +23,7 @@ export class ProfilePage implements OnInit {
       this.isLoggedIn = (user) ? true : false;
 
       if(user != null ) {
-        let currentUser$ = this.userService.getByAuthId(user.uid);
+        let currentUser$ = this.userService.getByAuthId(user.uid).valueChanges();
         currentUser$.subscribe(x => {
           if(x.length) {
             this.currentUser = x[0] as User;

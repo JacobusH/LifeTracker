@@ -13,6 +13,8 @@ export class FormDynamicComponent implements OnInit {
   objectProps;
   form: FormGroup;
 
+  isDebugMode: boolean = true; // get from service later
+
   constructor() { }
 
   ngOnInit() {

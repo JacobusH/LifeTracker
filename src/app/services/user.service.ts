@@ -40,8 +40,12 @@ export class UserService {
     return promise;
   }
 
-  getByAuthId(authId: string) { 
-    return this.afs.collection(this.colUSERS, ref => ref.where('authID', '==', authId)).valueChanges();
+  getByAuthId(authId: string): AngularFirestoreCollection<User> { 
+    return this.afs.collection(this.colUSERS, ref => ref.where('authID', '==', authId));
+  }
+
+  getByUserKey(userKey: string): AngularFirestoreDocument<User> { 
+    return this.afs.doc(this.colUSERS + '/' + userKey);
   }
 
   edit(item: User): Promise<void> {

@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module'
-import { MatIconRegistry, MatIconModule } from '@angular/material';
+import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { } from '@angular/material';
 
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+
+import { WeedService } from './weed/weed.service'
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
@@ -46,6 +49,10 @@ const routes: Routes = [
       })
     , AgmSnazzyInfoWindowModule
     , MatIconModule
+    , MatFormFieldModule
+    , MatInputModule
+    , MatOptionModule
+    , MatSelectModule
     , HttpClientModule
   ],
   declarations: [
@@ -62,6 +69,7 @@ const routes: Routes = [
   providers: [
     GoogleMapsAPIWrapper
     , MarkerManager
+    , WeedService
   ]
 })
 export class TrackersPageModule {}

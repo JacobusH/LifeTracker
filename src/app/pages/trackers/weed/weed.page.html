@@ -1,9 +1,9 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title>weed</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content padding>
+<app-tracker-title-bar [title]="'Weed'"></app-tracker-title-bar>
+<app-form-dynamic [dataObject]="trackerWeedDyn" (onSave)="onSave($event)"></app-form-dynamic>  
 
-</ion-content>

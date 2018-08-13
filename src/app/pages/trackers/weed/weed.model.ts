@@ -1,45 +1,72 @@
 import { GeoPoint } from "@firebase/firestore-types";
 
-export interface TrackerBeer {
+export interface TrackerWeed {
   key: string,
   userKey: string,
   locationName: string,
   locationPoint: GeoPoint,
-  beerName: string,
-  beerBrewery: string,
+  weedName: string,
+  weedStrain: string,
+  amountSmoked: number,
+  amountType: string,
   notes: string,
   rating: number,
   consumptionDate: Date,
 }
 
-export const trackerBeerDyn = {
+export const trackerWeedDyn = {
   locationName: {
     label: 'Location Name',
-    value: 'Where are you?',
+    // value: 'Where are you?',
     type: 'text',
     validation: {
       required: true
     }
   },
-  beerName: {
-    label: 'Beer Name',
-    value: 'What beer did you drink?',
+  weedName: {
+    label: 'Name',
+    // value: 'What weed did you enjoy?',
     type: 'text',
     validation: {
       required: true
     }
   },
-  beerBrewery: {
-    label: 'Brewery',
-    value: 'What brewery made this beer?',
-    type: 'text',
+  weedStrain: {
+    label: 'Strain',
+    options: [
+            { label: "(choose one)", value: ''},
+            { label: "Indica", value: 'Indica'},
+            { label: "Sativa", value: 'Sativa'},
+            { label: "Hybrid", value: 'Hybrid'}
+          ],
+    type: 'select',
+    validation: {
+      required: true
+    }
+  },
+  amountSmoked: {
+    label: 'Amount Smoked',
+    value: 1,
+    type: 'number',
+    validation: {
+      required: true
+    }
+  },
+  amountType: {
+    label: 'Smoking device',
+    options: [
+            { label: "(choose one)", value: ''},
+            { label: "Bowl", value: 'Bowl'},
+            { label: "Joint", value: 'Joint'},
+          ],
+    type: 'select',
     validation: {
       required: true
     }
   },
   notes: {
     label: 'Notes',
-    value: 'Any thoughts on this beer?',
+    // value: 'Any thoughts on this weed?',
     type: 'textarea',
     validation: {
       required: false
@@ -70,6 +97,14 @@ export const trackerBeerDyn = {
       required: false
     }
   },
+  consumptionDate: {
+    label: 'Consumption Date',
+    type: 'date',
+    value: '',
+    validation: {
+      required: true
+    }
+  }
 }
 
 // export const person = {
