@@ -13,7 +13,7 @@ export class FormDynamicComponent implements OnInit {
   objectProps;
   form: FormGroup;
 
-  isDebugMode: boolean = true; // get from service later
+  isDebugMode: boolean = false; // get from service later
 
   constructor() { }
 
@@ -51,7 +51,7 @@ export class FormDynamicComponent implements OnInit {
   }
 
   onSubmit(form) {
-    console.log(form);
+    // console.log(form);
     this.onSave.emit(form);
   }
 

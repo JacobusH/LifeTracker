@@ -1,16 +1,26 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>beer</ion-title>
-  </ion-toolbar>
-</ion-header>
--->
+<mat-tab-group>
 
-<!-- <ion-content padding>
-</ion-content>  -->
+    <mat-tab> 
+      <ng-template mat-tab-label>
+        <mat-icon svgIcon="pen"></mat-icon>
+      </ng-template>
+      <ng-template matTabContent>
+          <app-tracker-map></app-tracker-map>
+          <app-form-dynamic [dataObject]="trackerBeerDyn" (onSave)="onSave($event)"></app-form-dynamic>  
+      </ng-template>
+    </mat-tab>
   
-<app-tracker-title-bar [title]="'Beer'"></app-tracker-title-bar>
-<app-tracker-map></app-tracker-map>
-<app-form-dynamic [dataObject]="trackerBeerDyn" (onSave)="onSave($event)"></app-form-dynamic>  
+    <mat-tab> 
+      <ng-template mat-tab-label>
+          <ion-icon name="beer"></ion-icon>
+      </ng-template>
+      <ng-template matTabContent>
+        <!-- Common Selections -->
+      </ng-template>
+    </mat-tab>
+  
+  </mat-tab-group>
+
 
 
 

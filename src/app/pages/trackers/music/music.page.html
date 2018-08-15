@@ -1,9 +1,23 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>music</ion-title>
-  </ion-toolbar>
-</ion-header>
+<mat-tab-group>
 
-<ion-content padding>
+    <mat-tab> 
+      <ng-template mat-tab-label>
+        <mat-icon svgIcon="pen"></mat-icon>
+      </ng-template>
+      <ng-template matTabContent>
+          <!-- New -->
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab> 
+      <ng-template mat-tab-label>
+        <ion-icon name="musical-notes"></ion-icon>
+      </ng-template>
+      <ng-template matTabContent>
+        <!-- Common Selections -->
+      </ng-template>
+    </mat-tab>
+  
+  </mat-tab-group>
 
-</ion-content>
+

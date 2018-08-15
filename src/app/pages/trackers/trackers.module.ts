@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module'
-import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule } from '@angular/material';
+import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
+  , MatTabsModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { } from '@angular/material';
 
@@ -53,6 +54,7 @@ const routes: Routes = [
     , MatInputModule
     , MatOptionModule
     , MatSelectModule
+    , MatTabsModule
     , HttpClientModule
   ],
   declarations: [

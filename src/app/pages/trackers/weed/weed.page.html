@@ -1,9 +1,23 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>weed</ion-title>
-  </ion-toolbar>
-</ion-header> -->
+<mat-tab-group>
 
-<app-tracker-title-bar [title]="'Weed'"></app-tracker-title-bar>
-<app-form-dynamic [dataObject]="trackerWeedDyn" (onSave)="onSave($event)"></app-form-dynamic>  
+  <mat-tab> 
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="pen"></mat-icon>
+    </ng-template>
+    <ng-template matTabContent>
+      <app-form-dynamic [dataObject]="trackerWeedDyn" (onSave)="onSave($event)"></app-form-dynamic> 
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab> 
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="pine-tree"></mat-icon>
+    </ng-template>
+    <ng-template matTabContent>
+      <!-- Common Selections -->
+    </ng-template>
+  </mat-tab>
+
+</mat-tab-group>
+
 

@@ -77,7 +77,7 @@ export class MapComponent implements OnInit {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         // this.showPosition(position);
-        console.log("position", position);
+        // console.log("position", position);
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.zoom = 15;

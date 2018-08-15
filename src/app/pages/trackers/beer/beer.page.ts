@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TrackerBeer, trackerBeerDyn } from './beer.model';
 import { CFService } from '../../../services/CFService.service';
 
@@ -6,6 +6,7 @@ import { CFService } from '../../../services/CFService.service';
   selector: 'beer',
   templateUrl: './beer.page.html',
   styleUrls: ['./beer.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BeerPage implements OnInit {
   trackerBeerDyn;

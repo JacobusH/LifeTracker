@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { trackerWeedDyn, TrackerWeed } from './weed.model';
 import { WeedService } from './weed.service';
 import { AuthService } from '../../../services/auth.service';
@@ -8,6 +8,7 @@ import { CFService } from '../../../services/CFService.service';
   selector: 'weed',
   templateUrl: './weed.page.html',
   styleUrls: ['./weed.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WeedPage implements OnInit {
   trackerWeedDyn;

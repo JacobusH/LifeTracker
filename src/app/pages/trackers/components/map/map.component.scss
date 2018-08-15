@@ -9,6 +9,7 @@ agm-map {
 
 .map-cont {
     position: relative;
+    margin-top: 11px;
 
     .utils {
         position: absolute;
@@ -27,9 +28,11 @@ agm-map {
     #map-hide-btn {
         z-index: 101;
         position: absolute;
-        right: -10px;
+        right: 0px;
         top: -15px;
         opacity: .7;
+        width: 52px;
+        overflow-x: hidden;
     }
 
 }

@@ -3,19 +3,21 @@ import { GeoPoint } from "@firebase/firestore-types";
 export interface TrackerBeer {
   key: string,
   userKey: string,
-  locationName: string,
+  locationDrank: string,
   locationPoint: GeoPoint,
   beerName: string,
   beerBrewery: string,
+  amountDrank: number;
+  amountType: string;
   notes: string,
   rating: number,
   consumptionDate: Date,
 }
 
 export const trackerBeerDyn = {
-  locationName: {
-    label: 'Location Name',
-    value: 'Where are you?',
+  locationDrank: {
+    label: 'Location Drank',
+    // value: 'Where are you?',
     type: 'text',
     validation: {
       required: true
@@ -23,7 +25,7 @@ export const trackerBeerDyn = {
   },
   beerName: {
     label: 'Beer Name',
-    value: 'What beer did you drink?',
+    // value: 'What beer did you drink?',
     type: 'text',
     validation: {
       required: true
@@ -31,15 +33,35 @@ export const trackerBeerDyn = {
   },
   beerBrewery: {
     label: 'Brewery',
-    value: 'What brewery made this beer?',
+    // value: 'What brewery made this beer?',
     type: 'text',
+    validation: {
+      required: true
+    }
+  },
+  amountDrank: {
+    label: 'Amount Drank',
+    value: 1,
+    type: 'number',
+    validation: {
+      required: true
+    }
+  },
+  amountType: {
+    label: 'Drinking measurement',
+    options: [
+            { label: "(choose one)", value: ''},
+            { label: "Bottle", value: 'Bottle'},
+            { label: "Liter", value: 'Liter'},
+          ],
+    type: 'select',
     validation: {
       required: true
     }
   },
   notes: {
     label: 'Notes',
-    value: 'Any thoughts on this beer?',
+    // value: 'Any thoughts on this beer?',
     type: 'textarea',
     validation: {
       required: false
