@@ -13,6 +13,7 @@ import * as firebase from 'firebase/app';
 export class BeerService {
   colUSERS: string = '!Users';
   colTRACKERBEER: string = 'trackerBeer';
+  colTRACKERBEERCOMMON: string = 'trackerBeerCommon';
   users: AngularFirestoreCollection<User>;
   
   constructor(
@@ -35,16 +36,20 @@ export class BeerService {
       amountType: '',
       notes: '',
       rating: -1,
-      consumptionDate: new Date()
+      consumptionDate: new Date(),
+      type: 'beer',
+      commonType: ''
       };
+
+      data.commonType = data.beerName
       return data;
   }
 
-  saveNewTrackerWeed(userKey: string, weedEntry: TrackerBeer): Promise<firebase.firestore.DocumentReference>  {
+  saveNewTrackerWeed(userKey: string, beerEntry: TrackerBeer): Promise<firebase.firestore.DocumentReference>  {
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
         .getByUserKey(userKey)
         .collection(this.colTRACKERBEER)
-        .add(weedEntry);
+        .add(beerEntry);
 
     promise.then(x => {
       x.update({key: x.id});

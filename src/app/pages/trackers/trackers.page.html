@@ -20,7 +20,7 @@
   <router-outlet></router-outlet>
 
   <!-- Center fab button-->
-  <ion-fab #fab vertical="center" horizontal="center" slot="fixed" *ngIf="showCenterFab">
+  <!-- <ion-fab #fab id="fab" vertical="center" horizontal="center" slot="fixed" *ngIf="showCenterFab">
     <ion-fab-button>
       <ion-icon name="analytics"></ion-icon>
     </ion-fab-button>
@@ -38,37 +38,34 @@
       <ion-fab-button routerLink='weed'><mat-icon svgIcon="pine-tree"></mat-icon></ion-fab-button>
       <ion-fab-button routerLink='drugs'><mat-icon svgIcon="pill"></mat-icon></ion-fab-button>
     </ion-fab-list>
-  </ion-fab>
+  </ion-fab> -->
   <!-- End center fab button-->
     
   <!-- Bottom right Button -->
-  <ion-fab #fab id="footer-fab" vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button routerLink='/profile'>
-        <ion-icon name="person"></ion-icon>
-      </ion-fab-button>
-      <!-- <ion-fab-list side="left">
-        <ion-fab-button routerLink='beer' (click)="fabVisible = false"><ion-icon name="beer"></ion-icon></ion-fab-button>
-      </ion-fab-list> -->
-    </ion-fab>
+  <!-- <ion-fab #fabBRight id="footer-fab" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink='/profile'>
+      <ion-icon name="person"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
   <!-- Bottom right Fab Button-->
 
   <!-- Bottom left fab button-->
-  <ion-fab #fableft id="fab-left" vertical="bottom" horizontal="start" slot="fixed" *ngIf="!showCenterFab">
-      <ion-fab-button>
-        <ion-icon name="analytics"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-list side="end">
-        <ion-fab-button routerLink='music'><ion-icon name="musical-notes"></ion-icon></ion-fab-button>
-        <ion-fab-button routerLink='workout'><mat-icon svgIcon="dumbbell"></mat-icon></ion-fab-button>
-      </ion-fab-list>
-      <ion-fab-list side="top">
-        <ion-fab-button routerLink='beer'><ion-icon name="beer"></ion-icon></ion-fab-button>
-        <ion-fab-button routerLink='food'><mat-icon svgIcon="food-apple"></mat-icon></ion-fab-button>
-        <ion-fab-button routerLink='weed'><mat-icon svgIcon="pine-tree"></mat-icon></ion-fab-button>
-        <ion-fab-button routerLink='drugs'><mat-icon svgIcon="pill"></mat-icon></ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
-    <!-- Bottom left fab button-->
+  <!-- <ion-fab #fabBLeft id="fab-left" vertical="bottom" horizontal="start" slot="fixed" *ngIf="!showCenterFab">
+    <ion-fab-button>
+      <ion-icon name="analytics"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+      <ion-fab-button routerLink='music'><ion-icon name="musical-notes"></ion-icon></ion-fab-button>
+      <ion-fab-button routerLink='workout'><mat-icon svgIcon="dumbbell"></mat-icon></ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="top">
+      <ion-fab-button routerLink='beer'><ion-icon name="beer"></ion-icon></ion-fab-button>
+      <ion-fab-button routerLink='food'><mat-icon svgIcon="food-apple"></mat-icon></ion-fab-button>
+      <ion-fab-button routerLink='weed'><mat-icon svgIcon="pine-tree"></mat-icon></ion-fab-button>
+      <ion-fab-button routerLink='drugs'><mat-icon svgIcon="pill"></mat-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab> -->
+  <!-- Bottom left fab button-->
 
     
 </ion-content>

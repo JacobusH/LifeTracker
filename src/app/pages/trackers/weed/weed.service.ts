@@ -36,8 +36,12 @@ export class WeedService {
       amountType: '',
       notes: '',
       rating: -1,
-      consumptionDate: new Date()
+      consumptionDate: new Date(),
+      type: 'weed',
+      commonType: ''
       };
+
+      data.commonType = data.weedName;
       return data;
   }
 
@@ -56,7 +60,7 @@ export class WeedService {
         key: undefined,
         userKey: weedEntry.userKey,
         trackerWeedKey: x.id,
-        weedStrain: weedEntry.weedStrain 
+        commonType: weedEntry.commonType 
       };
       this.saveNewTrackerWeedCommon(userKey, comm);
 

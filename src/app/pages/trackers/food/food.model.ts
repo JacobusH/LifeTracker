@@ -1,74 +1,47 @@
 import { GeoPoint } from "@firebase/firestore-types";
 
-export interface TrackerWeed {
+export interface TrackerFood {
   key: string,
   userKey: string,
-  locationSmoked: string,
+  locationEaten: string,
   locationPoint: GeoPoint,
-  weedName: string,
-  weedStrain: string,
-  amountSmoked: number,
-  amountType: string,
+  foodName: string,
+  amountEaten: number,
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'weed',
-  commonType: string // same as 'weedStrain'. Used for dynamic service
+  type: 'food',
+  commonType: string // same as 'foodName'. Used for dynamic service
 }
 
-export interface TrackerWeedCommon {
+export interface TrackerFoodCommon {
   key: string,
   userKey: string,
-  trackerWeedKey: string,
+  trackerFoodKey: string,
   commonType: string,
 }
 
-export const trackerWeedDyn = {
-  locationSmoked: {
-    label: 'Location Smoked',
+export const trackerFoodDyn = {
+  locationEaten: {
+    label: 'Location Eaten',
     // value: 'Where are you?',
     type: 'text',
     validation: {
       required: true
     }
   },
-  weedName: {
-    label: 'Name',
-    // value: 'What weed did you enjoy?',
+  foodName: {
+    label: 'Food Name',
+    // value: 'Any thoughts on this weed?',
     type: 'text',
     validation: {
       required: true
     }
   },
-  weedStrain: {
-    label: 'Strain',
-    options: [
-            { label: "(choose one)", value: ''},
-            { label: "Indica", value: 'Indica'},
-            { label: "Sativa", value: 'Sativa'},
-            { label: "Hybrid", value: 'Hybrid'}
-          ],
-    type: 'select',
-    validation: {
-      required: true
-    }
-  },
-  amountSmoked: {
-    label: 'Amount Smoked',
+  amountEaten: {
+    label: 'Amount Eaten',
     value: 1,
     type: 'number',
-    validation: {
-      required: true
-    }
-  },
-  amountType: {
-    label: 'Smoking device',
-    options: [
-            { label: "(choose one)", value: ''},
-            { label: "Bowl", value: 'Bowl'},
-            { label: "Joint", value: 'Joint'},
-          ],
-    type: 'select',
     validation: {
       required: true
     }

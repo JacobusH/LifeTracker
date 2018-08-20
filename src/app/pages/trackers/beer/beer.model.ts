@@ -12,6 +12,15 @@ export interface TrackerBeer {
   notes: string,
   rating: number,
   consumptionDate: Date,
+  type: 'beer',
+  commonType: string // same as 'beerName'. Used for dynamic service
+}
+
+export interface TrackerBeerCommon {
+  key: string,
+  userKey: string,
+  trackerBeerKey: string,
+  commonType: string,
 }
 
 export const trackerBeerDyn = {
@@ -90,6 +99,14 @@ export const trackerBeerDyn = {
     value: '',
     validation: {
       required: false
+    }
+  },
+  consumptionDate: {
+    label: 'Consumption Date',
+    type: 'date',
+    value: '',
+    validation: {
+      required: true
     }
   },
 }

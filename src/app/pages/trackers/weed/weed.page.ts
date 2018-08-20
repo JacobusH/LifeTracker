@@ -16,7 +16,6 @@ export class WeedPage implements OnInit {
   currentLong;
   currentUserKey;
   
-
   constructor(
     private weedService: WeedService,
     private authService: AuthService,
@@ -37,10 +36,10 @@ export class WeedPage implements OnInit {
 
   onSave(formData: TrackerWeed) {
     console.log('formData', formData)
-    if(formData)
-    {
-      this.weedService.saveNewTrackerWeed(this.currentUserKey, formData);
-    }
+    // if(formData)
+    // {
+    //   this.weedService.saveNewTrackerWeed(this.currentUserKey, formData);
+    // }
   }
 
 }

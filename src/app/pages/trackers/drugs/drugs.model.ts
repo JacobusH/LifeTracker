@@ -1,60 +1,51 @@
 import { GeoPoint } from "@firebase/firestore-types";
 
-export interface TrackerWeed {
+export interface TrackerDrugs {
   key: string,
   userKey: string,
-  locationSmoked: string,
+  locationTaken: string,
   locationPoint: GeoPoint,
-  weedName: string,
-  weedStrain: string,
-  amountSmoked: number,
+  drugType: string,
+  amountTaken: number,
   amountType: string,
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'weed',
-  commonType: string // same as 'weedStrain'. Used for dynamic service
+  type: 'drugs',
+  commonType: string // same as 'drugType'. Used for dynamic service
 }
 
-export interface TrackerWeedCommon {
+export interface TrackerDrugsCommon {
   key: string,
   userKey: string,
-  trackerWeedKey: string,
+  trackerDrugsKey: string,
   commonType: string,
 }
 
-export const trackerWeedDyn = {
-  locationSmoked: {
-    label: 'Location Smoked',
+export const trackerDrugsDyn = {
+  locationTaken: {
+    label: 'Location Taken',
     // value: 'Where are you?',
     type: 'text',
     validation: {
       required: true
     }
   },
-  weedName: {
-    label: 'Name',
-    // value: 'What weed did you enjoy?',
-    type: 'text',
-    validation: {
-      required: true
-    }
-  },
-  weedStrain: {
-    label: 'Strain',
+  drugType: {
+    label: 'Drug Type',
     options: [
             { label: "(choose one)", value: ''},
-            { label: "Indica", value: 'Indica'},
-            { label: "Sativa", value: 'Sativa'},
-            { label: "Hybrid", value: 'Hybrid'}
+            { label: "MDMA", value: 'MDMA'},
+            { label: "LSD", value: 'LSD'},
+            { label: "Cocaine", value: 'Cocaine'}
           ],
     type: 'select',
     validation: {
       required: true
     }
   },
-  amountSmoked: {
-    label: 'Amount Smoked',
+  amountTaken: {
+    label: 'Amount Taken',
     value: 1,
     type: 'number',
     validation: {
@@ -62,11 +53,12 @@ export const trackerWeedDyn = {
     }
   },
   amountType: {
-    label: 'Smoking device',
+    label: 'Delivery Method',
     options: [
             { label: "(choose one)", value: ''},
-            { label: "Bowl", value: 'Bowl'},
-            { label: "Joint", value: 'Joint'},
+            { label: "Powder", value: 'Powder'},
+            { label: "Pill", value: 'Pill'},
+            { label: "Tab", value: 'Tab'},
           ],
     type: 'select',
     validation: {

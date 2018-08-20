@@ -12,7 +12,9 @@ import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-import { WeedService } from './weed/weed.service'
+import { TrackersService } from './trackers.service';
+import { DrugsService } from './drugs/drugs.service';
+import { WeedService } from './weed/weed.service';
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
@@ -70,7 +72,9 @@ const routes: Routes = [
   ],
   providers: [
     GoogleMapsAPIWrapper
+    , DrugsService
     , MarkerManager
+    // , TrackersService
     , WeedService
   ]
 })
