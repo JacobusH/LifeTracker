@@ -5,13 +5,12 @@ export interface TrackerFood {
   userKey: string,
   locationEaten: string,
   locationPoint: GeoPoint,
-  foodName: string,
+  name: string,
   amountEaten: number,
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'food',
-  commonType: string // same as 'foodName'. Used for dynamic service
+  type: string // 'food'
 }
 
 export interface TrackerFoodCommon {
@@ -30,7 +29,7 @@ export const trackerFoodDyn = {
       required: true
     }
   },
-  foodName: {
+  name: {
     label: 'Food Name',
     // value: 'Any thoughts on this weed?',
     type: 'text',

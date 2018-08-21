@@ -30,7 +30,7 @@ export class WeedService {
       locationSmoked: '',
       // locationPoint: new GeoPoint(0, 0),
       locationPoint: undefined,
-      weedName: '',
+      name: '',
       weedStrain: '',
       amountSmoked: -1,
       amountType: '',
@@ -41,7 +41,7 @@ export class WeedService {
       commonType: ''
       };
 
-      data.commonType = data.weedName;
+      data.commonType = data.name;
       return data;
   }
 

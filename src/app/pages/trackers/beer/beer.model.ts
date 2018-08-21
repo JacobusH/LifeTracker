@@ -5,15 +5,14 @@ export interface TrackerBeer {
   userKey: string,
   locationDrank: string,
   locationPoint: GeoPoint,
-  beerName: string,
+  name: string,
   beerBrewery: string,
   amountDrank: number;
   amountType: string;
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'beer',
-  commonType: string // same as 'beerName'. Used for dynamic service
+  type: string // 'beer'
 }
 
 export interface TrackerBeerCommon {
@@ -32,7 +31,7 @@ export const trackerBeerDyn = {
       required: true
     }
   },
-  beerName: {
+  name: {
     label: 'Beer Name',
     // value: 'What beer did you drink?',
     type: 'text',

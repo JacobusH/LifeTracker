@@ -30,7 +30,7 @@ export class BeerService {
       locationDrank: '',
       // locationPoint: new GeoPoint(0, 0),
       locationPoint: undefined,
-      beerName: '',
+      name: '',
       beerBrewery: '',
       amountDrank: -1,
       amountType: '',
@@ -41,7 +41,7 @@ export class BeerService {
       commonType: ''
       };
 
-      data.commonType = data.beerName
+      data.commonType = data.name
       return data;
   }
 

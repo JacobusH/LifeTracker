@@ -5,14 +5,13 @@ export interface TrackerDrugs {
   userKey: string,
   locationTaken: string,
   locationPoint: GeoPoint,
-  drugType: string,
+  name: string, // the type of drug i.e. lsd vs mdma
   amountTaken: number,
   amountType: string,
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'drugs',
-  commonType: string // same as 'drugType'. Used for dynamic service
+  type: string // 'drugs'
 }
 
 export interface TrackerDrugsCommon {
@@ -31,7 +30,7 @@ export const trackerDrugsDyn = {
       required: true
     }
   },
-  drugType: {
+  name: {
     label: 'Drug Type',
     options: [
             { label: "(choose one)", value: ''},

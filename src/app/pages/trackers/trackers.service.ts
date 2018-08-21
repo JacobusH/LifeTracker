@@ -31,6 +31,7 @@ export class TrackersService {
   users: AngularFirestoreCollection<User>;
   currentColTracker: string;
   currentColTrackerCommon: string;
+  currentTrackerType: string;
   
   // @Injectable()
   constructor(
@@ -39,6 +40,7 @@ export class TrackersService {
     // trackerType: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed,
     trackerType: string
   ) { 
+    this.currentTrackerType = trackerType;
     switch(trackerType) {
       case 'beer':
         this.currentColTracker = this.colTRACKERBEER;
@@ -56,31 +58,37 @@ export class TrackersService {
         this.currentColTracker = this.colTRACKERWEED;
         this.currentColTrackerCommon = this.colTRACKERWEEDCOMMON
         break;
-    } 
+    }
   }
 
 
   saveNewTracker(userKey: string, trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
-    // First save the new entry
+    // We need to set the type from the constructor on our form obj here and our user key
+    trackerEntry.userKey = userKey;
+    trackerEntry.type = this.currentTrackerType;
+
+    // Now save the new entry
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
         .getByUserKey(userKey)
         .collection(this.currentColTracker)
         .add(trackerEntry);
 
     promise.then(x => {
-      x.update({key: x.id});
+      x.update({key: x.id}); // this updates it in firebase
+      trackerEntry.key = x.id; // and our model for later
 
-      this.saveNewTrackerCommon(userKey, trackerEntry);
+      // Then save the common lookup
+      this.saveNewTrackerCommon(trackerEntry);
     });
 
     return promise;
   }
 
-  saveNewTrackerCommon(userKey: string, trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
+  saveNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
     let comm = this.createNewTrackerCommon(trackerEntry);
 
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
-        .getByUserKey(userKey)
+        .getByUserKey(trackerEntry.userKey)
         .collection(this.currentColTrackerCommon)
         .add(comm);
 
@@ -133,40 +141,58 @@ export class TrackersService {
     HELPERS 
   ***************/
 
+  // private addCommonType(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
+  //   switch(trackerEntry.commonType) {
+  //     case 'beer':
+  //       trackerEntry = trackerEntry as TrackerBeer;
+  //       trackerEntry.commonType = trackerEntry.name;
+  //       break;
+  //     case 'drugs':
+  //       trackerEntry = trackerEntry as TrackerDrugs;
+  //       trackerEntry.commonType = trackerEntry.name;
+  //       break;
+  //     case 'food':
+  //       trackerEntry = trackerEntry as TrackerFood;
+  //       trackerEntry.commonType = trackerEntry.name;
+  //       break;
+  //     case 'weed':
+  //      trackerEntry = trackerEntry as TrackerWeed;
+  //       trackerEntry.commonType = trackerEntry.name;
+  //       break;
+  //   } 
+  // }
+
   private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
+    console.log('createnewcommon entry', trackerEntry);
     switch(trackerEntry.type) {
       case 'beer':
-        let beerData: TrackerBeerCommon = {
-          key: undefined, // needs to be set later
+        return {
+          // key: undefined, // needs to be set later, can't even define it now because it gets set after db save
           userKey: trackerEntry.userKey,
           trackerBeerKey: trackerEntry.key,
-          commonType: trackerEntry.commonType,
+          commonType: trackerEntry.name,
         };
-        return beerData;
       case 'drugs':
-        let drugsData: TrackerDrugsCommon = {
+        return {
           key: undefined, // needs to be set later
           userKey: trackerEntry.userKey,
           trackerDrugsKey: trackerEntry.key,
-          commonType: trackerEntry.commonType,
+          commonType: trackerEntry.name,
         };
-        return drugsData;
       case 'food':
-        let foodData: TrackerFoodCommon = {
+        return {
           key: undefined, // needs to be set later
           userKey: trackerEntry.userKey,
           trackerFoodKey: trackerEntry.key,
-          commonType: trackerEntry.commonType,
+          commonType: trackerEntry.name,
         };
-        return foodData;
       case 'weed':
-        let weedData: TrackerWeedCommon = {
+        return {
           key: undefined, // needs to be set later
           userKey: trackerEntry.userKey,
           trackerWeedKey: trackerEntry.key,
-          commonType: trackerEntry.commonType,
+          commonType: trackerEntry.name,
         };
-        return weedData;
     } 
   }
 

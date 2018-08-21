@@ -30,7 +30,7 @@ export class DrugsService {
       locationTaken: '',
       // locationPoint: new GeoPoint(0, 0),
       locationPoint: undefined,
-      drugType: '',
+      name: '',
       amountTaken: -1,
       amountType: '',
       notes: '',
@@ -40,7 +40,7 @@ export class DrugsService {
       commonType: ''
       };
 
-      data.commonType = data.drugType;
+      data.commonType = data.name;
       return data;
   }
 

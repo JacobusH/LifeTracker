@@ -5,15 +5,14 @@ export interface TrackerWeed {
   userKey: string,
   locationSmoked: string,
   locationPoint: GeoPoint,
-  weedName: string,
+  name: string,
   weedStrain: string,
   amountSmoked: number,
   amountType: string,
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: 'weed',
-  commonType: string // same as 'weedStrain'. Used for dynamic service
+  type: string // 'weed'
 }
 
 export interface TrackerWeedCommon {
@@ -32,7 +31,7 @@ export const trackerWeedDyn = {
       required: true
     }
   },
-  weedName: {
+  name: {
     label: 'Name',
     // value: 'What weed did you enjoy?',
     type: 'text',

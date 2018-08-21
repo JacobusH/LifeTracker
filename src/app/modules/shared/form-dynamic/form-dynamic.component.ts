@@ -55,6 +55,16 @@ export class FormDynamicComponent implements OnInit {
     this.onSave.emit(form);
   }
 
+  // setCurrentPosition() {
+  //   if("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       this.lat = position.coords.latitude;
+  //       this.lng = position.coords.longitude;
+  //       this.zoom = 10;
+  //     })
+  //   }
+  // }
+
 
 
 }
