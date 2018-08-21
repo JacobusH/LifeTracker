@@ -23,64 +23,64 @@ export class WeedService {
     
   }
 
-  createNew(): TrackerWeed {
-    let data: TrackerWeed = {
-      key: '',
-      userKey: '',
-      locationSmoked: '',
-      // locationPoint: new GeoPoint(0, 0),
-      locationPoint: undefined,
-      name: '',
-      weedStrain: '',
-      amountSmoked: -1,
-      amountType: '',
-      notes: '',
-      rating: -1,
-      consumptionDate: new Date(),
-      type: 'weed',
-      commonType: ''
-      };
+  // createNew(): TrackerWeed {
+  //   let data: TrackerWeed = {
+  //     key: '',
+  //     userKey: '',
+  //     locationSmoked: '',
+  //     // locationPoint: new GeoPoint(0, 0),
+  //     locationPoint: undefined,
+  //     name: '',
+  //     weedStrain: '',
+  //     amountSmoked: -1,
+  //     amountType: '',
+  //     notes: '',
+  //     rating: -1,
+  //     consumptionDate: new Date(),
+  //     type: 'weed',
+  //     commonType: ''
+  //     };
 
-      data.commonType = data.name;
-      return data;
-  }
+  //     data.commonType = data.name;
+  //     return data;
+  // }
 
-  saveNewTrackerWeed(userKey: string, weedEntry: TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
-    // First save the new entry
-    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
-        .getByUserKey(userKey)
-        .collection(this.colTRACKERWEED)
-        .add(weedEntry);
+  // saveNewTrackerWeed(userKey: string, weedEntry: TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
+  //   // First save the new entry
+  //   let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+  //       .getByUserKey(userKey)
+  //       .collection(this.colTRACKERWEED)
+  //       .add(weedEntry);
 
-    promise.then(x => {
-      x.update({key: x.id});
+  //   promise.then(x => {
+  //     x.update({key: x.id});
 
-      // Now save it into the common lookup
-      let comm: TrackerWeedCommon = {
-        key: undefined,
-        userKey: weedEntry.userKey,
-        trackerWeedKey: x.id,
-        commonType: weedEntry.commonType 
-      };
-      this.saveNewTrackerWeedCommon(userKey, comm);
+  //     // Now save it into the common lookup
+  //     let comm: TrackerWeedCommon = {
+  //       key: undefined,
+  //       userKey: weedEntry.userKey,
+  //       trackerWeedKey: x.id,
+  //       commonType: weedEntry.commonType 
+  //     };
+  //     this.saveNewTrackerWeedCommon(userKey, comm);
 
-    });
+  //   });
 
-    return promise;
-  }
+  //   return promise;
+  // }
 
-  saveNewTrackerWeedCommon(userKey: string, trackerWeedCommonEntry: TrackerWeedCommon): Promise<firebase.firestore.DocumentReference>  {
-    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
-        .getByUserKey(userKey)
-        .collection(this.colTRACKERWEEDCOMMON)
-        .add(trackerWeedCommonEntry);
+  // saveNewTrackerWeedCommon(userKey: string, trackerWeedCommonEntry: TrackerWeedCommon): Promise<firebase.firestore.DocumentReference>  {
+  //   let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+  //       .getByUserKey(userKey)
+  //       .collection(this.colTRACKERWEEDCOMMON)
+  //       .add(trackerWeedCommonEntry);
 
-    promise.then(x => {
-      x.update({key: x.id});
-    });
+  //   promise.then(x => {
+  //     x.update({key: x.id});
+  //   });
 
-    return promise;
-  }
+  //   return promise;
+  // }
 
   getTrackerWeedColByUserKey(userKey: string): AngularFirestoreCollection<TrackerWeed> { 
     return this.userService

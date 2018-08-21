@@ -28,6 +28,7 @@ import { WeedPage } from './weed/weed.page';
 import { WorkoutPage } from './workout/workout.page';
 
 import { routing } from './trackers.routing';
+import { TrackerPopoverComponent } from './components/tracker-popover/tracker-popover.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [
+    TrackerPopoverComponent
+  ],
   imports: [
     routing
     , SharedModule
@@ -68,7 +72,7 @@ const routes: Routes = [
     , FoodPage
     , MusicPage
     , WorkoutPage
-    , WeedPage
+    , WeedPage, TrackerPopoverComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

@@ -6,9 +6,6 @@ import {
   TrackerWeed, TrackerWeedCommon, TrackerBeer, TrackerBeerCommon,
   TrackerFood, TrackerFoodCommon, TrackerDrugs, TrackerDrugsCommon 
 } from './trackers.model';
-import { 
-  BeerService, WeedService
-} from './trackerserviceEX.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import 'rxjs/add/operator/switchMap'
@@ -33,7 +30,6 @@ export class TrackersService {
   currentColTrackerCommon: string;
   currentTrackerType: string;
   
-  // @Injectable()
   constructor(
     private afs: AngularFirestore,
     private userService: UserService,
@@ -99,10 +95,18 @@ export class TrackersService {
     return promise;
   }
 
-  getTrackerColByUserKey(userKey: string): AngularFirestoreCollection<TrackerWeed> { 
+  getTrackerColByUserKey(userKey: string): AngularFirestoreCollection<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> { 
     return this.userService
       .getByUserKey(userKey)
       .collection(this.currentColTracker);
+  }
+
+  getTrackerColCommonByUserKey(userKey: string): AngularFirestoreCollection<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> { 
+    return this.userService
+      .getByUserKey(userKey)
+      .collection(this.currentColTrackerCommon, 
+        ref => ref.orderBy('commonType', 'desc')
+      );
   }
 
   editTracker(userKey: string, tracker: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<void> {
@@ -141,36 +145,15 @@ export class TrackersService {
     HELPERS 
   ***************/
 
-  // private addCommonType(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
-  //   switch(trackerEntry.commonType) {
-  //     case 'beer':
-  //       trackerEntry = trackerEntry as TrackerBeer;
-  //       trackerEntry.commonType = trackerEntry.name;
-  //       break;
-  //     case 'drugs':
-  //       trackerEntry = trackerEntry as TrackerDrugs;
-  //       trackerEntry.commonType = trackerEntry.name;
-  //       break;
-  //     case 'food':
-  //       trackerEntry = trackerEntry as TrackerFood;
-  //       trackerEntry.commonType = trackerEntry.name;
-  //       break;
-  //     case 'weed':
-  //      trackerEntry = trackerEntry as TrackerWeed;
-  //       trackerEntry.commonType = trackerEntry.name;
-  //       break;
-  //   } 
-  // }
-
   private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
-    console.log('createnewcommon entry', trackerEntry);
     switch(trackerEntry.type) {
       case 'beer':
+        trackerEntry = trackerEntry as TrackerBeer;
         return {
-          // key: undefined, // needs to be set later, can't even define it now because it gets set after db save
+          // key: undefined, // needs to be set later, if you try and set 'undefined' db won't let you set the value
           userKey: trackerEntry.userKey,
           trackerBeerKey: trackerEntry.key,
-          commonType: trackerEntry.name,
+          commonType: trackerEntry.beerBrewery + ' ' + trackerEntry.name,
         };
       case 'drugs':
         return {
