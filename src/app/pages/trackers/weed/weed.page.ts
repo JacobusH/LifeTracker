@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { trackerWeedDyn, TrackerWeed } from './weed.model';
-import { WeedService } from './weed.service';
+import { TrackerCommon } from '../trackers.model';
 import { AuthService } from '../../../services/auth.service';
 import { CFService } from '../../../services/CFService.service';
 
@@ -17,7 +17,6 @@ export class WeedPage implements OnInit {
   currentUserKey;
   
   constructor(
-    private weedService: WeedService,
     private authService: AuthService,
     private cfService: CFService
   ) { 

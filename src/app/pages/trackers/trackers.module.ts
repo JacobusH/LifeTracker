@@ -12,9 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-import { TrackersService } from './trackers.service';
-import { DrugsService } from './drugs/drugs.service';
-import { WeedService } from './weed/weed.service';
+import { TrackersService } from './trackers.service'; // not injected
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
@@ -28,7 +26,8 @@ import { WeedPage } from './weed/weed.page';
 import { WorkoutPage } from './workout/workout.page';
 
 import { routing } from './trackers.routing';
-import { TrackerPopoverComponent } from './components/tracker-popover/tracker-popover.component';
+import { TrackerPopoverComponent } from './components/tracker-common/tracker-popover/tracker-popover.component';
+import { TrackerCommonComponent } from './components/tracker-common/tracker-common.component';
 
 
 const routes: Routes = [
@@ -72,14 +71,12 @@ const routes: Routes = [
     , FoodPage
     , MusicPage
     , WorkoutPage
-    , WeedPage, TrackerPopoverComponent
+    , WeedPage, TrackerPopoverComponent, TrackerCommonComponent
   ],
   providers: [
     GoogleMapsAPIWrapper
-    , DrugsService
     , MarkerManager
     // , TrackersService
-    , WeedService
   ]
 })
 export class TrackersPageModule {}

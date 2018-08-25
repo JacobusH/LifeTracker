@@ -1,29 +1,12 @@
 import { GeoPoint } from "@firebase/firestore-types";
+import { TrackerBase } from '../trackers.model';
 
-export interface TrackerBeer {
-  key: string,
-  userKey: string,
-  locationDrank: string,
-  locationPoint: GeoPoint,
-  name: string,
+export interface TrackerBeer extends TrackerBase {
   beerBrewery: string,
-  amountDrank: number;
-  amountType: string;
-  notes: string,
-  rating: number,
-  consumptionDate: Date,
-  type: string // 'beer'
-}
-
-export interface TrackerBeerCommon {
-  key: string,
-  userKey: string,
-  trackerBeerKey: string,
-  commonType: string,
 }
 
 export const trackerBeerDyn = {
-  locationDrank: {
+  locationConsumed: {
     label: 'Location Drank',
     // value: 'Where are you?',
     type: 'text',
@@ -47,7 +30,7 @@ export const trackerBeerDyn = {
       required: true
     }
   },
-  amountDrank: {
+  consumptionAmount: {
     label: 'Amount Drank',
     value: 1,
     type: 'number',

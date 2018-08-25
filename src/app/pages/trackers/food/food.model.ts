@@ -1,23 +1,17 @@
 import { GeoPoint } from "@firebase/firestore-types";
+import { TrackerBase } from '../trackers.model';
 
-export interface TrackerFood {
+export interface TrackerFood extends TrackerBase {
   key: string,
   userKey: string,
   locationEaten: string,
   locationPoint: GeoPoint,
   name: string,
-  amountEaten: number,
+  consumptionAmount: number,
   notes: string,
   rating: number,
   consumptionDate: Date,
   type: string // 'food'
-}
-
-export interface TrackerFoodCommon {
-  key: string,
-  userKey: string,
-  trackerFoodKey: string,
-  commonType: string,
 }
 
 export const trackerFoodDyn = {

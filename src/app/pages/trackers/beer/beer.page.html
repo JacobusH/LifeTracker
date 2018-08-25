@@ -25,9 +25,7 @@
           <ion-icon name="beer"></ion-icon>
       </ng-template>
       <ng-template matTabContent>
-        <div class="commonType" *ngFor="let common of trackerBeerCommon" (click)="presentPopover($event, common.trackerBeerKey)">
-          {{ common.commonType }}
-        </div>
+        <app-tracker-common [trackerType]="TRACKERTYPE"></app-tracker-common>
       </ng-template>
     </mat-tab>
   

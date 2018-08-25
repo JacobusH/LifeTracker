@@ -1,24 +1,8 @@
 import { GeoPoint } from "@firebase/firestore-types";
+import { TrackerBase } from '../trackers.model';
 
-export interface TrackerDrugs {
-  key: string,
-  userKey: string,
-  locationTaken: string,
-  locationPoint: GeoPoint,
-  name: string, // the type of drug i.e. lsd vs mdma
-  amountTaken: number,
-  amountType: string,
-  notes: string,
-  rating: number,
-  consumptionDate: Date,
-  type: string // 'drugs'
-}
-
-export interface TrackerDrugsCommon {
-  key: string,
-  userKey: string,
-  trackerDrugsKey: string,
-  commonType: string,
+export interface TrackerDrugs extends TrackerBase {
+  // put specific characteristics here
 }
 
 export const trackerDrugsDyn = {

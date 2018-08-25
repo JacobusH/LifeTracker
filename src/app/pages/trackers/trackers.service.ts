@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { 
-  TrackerWeed, TrackerWeedCommon, TrackerBeer, TrackerBeerCommon,
-  TrackerFood, TrackerFoodCommon, TrackerDrugs, TrackerDrugsCommon 
+  TrackerWeed, TrackerBeer, TrackerTypeEnum,
+  TrackerFood, TrackerDrugs, TrackerCommon
 } from './trackers.model';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
@@ -34,23 +34,24 @@ export class TrackersService {
     private afs: AngularFirestore,
     private userService: UserService,
     // trackerType: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed,
-    trackerType: string
+    trackerType: TrackerTypeEnum
   ) { 
-    this.currentTrackerType = trackerType;
+    this.currentTrackerType = TrackerTypeEnum[trackerType];
+
     switch(trackerType) {
-      case 'beer':
+      case TrackerTypeEnum.BEER:
         this.currentColTracker = this.colTRACKERBEER;
         this.currentColTrackerCommon = this.colTRACKERBEERCOMMON
         break;
-      case 'drugs':
+      case TrackerTypeEnum.DRUGS:
         this.currentColTracker = this.colTRACKERDRUGS;
         this.currentColTrackerCommon = this.colTRACKERDRUGSCOMMON
         break;
-      case 'food':
+      case TrackerTypeEnum.FOOD:
         this.currentColTracker = this.colTRACKERFOOD;
         this.currentColTrackerCommon = this.colTRACKERFOODCOMMON
         break;
-      case 'weed':
+      case TrackerTypeEnum.WEED:
         this.currentColTracker = this.colTRACKERWEED;
         this.currentColTrackerCommon = this.colTRACKERWEEDCOMMON
         break;
@@ -101,12 +102,28 @@ export class TrackersService {
       .collection(this.currentColTracker);
   }
 
-  getTrackerColCommonByUserKey(userKey: string): AngularFirestoreCollection<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> { 
+  getTrackerColByUserKeyAndTrackerKey(userKey: string, trackerKey: string) : AngularFirestoreDocument<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> {
+    console.log('serv', userKey, trackerKey)
+
+    return this.userService
+      .getByUserKey(userKey)
+      .collection(this.currentColTracker)
+      .doc(trackerKey)
+  }
+
+  getTrackerColCommonByUserKey(userKey: string): AngularFirestoreCollection<TrackerCommon> { 
     return this.userService
       .getByUserKey(userKey)
       .collection(this.currentColTrackerCommon, 
         ref => ref.orderBy('commonType', 'desc')
       );
+  }
+
+  getTrackerColCommonByUserKeyAndTrackerKey(userKey: string, trackerCommonKey: string) : AngularFirestoreDocument<TrackerCommon> {
+    return this.userService
+      .getByUserKey(userKey)
+      .collection(this.currentColTracker)
+      .doc(trackerCommonKey)
   }
 
   editTracker(userKey: string, tracker: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<void> {
@@ -117,7 +134,7 @@ export class TrackersService {
       .update(tracker);
   }
 
-  editTrackerCommon(userKey: string, trackerCommon: TrackerBeerCommon | TrackerDrugsCommon | TrackerFoodCommon | TrackerWeedCommon): Promise<void> {
+  editTrackerCommon(userKey: string, trackerCommon: TrackerCommon): Promise<void> {
     return this.userService
       .getByUserKey(userKey)
       .collection(this.currentColTrackerCommon)
@@ -148,33 +165,25 @@ export class TrackersService {
   private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
     switch(trackerEntry.type) {
       case 'beer':
-        trackerEntry = trackerEntry as TrackerBeer;
+        let trackerBeerEntry = trackerEntry as TrackerBeer;
         return {
           // key: undefined, // needs to be set later, if you try and set 'undefined' db won't let you set the value
-          userKey: trackerEntry.userKey,
-          trackerBeerKey: trackerEntry.key,
-          commonType: trackerEntry.beerBrewery + ' ' + trackerEntry.name,
+          userKey: trackerBeerEntry.userKey,
+          trackerBeerKey: trackerBeerEntry.key,
+          commonType: trackerBeerEntry.name,
+          commonTypeExtra: trackerBeerEntry.beerBrewery,
+          commonRating: trackerBeerEntry.rating,
+          commonCount: { 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.amountType }
         };
-      case 'drugs':
+      default: 
         return {
-          key: undefined, // needs to be set later
+          // key: undefined, // needs to be set later
           userKey: trackerEntry.userKey,
-          trackerDrugsKey: trackerEntry.key,
+          trackerKey: trackerEntry.key,
           commonType: trackerEntry.name,
-        };
-      case 'food':
-        return {
-          key: undefined, // needs to be set later
-          userKey: trackerEntry.userKey,
-          trackerFoodKey: trackerEntry.key,
-          commonType: trackerEntry.name,
-        };
-      case 'weed':
-        return {
-          key: undefined, // needs to be set later
-          userKey: trackerEntry.userKey,
-          trackerWeedKey: trackerEntry.key,
-          commonType: trackerEntry.name,
+          commonTypeExtra: '', // no need on default
+          commonRating: trackerEntry.rating,
+          commonCount: { 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.amountType }
         };
     } 
   }
