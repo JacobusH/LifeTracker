@@ -30,7 +30,7 @@ export class BeerPage implements OnInit {
     private authService: AuthService
   ) { 
     this.trackerBeerDyn = trackerBeerDyn;
-    this.trackersService = new TrackersService(this.afs, this.userService, TrackerTypeEnum.BEER);
+    // this.trackersService = new TrackersService(this.afs, this.userService, TrackerTypeEnum.BEER);
     this.TRACKERTYPE = TrackerTypeEnum.BEER;
   }
 
@@ -40,6 +40,8 @@ export class BeerPage implements OnInit {
     this.authService.user.subscribe(user => {
       if(user) {
         this.currentUserKey = user.key;
+
+        this.trackersService = new TrackersService(this.afs, this.userService, TrackerTypeEnum.BEER, user.key);
 
         // this.trackersService.getTrackerColCommonByUserKey(this.currentUserKey).valueChanges().subscribe(common => {
         //   this.trackerCommon = common as TrackerCommon[];
@@ -53,7 +55,7 @@ export class BeerPage implements OnInit {
     console.log('beer form data', formData)
     if(formData)
     {
-      this.trackersService.saveNewTracker(this.currentUserKey, formData);
+      this.trackersService.saveNewTracker(formData);
     }
   }
 

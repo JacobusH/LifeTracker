@@ -16,7 +16,7 @@ export class TrackerCommonComponent implements OnInit {
   @Input('trackerType') trackerType: TrackerTypeEnum;  
   currentUserKey;
   trackersService: TrackersService;
-  trackerCommon: TrackerCommon[];
+  trackerCommons: TrackerCommon[];
 
   constructor(
     private authService: AuthService,
@@ -27,14 +27,14 @@ export class TrackerCommonComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.trackersService = new TrackersService(this.afs, this.userService, this.trackerType);
-
       this.authService.user.subscribe(user => {
       if(user) {
         this.currentUserKey = user.key;
 
-        this.trackersService.getTrackerColCommonByUserKey(this.currentUserKey).valueChanges().subscribe(common => {
-          this.trackerCommon = common as TrackerCommon[];
+        this.trackersService = new TrackersService(this.afs, this.userService, this.trackerType, user.key);
+        this.trackersService.getCurrentColTrackerCommon().valueChanges().subscribe(common => {
+          console.log('in commons', common)
+          this.trackerCommons = common as TrackerCommon[];
         });
       }
     });

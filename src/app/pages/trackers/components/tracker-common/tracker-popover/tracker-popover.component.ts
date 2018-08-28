@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { TrackersService } from '../../../trackers.service';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -7,13 +7,16 @@ import {
   TrackerWeed, TrackerBeer, TrackerTypeEnum,
   TrackerFood, TrackerDrugs, TrackerCommon
 } from '../../../trackers.model';
+import { AuthService } from '../../../../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tracker-popover',
   templateUrl: './tracker-popover.component.html',
   styleUrls: ['./tracker-popover.component.scss']
 })
-export class TrackerPopoverComponent implements OnInit {
+export class TrackerPopoverComponent implements OnInit, OnDestroy {
+  auth$: Subscription;
   currentTrackerKey;
   currentUserKey;
   currentTrackerType;
@@ -24,21 +27,34 @@ export class TrackerPopoverComponent implements OnInit {
     private navParams: NavParams,
     private userService: UserService,
     private afs: AngularFirestore,
+    private authService: AuthService
 
   ) {
     this.currentTrackerKey = this.navParams.get('currentTrackerKey');
     this.currentTrackerType = this.navParams.get('trackerType');
     this.currentUserKey = this.navParams.get('userKey');
-    
-    this.trackersService = new TrackersService(this.afs, this.userService, this.currentTrackerType);
+
+    // this.trackersService = new TrackersService(this.afs, this.userService, this.currentTrackerType);
   }
 
   
 
   ngOnInit() {
-    this.trackersService.getTrackerColByUserKeyAndTrackerKey(this.currentUserKey, this.currentTrackerKey).valueChanges().subscribe(tracker => {
-      this.currentTracker = tracker as TrackerBeer;
+    this.auth$ = this.authService.user.subscribe(user => {
+      if(user) {
+        this.currentUserKey = user.key;
+
+        this.trackersService = new TrackersService(this.afs, this.userService, this.currentTrackerType, user.key);
+        this.trackersService.getTrackerEntry(this.currentTrackerKey).valueChanges().subscribe(tracker => {
+          console.log('in popover', tracker)
+          this.currentTracker = tracker as TrackerBeer;
+        });
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this.auth$.unsubscribe();
   }
 
 }

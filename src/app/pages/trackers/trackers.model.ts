@@ -25,10 +25,10 @@ export interface TrackerCommon {
   key: string,
   userKey: string,
   trackerKey: string,
-  commonType: string,
+  commonName: string,
   commonTypeExtra: string,
   commonRating: number,
-  commonCount: { 'count': number, 'type': string }
+  commonCounts: [{ 'count': number, 'type': string }]
 }
 
 export enum TrackerTypeEnum {
