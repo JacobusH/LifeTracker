@@ -1,0 +1,34 @@
+.form-quest {
+  border: 1px solid #1f1f1f;
+  border-radius: 5px;
+  padding: 7px;
+  margin-top: 15px;
+  position: relative;
+
+  .quest-name {
+    position: absolute;
+    top: -7px;
+    background: white;
+    max-width: 50%;
+    min-width: 10%;
+    left: 45px;
+    padding-left: 30px;
+  }
+
+  .quest-remove {
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .quest-inner {
+    display: flex;
+    justify-content: space-around;
+
+    mat-form-field {
+      width: 30%;
+    }
+  } 
+}

@@ -28,6 +28,7 @@ import { WorkoutPage } from './workout/workout.page';
 import { routing } from './trackers.routing';
 import { TrackerPopoverComponent } from './components/tracker-common/tracker-popover/tracker-popover.component';
 import { TrackerCommonComponent } from './components/tracker-common/tracker-common.component';
+import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
 
 
 const routes: Routes = [
@@ -71,7 +72,7 @@ const routes: Routes = [
     , FoodPage
     , MusicPage
     , WorkoutPage
-    , WeedPage, TrackerPopoverComponent, TrackerCommonComponent
+    , WeedPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

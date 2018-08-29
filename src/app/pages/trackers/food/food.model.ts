@@ -11,7 +11,7 @@ export interface TrackerFood extends TrackerBase {
   notes: string,
   rating: number,
   consumptionDate: Date,
-  type: string // 'food'
+  trackerType: string // 'food'
 }
 
 export const trackerFoodDyn = {

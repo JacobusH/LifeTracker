@@ -66,7 +66,7 @@ export class TrackersService {
   saveNewTracker(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed)  {
     // We need to set the type from the constructor on our form obj here and our user key
     trackerEntry.userKey = this.currentUserKey;
-    trackerEntry.type = this.currentTrackerType;
+    trackerEntry.trackerType = this.currentTrackerType;
     
     // Check this does not exist in common already
     let save$ = this.getCommonEntryByTracker(trackerEntry).subscribe(x => {
@@ -91,7 +91,7 @@ export class TrackersService {
       else { // existing entry, update the common count and save the tracker entry
         let comm = x[0] as TrackerCommon;
         comm.commonCounts.forEach(elem => {
-          if(elem.type === trackerEntry.amountType) {
+          if(elem.type === trackerEntry.consumptionAmountType) {
             elem.count += trackerEntry.consumptionAmount;
             return;
           }
@@ -209,7 +209,7 @@ export class TrackersService {
   ***************/
 
   private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
-    switch(trackerEntry.type) {
+    switch(trackerEntry.trackerType) {
       case 'beer':
         let trackerBeerEntry = trackerEntry as TrackerBeer;
         return {
@@ -219,7 +219,7 @@ export class TrackersService {
           commonName: trackerBeerEntry.name,
           commonTypeExtra: trackerBeerEntry.beerBrewery,
           commonRating: trackerBeerEntry.rating,
-          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.amountType }]
+          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
         };
       default: 
         return {
@@ -229,7 +229,7 @@ export class TrackersService {
           commonName: trackerEntry.name,
           commonTypeExtra: '', // no need on default
           commonRating: trackerEntry.rating,
-          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.amountType }]
+          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
         };
     } 
   }

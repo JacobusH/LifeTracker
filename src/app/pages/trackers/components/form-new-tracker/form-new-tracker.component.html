@@ -1,0 +1,42 @@
+<h1 class="flex-center">Make a new Tracker</h1>
+
+<mat-form-field style="width: 100%">
+    <mat-label [attr.for]="prop">What do you want to track?</mat-label>
+    <input id="trackerName" matInput [(ngModel)]="trackerName" (keyup.enter)="showQuestions = true" />
+  </mat-form-field>
+<ion-button class="flex-center" (click)="showQuestions = true">Next</ion-button>
+
+<div *ngIf="showQuestions">
+  <!-- <div id="prebuilt">
+    <p> We already keep track of some things under the hood. Go ahead and change these to your preferences. Then add anything else you want to keep track of. For instance, if tracking your beer drinking you might want to add things like:</p>
+    <ul>
+      <li>Brewery</li>
+      <li>Friends With</li>
+    </ul>
+  </div> -->
+
+  <p>Every Tracked Item needs something to identify itself.</p>
+  <h2 class="flex-center">{{trackerName}}</h2>
+  <div class="form-quest" *ngFor="let quest of baseQuestions">
+    <input class="quest-name" matInput [(ngModel)]="quest.label" value="question.label" />  
+    <div class="quest-remove" *ngIf="!quest.noEdits" (click)="removeQuestion(quest)"><mat-icon svgIcon="delete"></mat-icon></div>
+    <div class="quest-inner">
+      <mat-form-field>
+        <mat-label>Position?</mat-label>
+        <input matInput [(ngModel)]="quest.position" value="quest.position" type="number">  
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Type of field?" [disabled]="quest.noEdits" [value]="quest.type">
+            <mat-option *ngFor="let option of fieldOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Required?</mat-label>
+        <input matInput [(ngModel)]="quest.validation.required" value="quest.validation.required" [disabled]="quest.noEdits" readonly="quest.noEdits">  
+      </mat-form-field>
+    </div>
+  </div>
+  <ion-button (click)="addEmptyQuestion()">Add Question</ion-button>
+</div>
