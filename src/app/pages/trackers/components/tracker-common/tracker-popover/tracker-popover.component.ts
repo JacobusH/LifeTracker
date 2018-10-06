@@ -5,7 +5,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { UserService } from '../../../../../services/user.service';
 import { 
   TrackerWeed, TrackerBeer, TrackerTypeEnum,
-  TrackerFood, TrackerDrugs, TrackerCommon
+  TrackerCommon
 } from '../../../trackers.model';
 import { AuthService } from '../../../../../services/auth.service';
 import { Subscription } from 'rxjs';
@@ -21,7 +21,7 @@ export class TrackerPopoverComponent implements OnInit, OnDestroy {
   currentUserKey;
   currentTrackerType;
   trackersService: TrackersService;
-  currentTracker: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed
+  currentTracker: TrackerBeer | TrackerWeed
 
   constructor(
     private navParams: NavParams,

@@ -1,0 +1,15 @@
+<div>
+
+
+<mat-form-field style="width: 100%">
+    <mat-label [attr.for]="prop">What do you want to track?</mat-label>
+    <input id="trackerName" matInput [(ngModel)]="trackerName" (keyup.enter)="showQuestions = true" />
+  </mat-form-field>
+  
+  <mat-button-toggle-group [(ngModel)]="trackerType" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="act">Activity</mat-button-toggle>
+    <mat-button-toggle value="skill">Skill</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <ion-button class="flex-center" (click)="onSave()">Create</ion-button>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Route, ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { CFService } from '../../services/CFService.service';
 
@@ -6,6 +6,7 @@ import { CFService } from '../../services/CFService.service';
   selector: 'trackers',
   templateUrl: './trackers.page.html',
   styleUrls: ['./trackers.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TrackersPage implements OnInit, AfterViewInit {
   currentPage;

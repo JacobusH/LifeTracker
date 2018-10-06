@@ -4,7 +4,7 @@ import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { 
   TrackerWeed, TrackerBeer, TrackerTypeEnum,
-  TrackerFood, TrackerDrugs, TrackerCommon
+  TrackerCommon
 } from './trackers.model';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
@@ -63,7 +63,7 @@ export class TrackersService {
   }
 
 
-  saveNewTracker(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed)  {
+  saveNewTracker(trackerEntry: TrackerBeer | TrackerWeed)  {
     // We need to set the type from the constructor on our form obj here and our user key
     trackerEntry.userKey = this.currentUserKey;
     trackerEntry.trackerType = this.currentTrackerType;
@@ -90,12 +90,12 @@ export class TrackersService {
       }
       else { // existing entry, update the common count and save the tracker entry
         let comm = x[0] as TrackerCommon;
-        comm.commonCounts.forEach(elem => {
-          if(elem.type === trackerEntry.consumptionAmountType) {
-            elem.count += trackerEntry.consumptionAmount;
-            return;
-          }
-        });
+        // comm.commonCounts.forEach(elem => {
+        //   if(elem.type === trackerEntry.consumptionAmountType) {
+        //     elem.count += trackerEntry.consumptionAmount;
+        //     return;
+        //   }
+        // });
 
         let promise: Promise<firebase.firestore.DocumentReference> = this.userService
         .getByUserKey(this.currentUserKey)
@@ -117,7 +117,7 @@ export class TrackersService {
     
   }
 
-  saveNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
+  saveNewTrackerCommon(trackerEntry: TrackerBeer | TrackerWeed): Promise<firebase.firestore.DocumentReference>  {
     let comm = this.createNewTrackerCommon(trackerEntry);
 
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
@@ -132,7 +132,7 @@ export class TrackersService {
     return promise;
   }
 
-  getCommonEntryByTracker(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
+  getCommonEntryByTracker(trackerEntry: TrackerBeer | TrackerWeed) {
     return this.userService.getByUserKey(this.currentUserKey)
       .collection(this.currentColTrackerCommon, 
         ref => ref.where('commonName', '==', trackerEntry.name))
@@ -144,13 +144,13 @@ export class TrackersService {
       );  
   }
 
-  getCurrentColTracker(): AngularFirestoreCollection<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> { 
+  getCurrentColTracker(): AngularFirestoreCollection<TrackerBeer | TrackerWeed> { 
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.currentColTracker);
   }
 
-  getTrackerEntry(trackerKey: string) : AngularFirestoreDocument<TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed> {
+  getTrackerEntry(trackerKey: string) : AngularFirestoreDocument<TrackerBeer | TrackerWeed> {
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.currentColTracker)
@@ -172,7 +172,7 @@ export class TrackersService {
       .doc(trackerCommonKey)
   }
 
-  editTracker(tracker: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<void> {
+  editTracker(tracker: TrackerBeer | TrackerWeed): Promise<void> {
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.currentColTracker)
@@ -188,7 +188,7 @@ export class TrackersService {
       .update(trackerCommon);
   }
 
-  deleteTracker(tracker: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<void> {
+  deleteTracker(tracker: TrackerBeer | TrackerWeed): Promise<void> {
     return this.userService
      .getByUserKey(this.currentUserKey)
      .collection(this.currentColTracker)
@@ -196,7 +196,7 @@ export class TrackersService {
      .delete()
   }
 
-  deleteTrackerCommon(trackerCommon: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed): Promise<void> {
+  deleteTrackerCommon(trackerCommon: TrackerBeer | TrackerWeed): Promise<void> {
     return this.userService
      .getByUserKey(this.currentUserKey)
      .collection(this.currentColTrackerCommon)
@@ -208,7 +208,7 @@ export class TrackersService {
     HELPERS 
   ***************/
 
-  private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerDrugs | TrackerFood | TrackerWeed) {
+  private createNewTrackerCommon(trackerEntry: TrackerBeer | TrackerWeed) {
     switch(trackerEntry.trackerType) {
       case 'beer':
         let trackerBeerEntry = trackerEntry as TrackerBeer;
@@ -218,8 +218,8 @@ export class TrackersService {
           trackerBeerKey: trackerBeerEntry.key,
           commonName: trackerBeerEntry.name,
           commonTypeExtra: trackerBeerEntry.beerBrewery,
-          commonRating: trackerBeerEntry.rating,
-          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
+          // commonRating: trackerBeerEntry.rating,
+          // commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
         };
       default: 
         return {
@@ -228,8 +228,8 @@ export class TrackersService {
           trackerKey: trackerEntry.key,
           commonName: trackerEntry.name,
           commonTypeExtra: '', // no need on default
-          commonRating: trackerEntry.rating,
-          commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
+          // commonRating: trackerEntry.rating,
+          // commonCounts: [{ 'count': trackerEntry.consumptionAmount, 'type': trackerEntry.consumptionAmountType }]
         };
     } 
   }

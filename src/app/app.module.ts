@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
 import { BrowserModule } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
@@ -33,7 +34,9 @@ import { environment } from '../environments/environment';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    AngularFireModule
+    NbThemeModule.forRoot({ name: 'cosmic' }) // this will enable the default theme, you can change this to `cosmic` to enable the dark theme
+    , NbLayoutModule
+    , AngularFireModule
     , AngularFirestoreModule
     , AngularFireStorageModule
     , AngularFireAuthModule

@@ -4,11 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
 import { BeerPage } from './beer/beer.page';
+import { ListPage } from './list/list.page';
+import { NewPage } from './new/new.page';
 import { WeedPage } from './weed/weed.page';
-import { FoodPage } from './food/food.page';
-import { MusicPage } from './music/music.page';
-import { DrugsPage } from './drugs/drugs.page';
-import { WorkoutPage } from './workout/workout.page';
 
 
 export const routes: Routes = [
@@ -16,11 +14,9 @@ export const routes: Routes = [
   children: [
     { path: '', redirectTo: 'trackers', pathMatch: 'full' },
     { path: 'beer', component: BeerPage, data: { state: 'tracker-beer' }},
-    { path: 'drugs', component: DrugsPage, data: { state: 'tracker-drugs' }},
-    { path: 'food', component: FoodPage, data: { state: 'tracker-food' }},
-    { path: 'music', component: MusicPage, data: { state: 'tracker-music' }},
+    { path: 'list', component: ListPage, data: { state: 'tracker-list' }},
+    { path: 'new', component: NewPage, data: { state: 'tracker-new' }},
     { path: 'weed', component: WeedPage, data: { state: 'tracker-weed' }},
-    { path: 'workout', component: WorkoutPage, data: { state: 'tracker-workout' }},
   ]},
 ];
 

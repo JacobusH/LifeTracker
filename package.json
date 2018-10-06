@@ -15,8 +15,8 @@
   "dependencies": {
     "@agm/core": "^1.0.0-beta.3",
     "@agm/snazzy-info-window": "^1.0.0-beta.3",
-    "@angular/animations": "^6.1.2",
-    "@angular/cdk": "^6.4.3",
+    "@angular/animations": "^6.1.9",
+    "@angular/cdk": "^6.4.7",
     "@angular/common": "6.0.9",
     "@angular/core": "6.0.9",
     "@angular/forms": "6.0.9",
@@ -36,6 +36,7 @@
     "@ionic/ng-toolkit": "1.0.0-rc.11",
     "@ionic/pro": "2.0.2",
     "@ionic/schematics-angular": "1.0.0-rc.11",
+    "@nebular/theme": "^2.0.1",
     "@ultimate/ngxerrors": "^1.4.0",
     "angularfire2": "^5.0.0-rc.11",
     "core-js": "^2.5.3",
@@ -49,7 +50,7 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "0.7.0-rc.3",
-    "@angular-devkit/build-angular": "0.7.0-rc.3",
+    "@angular-devkit/build-angular": "^0.8.3",
     "@angular-devkit/core": "0.7.0-rc.3",
     "@angular-devkit/schematics": "0.7.0-rc.3",
     "@angular/cli": "6.0.8",

@@ -1,24 +1,45 @@
 import { GeoPoint } from "@firebase/firestore-types";
 
 export * from './beer/beer.model';
-export * from './drugs/drugs.model';
-export * from './food/food.model';
 export * from './weed/weed.model';
 
 // TODO: finish other models
 
-export interface TrackerBase {
+export interface Tracker {
   key: string,
   userKey: string,
   name: string,
   trackerType: string // 'weed'
 }
 
-// amount: number,
-// amountType: string,
-// rating: string,
-// notes: string,
-// locationPoint: GeoPoint,
+export enum Interval {
+  "Day",
+  "Week",
+  "Month"
+}
+
+export interface Video {
+  key: string,
+  videoId: string,
+  title?: string,
+  caption?: string,
+  isActive: boolean,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export interface SkillTrackerNode {
+  trackerKey: string,
+  children?: Array<SkillTrackerNode>
+  videos?: Array<Video>
+  options: {
+    points: number,
+    decayRate: {
+      value: number,
+      interval: Interval
+    }
+  }
+}
 
 export interface TrackerCommon {
   key: string,

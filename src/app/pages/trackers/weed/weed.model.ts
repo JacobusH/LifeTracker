@@ -1,7 +1,7 @@
 import { GeoPoint } from "@firebase/firestore-types";
-import { TrackerBase } from '../trackers.model';
+import { Tracker } from '../trackers.model';
 
-export interface TrackerWeed extends TrackerBase {
+export interface TrackerWeed extends Tracker {
   weedStrain: string,
 }
 

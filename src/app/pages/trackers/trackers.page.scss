@@ -9,8 +9,12 @@ agm-map {
 // }
 
 .toolbar-title {
-    .subtitle {
-      font-size: 66%;
-      margin: 0;
-    }
+  .subtitle {
+    font-size: 66%;
+    margin: 0;
   }
+}
+
+.nb-theme-cosmic nb-layout .layout nb-layout-header nav {
+  height: 1.25rem;
+}

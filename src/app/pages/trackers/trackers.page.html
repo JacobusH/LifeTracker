@@ -1,25 +1,38 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-title class="toolbar-title">Trackers
         <p class="subtitle">{{subtitle}}</p>
-    </ion-title>
+    </ion-title> -->
     
     <!-- <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons> -->
-    <ion-buttons slot="end">  
+    <!-- <ion-buttons slot="end">  
     </ion-buttons>
   </ion-toolbar>
   
-</ion-header>
+</ion-header> -->
+
+<nb-layout>
+  <!-- <nb-layout-header>Awesome Company</nb-layout-header> -->
+  <nb-layout-header subheader class="test">{{subtitle}}</nb-layout-header>
+  <button nbButton></button>
+  
+  <nb-sidebar state="compacted">
+      <div routerLink='new'><mat-icon svgIcon="plus-circle"></mat-icon></div>
+ </nb-sidebar>
+
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+
+</nb-layout>
 
 
-<ion-content padding>
 
-  <app-form-new-tracker></app-form-new-tracker>
 
-  <!-- Child Content-->
-  <!-- <router-outlet></router-outlet> -->
+
+<!-- <ion-content padding> -->
 
   <!-- Center fab button-->
   <!-- <ion-fab #fab id="fab" vertical="center" horizontal="center" slot="fixed" *ngIf="showCenterFab">
@@ -70,6 +83,6 @@
   <!-- Bottom left fab button-->
 
     
-</ion-content>
+<!-- </ion-content> -->
 
 

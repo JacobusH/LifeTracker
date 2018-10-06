@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module'
+import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbButtonModule } from '@nebular/theme';
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
-  , MatTabsModule } from '@angular/material';
+  , MatTabsModule, MatButtonToggleModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { } from '@angular/material';
 
@@ -13,17 +14,16 @@ import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { TrackersService } from './trackers.service'; // not injected
+import { TrackersNewService } from './trackers-new.service'; // not injected
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
 
 import { TrackersPage } from './trackers.page';
 import { BeerPage } from './beer/beer.page';
-import { DrugsPage } from './drugs/drugs.page';
-import { FoodPage } from './food/food.page';
-import { MusicPage } from './music/music.page';
 import { WeedPage } from './weed/weed.page';
-import { WorkoutPage } from './workout/workout.page';
+import { NewPage } from './new/new.page';
+import { ListPage } from './list/list.page';
 
 import { routing } from './trackers.routing';
 import { TrackerPopoverComponent } from './components/tracker-common/tracker-popover/tracker-popover.component';
@@ -61,6 +61,10 @@ const routes: Routes = [
     , MatOptionModule
     , MatSelectModule
     , MatTabsModule
+    , MatButtonToggleModule
+    , NbLayoutModule
+    , NbButtonModule
+    , NbSidebarModule
     , HttpClientModule
   ],
   declarations: [
@@ -68,15 +72,13 @@ const routes: Routes = [
     , MapComponent
     , TrackersPage
     , BeerPage
-    , DrugsPage
-    , FoodPage
-    , MusicPage
-    , WorkoutPage
-    , WeedPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
+    , NewPage, WeedPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage
   ],
   providers: [
     GoogleMapsAPIWrapper
     , MarkerManager
+    , NbSidebarService
+    , TrackersNewService
     // , TrackersService
   ]
 })

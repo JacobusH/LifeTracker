@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'login', data: { state: 'login'}, loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'profile', data: { state: 'profile'}, loadChildren: './pages/profile/profile.module#ProfilePageModule', canActivate: [AuthGuard] },
 
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

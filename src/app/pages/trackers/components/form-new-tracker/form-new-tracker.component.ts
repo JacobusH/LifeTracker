@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackerBase, BaseQuestions, TrackerQuestion, TrackerFieldOptions } from '../../../trackers/trackers.model';
+import { Tracker, BaseQuestions, TrackerQuestion, TrackerFieldOptions } from '../../../trackers/trackers.model';
 
 
 
