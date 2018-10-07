@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { AuthService } from '../../../../services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { TrackerPopoverComponent } from './tracker-popover/tracker-popover.component';
-import { TrackerCommon, TrackerTypeEnum } from '../../trackers.model';
+import { TrackerCommon } from '../../trackers.model';
 import { UserService } from '../../../../services/user.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: ['./tracker-common.component.scss']
 })
 export class TrackerCommonComponent implements OnInit {
-  @Input('trackerType') trackerType: TrackerTypeEnum;  
+  @Input('trackerType') trackerType: any;  
   currentUserKey;
   // trackersService: TrackersService;
   trackerCommons: TrackerCommon[];

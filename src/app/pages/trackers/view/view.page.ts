@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TrackersNewService } from '../trackers-new.service';
+import { TrackersService } from '../trackers.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class ViewPage implements OnInit, OnChanges {
   
   constructor(
     private actRoute: ActivatedRoute,
-    private trackerNewService: TrackersNewService,
+    private trackerNewService: TrackersService,
     private authService: AuthService
   ) { 
     
@@ -26,7 +26,7 @@ export class ViewPage implements OnInit, OnChanges {
         this.currentTrackerName = params['id'];
         user.authID
 
-        this.trackerNewService.getTracker(this.currentTrackerName, user.authID).valueChanges().subscribe(tracker => {
+        this.trackerNewService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges().subscribe(tracker => {
           this.currentTracker = tracker[0]
         })
       })

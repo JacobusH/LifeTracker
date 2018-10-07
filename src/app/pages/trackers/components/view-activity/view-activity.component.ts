@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TrackersNewService } from '../../trackers-new.service';
+import { TrackersService } from '../../trackers.service';
 
 @Component({
   selector: 'app-view-activity',
@@ -10,7 +10,7 @@ export class ViewActivityComponent implements OnInit {
   @Input('currentTracker') currentTracker: string;
 
   constructor(
-    private trackerNewService: TrackersNewService
+    private trackerNewService: TrackersService
   ) { }
 
   ngOnInit() {

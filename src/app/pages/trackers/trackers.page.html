@@ -1,25 +1,12 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title class="toolbar-title">Trackers
-        <p class="subtitle">{{subtitle}}</p>
-    </ion-title> -->
-    
-    <!-- <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons> -->
-    <!-- <ion-buttons slot="end">  
-    </ion-buttons>
-  </ion-toolbar>
-  
-</ion-header> -->
-
 <nb-layout>
-  <!-- <nb-layout-header>Awesome Company</nb-layout-header> -->
   <nb-layout-header subheader class="test">{{subtitle}}</nb-layout-header>
   <button nbButton></button>
   
   <nb-sidebar state="compacted">
       <div routerLink='new'><mat-icon svgIcon="plus-circle"></mat-icon></div>
+      <div *ngFor="let tracker of trackersByLastViewed$ | async">
+        {{tracker.name}}
+      </div>
  </nb-sidebar>
 
   <nb-layout-column>

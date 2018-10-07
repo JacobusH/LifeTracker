@@ -3,7 +3,6 @@ import { NavParams } from '@ionic/angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserService } from '../../../../../services/user.service';
 import { 
-  TrackerTypeEnum,
   TrackerCommon
 } from '../../../trackers.model';
 import { AuthService } from '../../../../../services/auth.service';

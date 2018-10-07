@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Route, ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { CFService } from '../../services/CFService.service';
+import { TrackersService } from './trackers.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'trackers',
@@ -12,18 +14,26 @@ export class TrackersPage implements OnInit, AfterViewInit {
   currentPage;
   showCenterFab;
   subtitle;
+  trackersByLastViewed;
+  trackersByLastViewed$;
 
   lat: number = 51.678418;
   lng: number = 7.809007;
 
   constructor(
-    public route: ActivatedRoute
-    , private router: Router
-    , private cfService: CFService
+    public route: ActivatedRoute,
+    private router: Router, 
+    private cfService: CFService,
+    private trackerService: TrackersService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.cfService.cfState$.subscribe(state => this.showCenterFab = state);
+
+    this.authService.user.subscribe(user => {
+      this.trackersByLastViewed$ = this.trackerService.getAllTrackers(user.authID).valueChanges()
+    })
 
     // make initial subtitle and subscribe to changes from the child routes
     this.makeSubtitle(this.router.url);
@@ -32,8 +42,6 @@ export class TrackersPage implements OnInit, AfterViewInit {
         this.makeSubtitle(event.url)
       }      
     });
-
-    
   }
 
   ngAfterViewInit() {

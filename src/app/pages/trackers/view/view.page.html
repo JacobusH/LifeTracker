@@ -1,9 +1,8 @@
 <!-- {{currentTracker?.name}}
 {{currentTracker?.trackerType}} -->
 
-parent
-{{currentTracker?.name}}
+parent: {{currentTracker?.name}}
 
-<!-- <div *ngIf="currentTracker"> -->
+<div *ngIf="currentTracker">
   <app-view-activity [currentTracker]="currentTracker"></app-view-activity>
-<!-- </div> -->
+</div>

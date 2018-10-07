@@ -13,7 +13,7 @@ import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-import { TrackersNewService } from './trackers-new.service'; // not injected
+import { TrackersService } from './trackers.service'; 
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
@@ -28,6 +28,7 @@ import { TrackerPopoverComponent } from './components/tracker-common/tracker-pop
 import { TrackerCommonComponent } from './components/tracker-common/tracker-common.component';
 import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
 import { ViewActivityComponent } from './components/view-activity/view-activity.component';
+import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
 
 
 const routes: Routes = [
@@ -70,14 +71,13 @@ const routes: Routes = [
     TrackerTitleBarComponent
     , MapComponent
     , TrackersPage
-    , NewPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent
+    , NewPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent
   ],
   providers: [
     GoogleMapsAPIWrapper
     , MarkerManager
     , NbSidebarService
-    , TrackersNewService
-    // , TrackersService
+    , TrackersService
   ]
 })
 export class TrackersPageModule {}
