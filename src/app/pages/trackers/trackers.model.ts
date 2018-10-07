@@ -1,21 +1,33 @@
 import { GeoPoint } from "@firebase/firestore-types";
 
-export * from './beer/beer.model';
-export * from './weed/weed.model';
-
 // TODO: finish other models
-
-export interface Tracker {
-  key: string,
-  userKey: string,
-  name: string,
-  trackerType: string // 'weed'
+export enum ActivityFieldTypeEnum {
+  'empty',
+  'text',
+  'number',
+  'selectlist',
+  'date',
+  'datetime'
 }
 
 export enum Interval {
   "Day",
   "Week",
   "Month"
+}
+
+export enum TrackerTypeEnum {
+  "Activity",
+  "Skill"
+}
+
+export interface Tracker {
+  key: string,
+  userKey: string,
+  name: string,
+  trackerType: TrackerTypeEnum // 'skill | activity'
+  skillNodes?: Array<SkillNode>,
+  actNodes?: Array<ActivityNode>
 }
 
 export interface Video {
@@ -28,17 +40,29 @@ export interface Video {
   updatedAt: Date
 }
 
-export interface SkillTrackerNode {
+export interface SkillNode {
   trackerKey: string,
-  children?: Array<SkillTrackerNode>
+  name: string,
+  children?: Array<SkillNode>
   videos?: Array<Video>
-  options: {
+  options?: {
     points: number,
     decayRate: {
       value: number,
       interval: Interval
     }
   }
+}
+
+export interface ActivityNode {
+  trackerKey: string,
+  name: string,
+  fields: Array<ActivityField>
+}
+
+export interface ActivityField {
+  name: string,
+  type: ActivityFieldTypeEnum
 }
 
 export interface TrackerCommon {
@@ -51,14 +75,7 @@ export interface TrackerCommon {
   commonCounts: [{ 'count': number, 'type': string }]
 }
 
-export enum TrackerTypeEnum {
-  'BEER',
-  'DRUGS',
-  'FOOD',
-  'MUSIC',
-  'WEED',
-  'WORKOUT',
-}
+
 
 export interface TrackerQuestion {
   position: number,

@@ -1,22 +1,20 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeedPage } from './weed.page';
+import { ViewActivityComponent } from './view-activity.component';
 
-describe('WeedPage', () => {
-  let component: WeedPage;
-  let fixture: ComponentFixture<WeedPage>;
+describe('ViewActivityComponent', () => {
+  let component: ViewActivityComponent;
+  let fixture: ComponentFixture<ViewActivityComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WeedPage ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ ViewActivityComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WeedPage);
+    fixture = TestBed.createComponent(ViewActivityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

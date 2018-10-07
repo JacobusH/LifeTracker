@@ -42,6 +42,9 @@ export class TrackersPage implements OnInit, AfterViewInit {
 
   makeSubtitle(currentUrl) {
     this.subtitle = currentUrl.slice(currentUrl.lastIndexOf('/') + 1, currentUrl.length);
+    if(this.subtitle.lastIndexOf('?')) {
+      this.subtitle = this.subtitle.slice(this.subtitle.lastIndexOf('=') + 1, this.subtitle.length)
+    }
     this.subtitle = this.subtitle.charAt(0).toLocaleUpperCase() + this.subtitle.slice(1);
   }
 

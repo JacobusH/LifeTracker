@@ -13,22 +13,21 @@ import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-import { TrackersService } from './trackers.service'; // not injected
 import { TrackersNewService } from './trackers-new.service'; // not injected
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
 
 import { TrackersPage } from './trackers.page';
-import { BeerPage } from './beer/beer.page';
-import { WeedPage } from './weed/weed.page';
 import { NewPage } from './new/new.page';
 import { ListPage } from './list/list.page';
+import { ViewPage } from './view/view.page';
 
 import { routing } from './trackers.routing';
 import { TrackerPopoverComponent } from './components/tracker-common/tracker-popover/tracker-popover.component';
 import { TrackerCommonComponent } from './components/tracker-common/tracker-common.component';
 import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
+import { ViewActivityComponent } from './components/view-activity/view-activity.component';
 
 
 const routes: Routes = [
@@ -71,8 +70,7 @@ const routes: Routes = [
     TrackerTitleBarComponent
     , MapComponent
     , TrackersPage
-    , BeerPage
-    , NewPage, WeedPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage
+    , NewPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

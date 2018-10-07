@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackersNewService } from '../trackers-new.service'
-import { Tracker } from '../trackers.model';
+import { Tracker, TrackerTypeEnum } from '../trackers.model';
 
 @Component({
   selector: 'new',
@@ -9,11 +9,19 @@ import { Tracker } from '../trackers.model';
 })
 export class NewPage implements OnInit {
   trackerName: string;
-  trackerType: string;
-  
+  trackerType: TrackerTypeEnum;
+  enumActStr: string
+  enumSkillStr: string
+  enumAct: TrackerTypeEnum
+  enumSkill: TrackerTypeEnum
 
-  constructor(private trackerNewService: TrackersNewService) { 
 
+  constructor(
+    private trackerNewService: TrackersNewService) { 
+      this.enumSkillStr = TrackerTypeEnum[TrackerTypeEnum.Skill]
+      this.enumSkill = TrackerTypeEnum.Skill
+      this.enumActStr = TrackerTypeEnum[TrackerTypeEnum.Activity]
+      this.enumAct = TrackerTypeEnum.Activity
   }
 
   ngOnInit() {
@@ -22,13 +30,14 @@ export class NewPage implements OnInit {
 
   onSave() {
     let newT: Tracker = {
-      key: undefined,
+      key: 'zzz',
       name: this.trackerName,
       trackerType: this.trackerType,
-      userKey: 'test'
+      userKey: 'zzz'
     };
 
     this.trackerNewService.saveNewTracker(newT);
+    
   }
 
 }

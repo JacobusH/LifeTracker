@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavParams } from '@ionic/angular';
-import { TrackersService } from '../../../trackers.service';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserService } from '../../../../../services/user.service';
 import { 
-  TrackerWeed, TrackerBeer, TrackerTypeEnum,
+  TrackerTypeEnum,
   TrackerCommon
 } from '../../../trackers.model';
 import { AuthService } from '../../../../../services/auth.service';
@@ -20,8 +19,6 @@ export class TrackerPopoverComponent implements OnInit, OnDestroy {
   currentTrackerKey;
   currentUserKey;
   currentTrackerType;
-  trackersService: TrackersService;
-  currentTracker: TrackerBeer | TrackerWeed
 
   constructor(
     private navParams: NavParams,
@@ -44,11 +41,11 @@ export class TrackerPopoverComponent implements OnInit, OnDestroy {
       if(user) {
         this.currentUserKey = user.key;
 
-        this.trackersService = new TrackersService(this.afs, this.userService, this.currentTrackerType, user.key);
-        this.trackersService.getTrackerEntry(this.currentTrackerKey).valueChanges().subscribe(tracker => {
-          console.log('in popover', tracker)
-          this.currentTracker = tracker as TrackerBeer;
-        });
+        // this.trackersService = new TrackersService(this.afs, this.userService, this.currentTrackerType, user.key);
+        // this.trackersService.getTrackerEntry(this.currentTrackerKey).valueChanges().subscribe(tracker => {
+        //   console.log('in popover', tracker)
+        //   this.currentTracker = tracker as TrackerBeer;
+        // });
       }
     });
   }

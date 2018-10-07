@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { AuthService } from '../../../../services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { TrackerPopoverComponent } from './tracker-popover/tracker-popover.component';
-import { TrackersService } from '../../trackers.service';
 import { TrackerCommon, TrackerTypeEnum } from '../../trackers.model';
 import { UserService } from '../../../../services/user.service';
 
@@ -15,7 +14,7 @@ import { UserService } from '../../../../services/user.service';
 export class TrackerCommonComponent implements OnInit {
   @Input('trackerType') trackerType: TrackerTypeEnum;  
   currentUserKey;
-  trackersService: TrackersService;
+  // trackersService: TrackersService;
   trackerCommons: TrackerCommon[];
 
   constructor(
@@ -31,11 +30,11 @@ export class TrackerCommonComponent implements OnInit {
       if(user) {
         this.currentUserKey = user.key;
 
-        this.trackersService = new TrackersService(this.afs, this.userService, this.trackerType, user.key);
-        this.trackersService.getCurrentColTrackerCommon().valueChanges().subscribe(common => {
-          console.log('in commons', common)
-          this.trackerCommons = common as TrackerCommon[];
-        });
+        // this.trackersService = new TrackersService(this.afs, this.userService, this.trackerType, user.key);
+        // this.trackersService.getCurrentColTrackerCommon().valueChanges().subscribe(common => {
+        //   console.log('in commons', common)
+        //   this.trackerCommons = common as TrackerCommon[];
+        // });
       }
     });
   }
