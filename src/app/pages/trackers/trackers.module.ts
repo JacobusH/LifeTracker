@@ -19,6 +19,7 @@ import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
 
 import { TrackersPage } from './trackers.page';
+import { HomePage } from './home/home.page';
 import { NewPage } from './new/new.page';
 import { ListPage } from './list/list.page';
 import { ViewPage } from './view/view.page';
@@ -29,6 +30,7 @@ import { TrackerCommonComponent } from './components/tracker-common/tracker-comm
 import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
 import { ViewActivityComponent } from './components/view-activity/view-activity.component';
 import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
+import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
 
 
 const routes: Routes = [
@@ -71,7 +73,7 @@ const routes: Routes = [
     TrackerTitleBarComponent
     , MapComponent
     , TrackersPage
-    , NewPage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent
+    , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

@@ -32,6 +32,7 @@ export interface Tracker {
   key: string,
   userKey: string,
   name: string,
+  iconName: string,
   dateCreated: Date,
   dateLastViewed: Date
 }

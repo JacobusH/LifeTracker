@@ -32,7 +32,7 @@ export class TrackersPage implements OnInit, AfterViewInit {
     this.cfService.cfState$.subscribe(state => this.showCenterFab = state);
 
     this.authService.user.subscribe(user => {
-      this.trackersByLastViewed$ = this.trackerService.getAllTrackers(user.authID).valueChanges()
+      this.trackersByLastViewed$ = this.trackerService.getAllTrackersByLastViewed(user.authID).valueChanges()
     })
 
     // make initial subtitle and subscribe to changes from the child routes

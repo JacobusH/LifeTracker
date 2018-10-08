@@ -1,15 +1,17 @@
-<div>
-  <mat-form-field style="width: 100%">
+<div class="flex-center">
+  <mat-form-field style="width: 50%">
     <mat-label [attr.for]="prop">What do you want to track?</mat-label>
-    <input id="trackerName" matInput [(ngModel)]="trackerName" (keyup.enter)="showQuestions = true" />
+    <input id="trackerName" matInput [(ngModel)]="trackerName" />
   </mat-form-field>
-  
-  <div class="flex-center">
-    <mat-button-toggle-group [(ngModel)]="trackerType" name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle [value]="enumAct">{{enumActStr}}</mat-button-toggle>
-      <mat-button-toggle [value]="enumSkill">{{enumSkillStr}}</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
-  <ion-button class="flex-center" (click)="onSave()">Create</ion-button>
 </div>
+  
+<p class="flex-center">Choose an icon:&nbsp; <a href="https://materialdesignicons.com/" target="_blank">Icons</a></p>
+<div class="flex-center">
+  <mat-form-field style="width: 33%">
+    <mat-label [attr.for]="prop">Icon</mat-label>
+    <input id="iconName" matInput [(ngModel)]="iconName" placeholder="music-note-eigth" />
+  </mat-form-field>
+</div>
+
+<ion-button class="flex-center" (click)="onSave()">Create</ion-button>
+

@@ -34,28 +34,28 @@ export class TrackersService {
   }
 
   
-  saveNewTracker(trackerName: string, userKey: string)  {
-    this.verifyUserKey(userKey);
-    trackerName.replace(/\s/g, '');
-    let check$ = this.checkTrackerIsNew(trackerName, userKey).valueChanges().subscribe(x => {
+  saveNewTracker(newTracker: Tracker)  {
+    this.verifyUserKey(newTracker.userKey);
+    newTracker.name.replace(/\s/g, '');
+    let check$ = this.checkTrackerIsNew(newTracker).valueChanges().subscribe(x => {
       if(x.length) { // exists
         console.log("trackers exists", x)
         // TODO: show error
       }
       else { // new
-        this.createNewTracker(trackerName);
-        this.router.navigate(['trackers/view/', trackerName]);
+        this.createNewTracker(newTracker);
+        this.router.navigate(['trackers/view/', newTracker.name]);
         check$.unsubscribe()
       }
     })
   }
 
-  checkTrackerIsNew(trackerName: string, userKey) {
-    this.verifyUserKey(userKey);
+  checkTrackerIsNew(newTracker: Tracker) {
+    this.verifyUserKey(newTracker.userKey);
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers,
-        ref => ref.where('trackerName', '==', trackerName)
+        ref => ref.where('name', '==', newTracker.name)
       );
   }
 
@@ -86,16 +86,7 @@ export class TrackersService {
         ref => ref.where('parent', '==', null));
   }
 
-  createNewTracker(trackerName: string): Promise<firebase.firestore.DocumentReference>  {
-    // make tracker
-    let newTracker: Tracker = {
-      key: 'zzz',
-      userKey: this.currentUserKey,
-      name: trackerName,
-      dateCreated: new Date(),
-      dateLastViewed: new Date()
-    }
-
+  createNewTracker(newTracker: Tracker): Promise<firebase.firestore.DocumentReference>  {
     // add to index
     let trackerPromise: Promise<firebase.firestore.DocumentReference> =this.userService
       .getByUserKey(this.currentUserKey)
@@ -125,10 +116,12 @@ export class TrackersService {
       }
     };
 
+    console.log('coll', this.colBase + newTracker.name)
+
     // create collection using empty node
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
       .getByUserKey(this.currentUserKey)
-      .collection(this.colBase + trackerName)
+      .collection(this.colBase + newTracker.name)
       .add(emptyNode);
 
     promise.then(x => {

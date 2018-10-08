@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackersService } from '../trackers.service'
-import { TrackerNode } from '../trackers.model';
+import { TrackerNode, Tracker } from '../trackers.model';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class NewPage implements OnInit {
   trackerName: string;
+  iconName: string;
 
   constructor(
     private trackerNewService: TrackersService,
@@ -24,7 +25,16 @@ export class NewPage implements OnInit {
 
   onSave() {
     this.authService.user.subscribe(user => {
-      this.trackerNewService.saveNewTracker(this.trackerName, user.authID);
+       // make tracker
+      let newTracker: Tracker = {
+        key: 'zzz',
+        userKey: user.authID,
+        name: this.trackerName,
+        iconName: this.iconName,
+        dateCreated: new Date(),
+        dateLastViewed: new Date()
+      }
+      this.trackerNewService.saveNewTracker(newTracker);
     })
   }
 

@@ -3,10 +3,15 @@
   <button nbButton></button>
   
   <nb-sidebar state="compacted">
-      <div routerLink='new'><mat-icon svgIcon="plus-circle"></mat-icon></div>
-      <div *ngFor="let tracker of trackersByLastViewed$ | async">
-        {{tracker.name}}
-      </div>
+    <div class="side-icons">
+      <div routerLink='home'><mat-icon svgIcon="home"></mat-icon></div>
+      <div class="icon" routerLink='new'><mat-icon svgIcon="plus-circle"></mat-icon></div>
+      <mat-icon 
+        class="icon"
+        [svgIcon]="tracker.iconName" 
+        *ngFor="let tracker of trackersByLastViewed$ | async"
+        routerLink='/trackers/view/{{tracker.name}}'></mat-icon>
+    </div>
  </nb-sidebar>
 
   <nb-layout-column>
