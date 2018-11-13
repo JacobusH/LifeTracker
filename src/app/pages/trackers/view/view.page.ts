@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TrackersService } from '../trackers.service';
 import { AuthService } from '../../../services/auth.service';
 
+
 @Component({
   selector: 'view',
   templateUrl: './view.page.html',
@@ -10,7 +11,9 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ViewPage implements OnInit, OnChanges {
   currentTrackerName = "";
-  currentTracker;
+  parentNodes;
+  parentNodes$;
+  showSidebar; 
   
   constructor(
     private actRoute: ActivatedRoute,
@@ -26,8 +29,10 @@ export class ViewPage implements OnInit, OnChanges {
         this.currentTrackerName = params['id'];
         user.authID
 
-        this.trackerNewService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges().subscribe(tracker => {
-          this.currentTracker = tracker[0]
+        this.parentNodes$ = this.trackerNewService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges();
+
+        this.trackerNewService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges().subscribe(nodes => {
+          this.parentNodes = nodes
         })
       })
     });
@@ -38,6 +43,10 @@ export class ViewPage implements OnInit, OnChanges {
       // this.currentTracker = this.currentTracker
     }
 
+  }
+
+  showSettings() {
+    this.showSidebar = !this.showSidebar;
   }
 
 

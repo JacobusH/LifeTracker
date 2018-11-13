@@ -15,7 +15,7 @@ export class TrackersPage implements OnInit, AfterViewInit {
   showCenterFab;
   subtitle;
   trackersByLastViewed;
-  trackersByLastViewed$;
+  trackersByLastViewed$; 
 
   lat: number = 51.678418;
   lng: number = 7.809007;

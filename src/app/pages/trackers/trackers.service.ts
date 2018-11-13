@@ -29,10 +29,31 @@ export class TrackersService {
   ) { 
      this.authService.user.subscribe(x => {
       this.currentUserKey = x.authID
-      console.log('cont', this.currentUserKey)
     })
   }
 
+  private createEmptyNode() {
+    // make initial empty node
+    let emptyNode: TrackerNode = {
+      key: 'zzz',
+      userKey: this.currentUserKey,
+      name: 'New Act Node',
+      parent: null,
+      children: [],
+      fields: [
+        { name: 'New Field', type: ActivityFieldTypeEnum.empty }
+      ],
+      options: {
+        points: -1,
+        decayRate: {
+          interval: ActivityInterval.None,
+          value: -1
+        }
+      }
+    };
+
+    return emptyNode;
+  }
   
   saveNewTracker(newTracker: Tracker)  {
     this.verifyUserKey(newTracker.userKey);
@@ -50,6 +71,58 @@ export class TrackersService {
     })
   }
 
+  createNewTracker(newTracker: Tracker): Promise<firebase.firestore.DocumentReference>  {
+    // add to index
+    let trackerPromise: Promise<firebase.firestore.DocumentReference> =this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colAllTrackers)
+      .add(newTracker);
+
+    trackerPromise.then(x => {
+      x.update({key: x.id});
+    });
+
+    let emptyNode = this.createEmptyNode();
+
+    // add to collection using empty node
+    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + newTracker.name)
+      .add(emptyNode);
+
+    promise.then(x => {
+      x.update({key: x.id});
+    });
+
+    return trackerPromise;
+  }
+
+  createNode(trackerName: string, userKey: string, parentNodeKey: string = undefined) {
+    this.verifyUserKey(userKey);
+    let emptyNode = this.createEmptyNode();
+    if(parentNodeKey) {
+      emptyNode.parent = parentNodeKey;
+    }
+    
+    // add the empty node to the right collection
+    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .add(emptyNode);
+
+    promise.then(x => {
+      x.update({key: x.id});
+      if(parentNodeKey) {
+        this.userService
+        .getByUserKey(this.currentUserKey)
+        .collection(this.colBase + trackerName)
+        .doc(parentNodeKey).update({
+          children: firebase.firestore.FieldValue.arrayUnion(x.id)
+        })
+      }
+    });
+  }
+
   checkTrackerIsNew(newTracker: Tracker) {
     this.verifyUserKey(newTracker.userKey);
     return this.userService
@@ -59,9 +132,25 @@ export class TrackersService {
       );
   }
 
+  deleteNode(nodeKey: string, trackerName: string, userKey: string) {
+    this.verifyUserKey(userKey);
+    let toDel = this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(nodeKey);
+      
+      toDel.valueChanges().subscribe(node => {
+        let retNode = node as TrackerNode;
+        retNode.children.forEach(childKey => {
+          this.deleteNode(childKey, trackerName, userKey)
+        })
+      }).unsubscribe();
+
+      toDel.delete();
+  }
+
   getAllTrackers(userKey: string): AngularFirestoreCollection<Tracker> { 
     this.verifyUserKey(userKey);
-    console.log('all tracks', this.currentUserKey)
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers);
@@ -86,49 +175,11 @@ export class TrackersService {
         ref => ref.where('parent', '==', null));
   }
 
-  createNewTracker(newTracker: Tracker): Promise<firebase.firestore.DocumentReference>  {
-    // add to index
-    let trackerPromise: Promise<firebase.firestore.DocumentReference> =this.userService
+  getNodeByKey(nodeKey: string, trackerName: string): AngularFirestoreDocument<TrackerNode> {
+    return this.userService
       .getByUserKey(this.currentUserKey)
-      .collection(this.colAllTrackers)
-      .add(newTracker);
-
-      trackerPromise.then(x => {
-        x.update({key: x.id});
-      });
-
-    // make initial empty node
-    let emptyNode: TrackerNode = {
-      key: 'zzz',
-      userKey: this.currentUserKey,
-      name: 'New Act Node',
-      parent: null,
-      children: [],
-      fields: [
-        { name: 'New Field', type: ActivityFieldTypeEnum.empty }
-      ],
-      options: {
-        points: -1,
-        decayRate: {
-          interval: ActivityInterval.None,
-          value: -1
-        }
-      }
-    };
-
-    console.log('coll', this.colBase + newTracker.name)
-
-    // create collection using empty node
-    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
-      .getByUserKey(this.currentUserKey)
-      .collection(this.colBase + newTracker.name)
-      .add(emptyNode);
-
-    promise.then(x => {
-      x.update({key: x.id});
-    });
-
-    return promise;
+      .collection(this.colBase + trackerName)
+      .doc(nodeKey);
   }
 
   verifyUserKey(userKey: string) {

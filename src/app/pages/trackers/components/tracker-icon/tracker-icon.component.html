@@ -1,8 +1,8 @@
-<div class="t-icon" routerLink='/trackers/view/{{tracker.name}}'>
+<div [ngClass]="{'t-icon': !mini, 'mini-icon': mini}" class="t-icon" routerLink='/trackers/view/{{tracker.name}}'>
   <mat-icon 
     class="icon"
     [svgIcon]="tracker.iconName" 
   ></mat-icon>
-  <div class="t-name">{{tracker?.name}}</div>
+  <div *ngIf="!mini" class="t-name">{{tracker?.name}}</div>
 </div>
 

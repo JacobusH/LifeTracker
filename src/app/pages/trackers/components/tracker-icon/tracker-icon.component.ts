@@ -8,6 +8,7 @@ import { Tracker } from '../../trackers.model'
 })
 export class TrackerIconComponent implements OnInit {
   @Input('tracker') tracker: Tracker;
+  @Input('mini') mini: boolean = false;
 
   constructor() { }
 

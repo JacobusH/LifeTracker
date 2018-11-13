@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { SharedModule } from '../../modules/shared/shared.module'
-import { NbSidebarModule, NbLayoutModule, NbSidebarService, NbButtonModule } from '@nebular/theme';
+import { SharedModule } from '../../modules/shared/shared.module';
+import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule } from 'ng-zorro-antd';
+import { D3Module } from '../../modules/d3/d3.module'
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
-  , MatTabsModule, MatButtonToggleModule } from '@angular/material';
+  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { } from '@angular/material';
 
@@ -31,6 +32,7 @@ import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-
 import { ViewActivityComponent } from './components/view-activity/view-activity.component';
 import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
 import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
+import { TrackerNodeNewComponent } from './components/tracker-node-new/tracker-node-new.component';
 
 
 const routes: Routes = [
@@ -46,6 +48,9 @@ const routes: Routes = [
   ],
   imports: [
     routing
+    , D3Module
+    , NgZorroAntdModule
+    , NzLayoutModule
     , SharedModule
     , CommonModule
     , FormsModule
@@ -64,22 +69,22 @@ const routes: Routes = [
     , MatSelectModule
     , MatTabsModule
     , MatButtonToggleModule
-    , NbLayoutModule
-    , NbButtonModule
-    , NbSidebarModule
+    , MatMenuModule
+    , MatDividerModule
     , HttpClientModule
   ],
   declarations: [
     TrackerTitleBarComponent
     , MapComponent
     , TrackersPage
-    , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent, ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent
+    , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
+    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent, TrackerNodeNewComponent
   ],
   providers: [
     GoogleMapsAPIWrapper
     , MarkerManager
-    , NbSidebarService
     , TrackersService
+    ,  { provide: NZ_I18N, useValue: en_US }
   ]
 })
 export class TrackersPageModule {}

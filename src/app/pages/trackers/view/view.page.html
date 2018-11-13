@@ -1,8 +1,14 @@
-<!-- {{currentTracker?.name}}
-{{currentTracker?.trackerType}} -->
-
-parent: {{currentTracker?.name}}
-
-<div *ngIf="currentTracker">
-  <app-view-activity [currentTracker]="currentTracker"></app-view-activity>
+<div class="view-cont">
+  <div class="top-right">
+    <app-tracker-node-new [tracker]="currentTrackerName"></app-tracker-node-new>
+    <mat-icon svgIcon="settings" (click)="showSettings()"></mat-icon>     
+  </div>
+  <div class="node-cont">
+    <div *ngFor="let node of parentNodes$ | async">
+      <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key"></app-tracker-node>
+    </div>
+  </div>
 </div>
+
+
+<!-- <graph-horiz></graph-horiz> -->

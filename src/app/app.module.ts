@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { NbThemeModule, NbLayoutModule } from '@nebular/theme';
 import { BrowserModule } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -13,11 +12,11 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule
-  , MatTabsModule } from '@angular/material';
+  , MatTabsModule, MatMenuModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx'; 
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
@@ -30,13 +29,15 @@ import { CFService } from './services/CFService.service';
 
 import { environment } from '../environments/environment';
 
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    NbThemeModule.forRoot({ name: 'cosmic' }) // this will enable the default theme, you can change this to `cosmic` to enable the dark theme
-    , NbLayoutModule
-    , AngularFireModule
+    AngularFireModule
     , AngularFirestoreModule
     , AngularFireStorageModule
     , AngularFireAuthModule
@@ -55,6 +56,7 @@ import { environment } from '../environments/environment';
     , MatOptionModule
     , MatSelectModule
     , MatTabsModule
+    , MatMenuModule
     , HttpClientModule
   ],
   providers: [

@@ -1,3 +1,25 @@
-<p>
-  tracker-node works!
-</p>
+<div *ngIf="node" class="node">
+  {{ node.name }}
+  {{node.key}}
+  <div class="options">
+    <mat-icon mat-icon-button [matMenuTriggerFor]="appMenu" svgIcon="arrow-down-drop-circle"></mat-icon> 
+  </div>
+  <div *ngFor="let field of node.fields">
+    {{field.name}}
+  </div>
+
+  <div *ngIf="node.children">
+    <app-tracker-node *ngFor="let childKey of node.children" 
+      [nodeKey]="childKey"
+      [tracker]="trackerName">
+    </app-tracker-node>
+  </div>
+</div>
+
+
+<!-- Node Menu -->
+<mat-menu #appMenu="matMenu">
+  <button mat-menu-item (click)="addChild(node.key)">Add Child</button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="delete(node.key)">Delete</button>
+</mat-menu>  

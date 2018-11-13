@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrackerIconComponent } from './tracker-icon.component';
+import { NodeVisualComponent } from './node-visual.component';
 
-describe('TrackerIconComponent', () => {
-  let component: TrackerIconComponent;
-  let fixture: ComponentFixture<TrackerIconComponent>;
+describe('NodeVisualComponent', () => {
+  let component: NodeVisualComponent;
+  let fixture: ComponentFixture<NodeVisualComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrackerIconComponent ]
+      declarations: [ NodeVisualComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TrackerIconComponent);
+    fixture = TestBed.createComponent(NodeVisualComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
