@@ -1,13 +1,19 @@
 <div class="view-cont">
-  <div class="top-right">
-    <app-tracker-node-new [tracker]="currentTrackerName"></app-tracker-node-new>
-    <mat-icon svgIcon="settings" (click)="showSettings()"></mat-icon>     
+  <div class="top">
+    <div class="top-left">
+      <app-tracker-options [tracker]="currentTrackerName" [isShown]="showOptions"></app-tracker-options>
+    </div>
+    <div class="top-right">
+        <app-tracker-node-new [tracker]="currentTrackerName"></app-tracker-node-new>
+        <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
+      </div>
   </div>
   <div class="node-cont">
     <div *ngFor="let node of parentNodes$ | async">
       <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key"></app-tracker-node>
     </div>
   </div>
+  
 </div>
 
 

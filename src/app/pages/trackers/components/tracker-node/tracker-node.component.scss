@@ -3,10 +3,27 @@
   border: 2px solid lightslategrey;
   border-radius: 5px;
   padding: 5px;
+  
 
   .options {
     position: absolute;
-    top: -10px;
-    right: -17px;
+    top: 0px;
+    right: 0px;
   }
+  
+  .top {
+    display: flex;
+
+    .left {
+      flex: 80%;
+    }
+  
+    .right { 
+      flex: 20%;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: flex-end;
+    }
+  }
+  
 }

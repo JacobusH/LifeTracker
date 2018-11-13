@@ -13,7 +13,7 @@ export class ViewPage implements OnInit, OnChanges {
   currentTrackerName = "";
   parentNodes;
   parentNodes$;
-  showSidebar; 
+  showOptions;
   
   constructor(
     private actRoute: ActivatedRoute,
@@ -43,10 +43,6 @@ export class ViewPage implements OnInit, OnChanges {
       // this.currentTracker = this.currentTracker
     }
 
-  }
-
-  showSettings() {
-    this.showSidebar = !this.showSidebar;
   }
 
 

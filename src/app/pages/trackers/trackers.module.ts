@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module';
-import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule } from 'ng-zorro-antd';
 import { D3Module } from '../../modules/d3/d3.module'
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
   , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule } from '@angular/material';
@@ -15,6 +15,7 @@ import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { TrackersService } from './trackers.service'; 
+import { OptionsService } from './options/options.service'; 
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
@@ -33,6 +34,7 @@ import { ViewActivityComponent } from './components/view-activity/view-activity.
 import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
 import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
 import { TrackerNodeNewComponent } from './components/tracker-node-new/tracker-node-new.component';
+import { OptionsComponent } from './options/options.component';
 
 
 const routes: Routes = [
@@ -51,6 +53,7 @@ const routes: Routes = [
     , D3Module
     , NgZorroAntdModule
     , NzLayoutModule
+    , NzCheckboxModule
     , SharedModule
     , CommonModule
     , FormsModule
@@ -78,11 +81,12 @@ const routes: Routes = [
     , MapComponent
     , TrackersPage
     , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
-    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent, TrackerNodeNewComponent
+    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent, TrackerNodeNewComponent, OptionsComponent
   ],
   providers: [
     GoogleMapsAPIWrapper
     , MarkerManager
+    , OptionsService
     , TrackersService
     ,  { provide: NZ_I18N, useValue: en_US }
   ]

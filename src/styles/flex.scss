@@ -4,6 +4,12 @@
   justify-content: center;
 }
 
+.flex-vcenter {
+  display:flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
 .flex-space-between {
   display:flex;
   flex-flow: row nowrap;

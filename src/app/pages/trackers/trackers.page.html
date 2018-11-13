@@ -18,44 +18,45 @@
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item routerLink='/trackers/new'><span><i class="anticon anticon-plus-circle"></i><span class="nav-text">New</span></span></li>
+      <li nz-menu-item routerLink='/profile'><span><i class="anticon anticon-user"></i><span class="nav-text">User</span></span></li>
       <li nz-submenu>
-        <span title><i class="anticon anticon-user"></i><span class="nav-text">User</span></span>
+        <span title routerLink='/trackers/home'><i class="anticon anticon-line-chart"></i><span class="nav-text">Trackers</span></span>
         <ul>
-          <li nz-menu-item>Tom</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
+          <li nz-menu-item class="flex-vcenter" 
+          *ngFor="let tracker of trackersByLastViewed$ | async" routerLink='/trackers/view/{{tracker.name}}'>
+            <mat-icon class="icon"[svgIcon]="tracker.iconName"></mat-icon>
+            <span class="nav-text">{{tracker.name}}</span>
+          </li>
         </ul>
       </li>
-      <li nz-submenu>
-        <span title><i class="anticon anticon-team"></i><span class="nav-text">Team</span></span>
-        <ul>
-          <li nz-menu-item>Team 1</li>
-          <li nz-menu-item>Team 2</li>
-        </ul>
-      </li>
-      <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">File</span></span></li>
+     
     </ul>
+    <div>
+      <i class="anticon trigger" 
+      style="color: #d3d3d3;"
+      [class.anticon-menu-fold]="!isCollapsed" 
+      [class.anticon-menu-unfold]="isCollapsed" 
+      (click)="isCollapsed=!isCollapsed">
+      </i>
+  </div>
   </nz-sider>
+
+  <nz-layout>
+    <router-outlet></router-outlet> 
+  </nz-layout>
+  
+<!-- 
   <nz-layout>
     <nz-header style="background: #fff; padding:0;">
       <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
     </nz-header>
     <nz-content style="margin:0 16px;">
-      <nz-breadcrumb style="margin:16px 0;">
-        <nz-breadcrumb-item>User</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <div style="padding:24px; background: #fff; min-height: 360px;">
-        Bill is a cat.
-      </div>
+      <router-outlet></router-outlet> 
     </nz-content>
-    <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
-  </nz-layout>
+  </nz-layout> -->
+
 </nz-layout>
-<ng-template #trigger>
-  <i class="anticon anticon-up"></i>
-</ng-template>
- 
 
 
 

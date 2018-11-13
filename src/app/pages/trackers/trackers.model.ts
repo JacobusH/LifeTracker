@@ -34,7 +34,11 @@ export interface Tracker {
   name: string,
   iconName: string,
   dateCreated: Date,
-  dateLastViewed: Date
+  dateLastViewed: Date,
+  options: {
+    isDeletable: boolean,
+    showIcons: boolean
+  }
 }
 
 export interface TrackerNode {

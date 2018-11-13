@@ -32,7 +32,11 @@ export class NewPage implements OnInit {
         name: this.trackerName,
         iconName: this.iconName,
         dateCreated: new Date(),
-        dateLastViewed: new Date()
+        dateLastViewed: new Date(),
+        options: {
+          isDeletable: false,
+          showIcons: true
+        }
       }
       this.trackerNewService.saveNewTracker(newTracker);
     })
