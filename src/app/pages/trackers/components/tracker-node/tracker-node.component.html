@@ -1,18 +1,15 @@
 <div *ngIf="node" class="node">
   <div class="top">
       <div class="left">
-          {{ node.name }}
-          {{node.key}}
-          <!-- <div class="options">
-            <mat-icon mat-icon-button [matMenuTriggerFor]="appMenu" svgIcon="arrow-down-drop-circle"></mat-icon> 
-          </div> -->
-          <div *ngFor="let field of node.fields">
-            {{field.name}}
+          <div *ngFor="let field of nodeFields">
+            <app-tracker-field [data]="field" [nodeKey]="node.key" [userKey]="userKey" [trackerName]="trackerName"></app-tracker-field>
           </div>
+          <mat-icon svgIcon="plus" @slideInFadeOut *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>
         </div>
         <div class="right">
-          <mat-icon svgIcon="plus-circle" (click)="addChild(node.key)"></mat-icon> 
-          <mat-icon svgIcon="delete" @fadeInOut *ngIf="options && options['isDeletable']" (click)="delete(node.key)"></mat-icon> 
+          <mat-icon svgIcon="plus-circle" *ngIf="options && options['isEditable']" (click)="addChild(node.key)"></mat-icon> 
+          <mat-icon svgIcon="content-copy" *ngIf="options && options['isEditable']" (click)="copyNode(node)"></mat-icon> 
+          <mat-icon svgIcon="delete" *ngIf="options && options['isDeletable']" (click)="delete(node)"></mat-icon> 
         </div>
   </div>
   <div class="bottom">
@@ -26,7 +23,9 @@
  
 </div>
 
-
+<!-- <div class="options">
+      <mat-icon mat-icon-button [matMenuTriggerFor]="appMenu" svgIcon="arrow-down-drop-circle"></mat-icon> 
+    </div> -->
 <!-- Node Menu -->
 <mat-menu #appMenu="matMenu">
   <button mat-menu-item (click)="addChild(node.key)">Add Child</button>

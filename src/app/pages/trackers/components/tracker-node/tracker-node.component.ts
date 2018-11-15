@@ -1,59 +1,73 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { TrackersService } from '../../trackers.service';
 import { AuthService } from '../../../../services/auth.service'
 import { OptionsService } from '../../options/options.service';
-import { trigger, state, animate, style, transition} from '@angular/animations';
+import { TrackerFieldService } from '../tracker-field/tracker-field.service';
+import { TrackerNode } from '../../trackers.model';
+import { slideInFadeOut } from '../../../../animations/slideInFadeOut.animation';
+import { take } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-tracker-node',
   templateUrl: './tracker-node.component.html',
   styleUrls: ['./tracker-node.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('500ms ease', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        animate('500ms ease', style({opacity: 0}))
-      ])
-    ])
-  ]
+  animations: [ slideInFadeOut ]
 })
-export class TrackerNodeComponent implements OnInit {
+export class TrackerNodeComponent implements OnInit, AfterViewInit {
   @Input('nodeKey') nodeKey: string;
   @Input('tracker') trackerName: string;
-  node;
+  @Output('onDelete') deleteEvent = new EventEmitter<TrackerNode>();
+  @Output('onCopy') copyEvent = new EventEmitter<TrackerNode>();
+
+  node: TrackerNode;
   options;
+  userKey;
+  nodeFields;
 
   constructor(
     private trackerService: TrackersService,
+    private fieldService: TrackerFieldService,
     private authService: AuthService,
     private optionsService: OptionsService
   ) { }
 
   ngOnInit() {
-    this.trackerService.getNodeByKey(this.nodeKey, this.trackerName).valueChanges().subscribe(node => {
-      this.node = node
-    })
 
+  }
+
+  ngAfterViewInit() {
     this.authService.user.subscribe(user => {
-      let test$ = this.optionsService.getTrackerOptions(this.trackerName, user.authID).valueChanges().subscribe(x => {
-        this.options = x[0].options
+      this.optionsService.getTrackerOptions(this.trackerName, user.authID).valueChanges().subscribe(x => {
+        this.options = x[0].options;
+        this.userKey = user.authID
       });
+
+      this.nodeKey = this.nodeKey;
+      this.trackerService.getNodeByKey(this.nodeKey, this.trackerName, user.authID).valueChanges().pipe(take(1)).subscribe(node => {
+        this.node = node;
+        this.fieldService.getFields(this.trackerName, this.node.key, user.authID).valueChanges().pipe(take(1)).subscribe(fields => {
+          this.nodeFields = fields;
+        });
+      })
     })
   }
 
   addChild(nodeKey: string) {
-    this.authService.user.subscribe(user => {
-      this.trackerService.createNode(this.trackerName, user.authID, nodeKey)
-    })
+    this.trackerService.createNode(this.trackerName, this.userKey, nodeKey);
   }
 
-  delete(nodeKey: string) {
-    this.authService.user.subscribe(user => {
-      this.trackerService.deleteNode(nodeKey, this.trackerName, user.authID)
-    })
+  addField(nodeKey: string) {
+    this.nodeFields.push(this.fieldService.createEmptyField());
+    this.fieldService.saveTrackerField(this.trackerName, this.userKey, nodeKey);
+  }
+
+  copyNode(node) {
+    this.copyEvent.emit(node);
+  }
+
+  delete(node: TrackerNode) {
+    this.deleteEvent.emit(node);
   }
 
 }

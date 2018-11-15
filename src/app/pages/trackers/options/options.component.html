@@ -1,4 +1,4 @@
 <div @slideInOut class='flex-center options' *ngIf="options && isShown">
   <label nz-checkbox [(ngModel)]="options['isDeletable']" (ngModelChange)="saveOptions(event)">Deletable</label>
-  <label nz-checkbox [(ngModel)]="options['showIcons']" (ngModelChange)="saveOptions(event)">Icons</label>
+  <label nz-checkbox [(ngModel)]="options['isEditable']" (ngModelChange)="saveOptions(event)">Icons</label>
 </div>

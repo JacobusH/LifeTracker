@@ -2,13 +2,23 @@ import { GeoPoint } from "@firebase/firestore-types";
 import { Datetime } from "@ionic/angular";
 
 // TODO: finish other models
-export enum ActivityFieldTypeEnum {
+export interface TrackerField {
+  key?: string;
+  nodeKey: string;
+  label: string;
+  value: string; 
+  type: TrackerFieldTypeEnum;
+}
+
+export enum TrackerFieldTypeEnum {
   'empty',
   'text',
+  'textarea',
   'number',
-  'selectlist',
+  'select',
   'date',
-  'datetime'
+  'datetime-local',
+  'radio'
 }
 
 export enum ActivityInterval {
@@ -37,7 +47,7 @@ export interface Tracker {
   dateLastViewed: Date,
   options: {
     isDeletable: boolean,
-    showIcons: boolean
+    isEditable: boolean
   }
 }
 
@@ -47,7 +57,7 @@ export interface TrackerNode {
   name: string,
   parent?: string,
   children?: Array<string>
-  fields?: Array<ActivityField>
+  fields?: Array<TrackerField>
   videos?: Array<Video>,
   options?: {
     points: number,
@@ -56,11 +66,6 @@ export interface TrackerNode {
       interval: ActivityInterval
     }
   }
-}
-
-export interface ActivityField {
-  name: string,
-  type: ActivityFieldTypeEnum
 }
 
 export interface TrackerCommon {

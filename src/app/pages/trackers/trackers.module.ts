@@ -35,6 +35,7 @@ import { TrackerNodeComponent } from './components/tracker-node/tracker-node.com
 import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
 import { TrackerNodeNewComponent } from './components/tracker-node-new/tracker-node-new.component';
 import { OptionsComponent } from './options/options.component';
+import { TrackerFieldComponent } from './components/tracker-field/tracker-field.component';
 
 
 const routes: Routes = [
@@ -81,7 +82,7 @@ const routes: Routes = [
     , MapComponent
     , TrackersPage
     , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
-    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent, TrackerNodeNewComponent, OptionsComponent
+    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent, TrackerIconComponent, TrackerNodeNewComponent, OptionsComponent, TrackerFieldComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

@@ -1,0 +1,55 @@
+<div class="field-cont">
+<mat-form-field class="left" style="width: 100%">
+    <mat-label [attr.for]="data">{{data.label}}</mat-label>
+      <div [ngSwitch]="data.type">
+  
+        <!-- Text Input -->
+        <input matInput *ngSwitchCase="'1'" 
+          (change)="save($event)"
+          [id]="data.label" [type]="data.type" [value]="data.value">
+
+        <!-- Text Area -->
+        <input matInput *ngSwitchCase="'2'" 
+          (change)="save($event)" [value]="data.value"
+          [id]="data.label" [type]="data.type" cols="10" rows="5">
+
+        <!-- Number Input -->
+        <input matInput *ngSwitchCase="'3'" 
+          (change)="save($event)" [value]="data.value"
+          [id]="data.label" [type]="data.type">
+
+         <!-- Select List -->
+         <div *ngSwitchCase="'4'">
+            <mat-select placeholder="Choose One">
+              <mat-option *ngFor="let option of data.options" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </div>
+
+        <!-- Date Input -->
+        <input matInput *ngSwitchCase="'5'" 
+          (change)="save($event)" [value]="data.value"
+          [id]="data.label" [type]="data.type">
+
+        <!-- DateTime Input -->
+        <input matInput *ngSwitchCase="'6'"
+          (change)="save($event)" [value]="data.value"
+          [id]="data.label" [type]="data.type">
+
+        <!-- Radio List -->
+        <div *ngSwitchCase="'7'">
+          <mat-label *ngFor="let option of data.options">
+            <input matInput
+              type="radio"
+              [name]="data.label"
+              [value]="option.value"> {{option.label}}
+          </mat-label>
+        </div> 
+
+      </div>
+    </mat-form-field>
+
+    <!-- Edit Section -->
+    <mat-icon svgIcon="square-edit-outline"  class="right" *ngIf="options && options['isEditable']" (click)="editField()"></mat-icon> 
+</div>

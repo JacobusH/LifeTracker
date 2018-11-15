@@ -7,7 +7,7 @@
   <div class="icon" routerLink='new'><mat-icon svgIcon="plus-circle"></mat-icon></div>
   <app-tracker-icon 
     [tracker]="tracker" 
-    [mini]="true" 
+    [mini]="true"  
     *ngFor="let tracker of trackersByLastViewed$ | async">
   </app-tracker-icon>
 </div>

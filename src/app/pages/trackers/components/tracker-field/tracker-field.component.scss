@@ -1,0 +1,13 @@
+.field-cont {
+  display: flex;
+  align-items: center;
+
+  .left {
+    flex: 80%;
+    margin-right: 5px;
+  }
+
+  .right {
+    flex: 20%;
+  }
+}

@@ -4,11 +4,11 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
 import { 
-  ActivityField, ActivityFieldTypeEnum, TrackerNode, ActivityInterval, Tracker
+  TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker
 } from '../trackers.model';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
-import { User } from '../../..//models/user.model';
+import { User } from '../../../models/user.model';
 import { map, filter, catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as firebase from 'firebase/app';
@@ -34,7 +34,7 @@ export class OptionsService {
   }
 
   getTrackerOptions(curTrackerName: string, userKey: string) {
-    this.verifyUserKey(curTrackerName);
+    this.verifyUserKey(userKey);
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers,

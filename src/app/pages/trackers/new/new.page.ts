@@ -35,7 +35,7 @@ export class NewPage implements OnInit {
         dateLastViewed: new Date(),
         options: {
           isDeletable: false,
-          showIcons: true
+          isEditable: true
         }
       }
       this.trackerNewService.saveNewTracker(newTracker);

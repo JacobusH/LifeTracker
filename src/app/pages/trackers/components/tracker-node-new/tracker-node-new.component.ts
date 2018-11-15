@@ -20,9 +20,9 @@ export class TrackerNodeNewComponent implements OnInit {
   }
 
   createNew() {
-    this.authService.user.subscribe(user => {
-      this.trackerService.createNode(this.trackerName, user.authID)
-    })
+    // this.authService.user.subscribe(user => {
+    //   this.trackerService.createNode(this.trackerName, user.authID)
+    // })
   }
 
 }

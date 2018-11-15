@@ -4,14 +4,15 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
 import { 
-  ActivityField, ActivityFieldTypeEnum, TrackerNode, ActivityInterval, Tracker
+  TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker, TrackerField
 } from './trackers.model';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { map, filter, catchError, mergeMap, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, forkJoin } from 'rxjs';
 import * as firebase from 'firebase/app';
+import { TrackerFieldService } from './components/tracker-field/tracker-field.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,22 @@ export class TrackersService {
     private afs: AngularFirestore,
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private fieldService: TrackerFieldService
   ) { 
      this.authService.user.subscribe(x => {
       this.currentUserKey = x.authID
     })
   }
 
-  private createEmptyNode() {
+  emptyField: TrackerField = {
+    nodeKey: undefined,
+    label: "Name",
+    value: "",
+    type: TrackerFieldTypeEnum.text
+  }
+
+  createEmptyNode() {
     // make initial empty node
     let emptyNode: TrackerNode = {
       key: 'zzz',
@@ -40,9 +49,9 @@ export class TrackersService {
       name: 'New Act Node',
       parent: null,
       children: [],
-      fields: [
-        { name: 'New Field', type: ActivityFieldTypeEnum.empty }
-      ],
+      // fields: [
+      //   this.emptyField
+      // ],
       options: {
         points: -1,
         decayRate: {
@@ -64,14 +73,15 @@ export class TrackersService {
         // TODO: show error
       }
       else { // new
-        this.createNewTracker(newTracker);
-        this.router.navigate(['trackers/view/', newTracker.name]);
+        this.createNewTracker(newTracker).then(x => {
+          this.router.navigate(['trackers/view/', newTracker.name])
+        });
         check$.unsubscribe()
       }
     })
   }
 
-  createNewTracker(newTracker: Tracker): Promise<firebase.firestore.DocumentReference>  {
+  createNewTracker(newTracker: Tracker)  {
     // add to index
     let trackerPromise: Promise<firebase.firestore.DocumentReference> =this.userService
       .getByUserKey(this.currentUserKey)
@@ -91,10 +101,19 @@ export class TrackersService {
       .add(emptyNode);
 
     promise.then(x => {
-      x.update({key: x.id});
+      x.update({key: x.id}); // set the node key
+
+      this.emptyField.nodeKey = x.id;
+      let innerPromise = x.collection('fields').add(this.emptyField) // set a blank field
+      innerPromise.then(x => {
+        x.update({key: x.id}); // set the field key
+      })
+
+      // TODO: why is this not working...
+      // this.fieldService.saveTrackerField(this.colBase + newTracker.name, x.id, this.currentUserKey) // make a new empty field in the node
     });
 
-    return trackerPromise;
+    return Promise.all([trackerPromise, promise]);
   }
 
   createNode(trackerName: string, userKey: string, parentNodeKey: string = undefined) {
@@ -105,22 +124,50 @@ export class TrackersService {
     }
     
     // add the empty node to the right collection
+    let innerPromise;
     let promise: Promise<firebase.firestore.DocumentReference> = this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colBase + trackerName)
       .add(emptyNode);
 
-    promise.then(x => {
-      x.update({key: x.id});
+    promise.then(nodeRef => {
+      nodeRef.update({key: nodeRef.id});
+
+      this.emptyField.nodeKey = emptyNode.key;
+      innerPromise = nodeRef.collection('fields').add(this.emptyField) // set a blank field
+      innerPromise.then(fieldRef => {
+        fieldRef.update({key: fieldRef.id}); // set the field key
+        fieldRef.update({nodeKey: nodeRef.id})
+      })
+
       if(parentNodeKey) {
         this.userService
         .getByUserKey(this.currentUserKey)
         .collection(this.colBase + trackerName)
         .doc(parentNodeKey).update({
-          children: firebase.firestore.FieldValue.arrayUnion(x.id)
+          children: firebase.firestore.FieldValue.arrayUnion(nodeRef.id)
         })
       }
+
+      return nodeRef;
     });
+
+    return promise;
+  }
+
+  copyTrackerNode(trackerName: string, node: TrackerNode, userKey: string) {
+    let oldKey = node.key;
+    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .add(node);
+
+      promise.then(nodeRef => {
+        this.fieldService.copyFields(trackerName, userKey, node, nodeRef.id);
+        return nodeRef.update({key: nodeRef.id});
+      });
+
+      return promise;
   }
 
   checkTrackerIsNew(newTracker: Tracker) {
@@ -175,11 +222,20 @@ export class TrackersService {
         ref => ref.where('parent', '==', null));
   }
 
-  getNodeByKey(nodeKey: string, trackerName: string): AngularFirestoreDocument<TrackerNode> {
+  getNodeByKey(nodeKey: string, trackerName: string, userKey: string): AngularFirestoreDocument<TrackerNode> {
+    this.verifyUserKey(userKey);
+
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colBase + trackerName)
       .doc(nodeKey);
+  }
+
+  getMostRecentNode(trackerName: string, userKey: string) {
+    this.verifyUserKey(userKey);
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
   }
 
   verifyUserKey(userKey: string) {
