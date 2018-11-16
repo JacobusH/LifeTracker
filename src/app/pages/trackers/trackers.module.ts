@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module';
-import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule, NzPopoverModule } from 'ng-zorro-antd';
 import { D3Module } from '../../modules/d3/d3.module'
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
   , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule } from '@angular/material';
@@ -53,6 +53,7 @@ const routes: Routes = [
     routing
     , D3Module
     , NgZorroAntdModule
+    , NzPopoverModule
     , NzLayoutModule
     , NzCheckboxModule
     , SharedModule

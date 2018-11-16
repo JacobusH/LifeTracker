@@ -62,7 +62,7 @@ export class TrackerFieldService {
         .add(field);
 
         promise.then(x => {
-          x.update({key: x.id}); // set the field key
+          return x.update({key: x.id}); // set the field key
         })  
     }
     else { // update field
@@ -75,6 +75,8 @@ export class TrackerFieldService {
         .doc(field.key)
         .update(field);
     }
+
+    return promise;
       
   }
 
@@ -99,6 +101,15 @@ export class TrackerFieldService {
           }) 
       });
     });
+  }
+
+  getField(curTrackerName: string, fieldKey: string, nodeKey: string, userKey: string) {
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + curTrackerName)
+      .doc(nodeKey)
+      .collection(this.colFields)
+      .doc(fieldKey);
   }
 
   getFields(curTrackerName: string, nodeKey, userKey: string) {

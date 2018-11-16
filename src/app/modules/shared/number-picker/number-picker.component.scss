@@ -1,0 +1,18 @@
+.cont {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  input {
+    width: 22%;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    margin: 0px 4px;
+    text-align: center;
+  }
+
+  .anticon {
+    font-size: 24px;
+    cursor: pointer
+  }
+}

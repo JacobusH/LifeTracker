@@ -1,55 +1,102 @@
 <div class="field-cont">
-<mat-form-field class="left" style="width: 100%">
-    <mat-label [attr.for]="data">{{data.label}}</mat-label>
-      <div [ngSwitch]="data.type">
-  
+  <!-- <mat-form-field class="left" style="width: 100%">
+    <mat-label [attr.for]="field">{{field.label}}</mat-label>
+      <div [ngSwitch]="fieldType">
+        {{fieldType}} -->
         <!-- Text Input -->
-        <input matInput *ngSwitchCase="'1'" 
+        <!-- <input matInput *ngSwitchCase="'1'" 
           (change)="save($event)"
-          [id]="data.label" [type]="data.type" [value]="data.value">
+          [id]="field.label" [type]="text" [value]="field.value"> -->
 
         <!-- Text Area -->
-        <input matInput *ngSwitchCase="'2'" 
-          (change)="save($event)" [value]="data.value"
-          [id]="data.label" [type]="data.type" cols="10" rows="5">
+        <!-- <input matInput *ngSwitchCase="'2'" 
+          (change)="save($event)" [value]="field.value"
+          [id]="field.label" [type]="textarea" cols="10" rows="5"> -->
 
         <!-- Number Input -->
-        <input matInput *ngSwitchCase="'3'" 
-          (change)="save($event)" [value]="data.value"
-          [id]="data.label" [type]="data.type">
+        <!-- <input matInput *ngSwitchCase="'3'" 
+          (change)="save($event)" [value]="field.value"
+          [id]="field.label" [type]="number"> -->
 
          <!-- Select List -->
-         <div *ngSwitchCase="'4'">
+         <!-- <div *ngSwitchCase="'4'">
             <mat-select placeholder="Choose One">
-              <mat-option *ngFor="let option of data.options" [value]="option.value">
+              <mat-option *ngFor="let option of field.options" [value]="option.value">
                 {{ option.label }}
               </mat-option>
             </mat-select>
-          </div>
+          </div> -->
 
         <!-- Date Input -->
-        <input matInput *ngSwitchCase="'5'" 
-          (change)="save($event)" [value]="data.value"
-          [id]="data.label" [type]="data.type">
+        <!-- <input matInput *ngSwitchCase="'5'" 
+          (change)="save($event)" [value]="field.value"
+          [id]="field.label" [type]="date"> -->
 
         <!-- DateTime Input -->
-        <input matInput *ngSwitchCase="'6'"
-          (change)="save($event)" [value]="data.value"
-          [id]="data.label" [type]="data.type">
+        <!-- <input matInput *ngSwitchCase="'6'"
+          (change)="save($event)" [value]="field.value"
+          [id]="field.label" [type]="date-timej-local"> -->
 
         <!-- Radio List -->
-        <div *ngSwitchCase="'7'">
-          <mat-label *ngFor="let option of data.options">
+        <!-- <div *ngSwitchCase="'7'">
+          <mat-label *ngFor="let option of field.options">
             <input matInput
               type="radio"
-              [name]="data.label"
+              [name]="field.label"
               [value]="option.value"> {{option.label}}
           </mat-label>
-        </div> 
-
+        </div>  -->
+<!-- 
       </div>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <!-- Edit Section -->
-    <mat-icon svgIcon="square-edit-outline"  class="right" *ngIf="options && options['isEditable']" (click)="editField()"></mat-icon> 
+    <mat-icon @slideInFadeOut svgIcon="square-edit-outline"  nz-popover
+    nzPlacement="right"
+    nzTrigger="click"
+    [nzTitle]="titleTemplate"
+    [nzContent]="contentTemplate"class="right" 
+    [(nzVisible)]="editVisible"
+    (nzVisibleChange)="onEditChange($event)"
+    *ngIf="options && options['isEditable']" (click)="editField()">
+    </mat-icon> 
+
+    <mat-form-field class="left" style="width: 100%" *ngIf="fieldType == '1'" >
+      <mat-label [attr.for]="field">{{field.label}}</mat-label>
+      <input matInput 
+          (change)="save($event)"
+          [id]="field.label" type="text" [value]="field.value">
+    </mat-form-field>
+    <!-- <mat-form-field class="left" style="width: 100%" *ngIf="fieldType == '3'">
+      <mat-label [attr.for]="field">{{field.label}} and {{field.type}}</mat-label>
+      <input matInput
+          (change)="save($event)" [value]="field.value"
+          [id]="field.label" type="number">
+      </mat-form-field> -->
+
+      <app-number-picker *ngIf="fieldType == '3'" [value]="field.value" (onChangeEvent)="saveNumber($event)"></app-number-picker>
+      
+
+    
 </div>
+
+<ng-template #titleTemplate><i nz-icon type="close"></i> Change Field</ng-template>
+<ng-template #contentTemplate>
+  <div class="flex-column">
+    <mat-form-field>
+        <mat-label [attr.for]="field">Label</mat-label>
+        <input matInput
+        (change)="changeLabel($event)" [value]="field.label"
+        [id]="field.label" [type]="string">
+    </mat-form-field> 
+    <mat-form-field>
+    <mat-select [placeholder]="fieldTypeString">
+        <mat-option *ngFor="let item of typeOptions | keyvalue" [value]="item.value" (click)="changeType(item.key)">
+          {{ item.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+    
+  </ng-template>

@@ -9,7 +9,7 @@ import {
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
-import { map, filter, catchError, mergeMap, switchMap } from 'rxjs/operators';
+import { map, filter, catchError, mergeMap, switchMap, take } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
 import * as firebase from 'firebase/app';
 import { TrackerFieldService } from './components/tracker-field/tracker-field.service';
@@ -67,53 +67,53 @@ export class TrackersService {
   saveNewTracker(newTracker: Tracker)  {
     this.verifyUserKey(newTracker.userKey);
     newTracker.name.replace(/\s/g, '');
-    let check$ = this.checkTrackerIsNew(newTracker).valueChanges().subscribe(x => {
+    let check$ = this.checkTrackerIsNew(newTracker).valueChanges().pipe(take(1)).subscribe(x => {
       if(x.length) { // exists
         console.log("trackers exists", x)
         // TODO: show error
       }
       else { // new
         this.createNewTracker(newTracker).then(x => {
+          console.log('navving to tracker view')
           this.router.navigate(['trackers/view/', newTracker.name])
         });
-        check$.unsubscribe()
       }
     })
   }
 
   createNewTracker(newTracker: Tracker)  {
+    let fieldPromise: Promise<any>;
+
     // add to index
     let trackerPromise: Promise<firebase.firestore.DocumentReference> =this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers)
       .add(newTracker);
-
     trackerPromise.then(x => {
       x.update({key: x.id});
     });
 
-    let emptyNode = this.createEmptyNode();
-
     // add to collection using empty node
-    let promise: Promise<firebase.firestore.DocumentReference> = this.userService
+    let emptyNode = this.createEmptyNode();
+    let nodePromise: Promise<firebase.firestore.DocumentReference> = this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colBase + newTracker.name)
       .add(emptyNode);
+    return nodePromise.then(nodeRef => {
+      nodeRef.update({key: nodeRef.id}); // set the node key
 
-    promise.then(x => {
-      x.update({key: x.id}); // set the node key
-
-      this.emptyField.nodeKey = x.id;
-      let innerPromise = x.collection('fields').add(this.emptyField) // set a blank field
-      innerPromise.then(x => {
-        x.update({key: x.id}); // set the field key
+      this.emptyField.nodeKey = nodeRef.id;
+      fieldPromise = nodeRef.collection('fields').add(this.emptyField) // set a blank field
+      return fieldPromise.then(fieldRef => {
+        console.log("field key created")
+        return fieldRef.update({key: fieldRef.id}); // set the field key
       })
 
       // TODO: why is this not working...
       // this.fieldService.saveTrackerField(this.colBase + newTracker.name, x.id, this.currentUserKey) // make a new empty field in the node
     });
 
-    return Promise.all([trackerPromise, promise]);
+    // return Promise.all([trackesrPromise, nodePromise, fieldPromise]);
   }
 
   createNode(trackerName: string, userKey: string, parentNodeKey: string = undefined) {
@@ -137,7 +137,7 @@ export class TrackersService {
       innerPromise = nodeRef.collection('fields').add(this.emptyField) // set a blank field
       innerPromise.then(fieldRef => {
         fieldRef.update({key: fieldRef.id}); // set the field key
-        fieldRef.update({nodeKey: nodeRef.id})
+        fieldRef.update({nodeKey: nodeRef.id}) // set the field's node key
       })
 
       if(parentNodeKey) {
@@ -194,6 +194,15 @@ export class TrackersService {
       }).unsubscribe();
 
       toDel.delete();
+  }
+
+  getTrackerByName(trackerName:string, userKey: string) {
+    this.verifyUserKey(userKey);
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colAllTrackers,
+        ref => ref.where('name', '==', trackerName)
+      );
   }
 
   getAllTrackers(userKey: string): AngularFirestoreCollection<Tracker> { 

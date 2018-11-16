@@ -1,22 +1,26 @@
 <div *ngIf="node" class="node">
   <div class="top">
-      <div class="left">
+      <div class="left" *ngIf="nodeFields">
           <div *ngFor="let field of nodeFields">
-            <app-tracker-field [data]="field" [nodeKey]="node.key" [userKey]="userKey" [trackerName]="trackerName"></app-tracker-field>
+            <app-tracker-field [field]="field" [nodeKey]="node.key" 
+            [userKey]="userKey" [trackerName]="trackerName"
+            [options]="options">
+            </app-tracker-field>
           </div>
-          <mat-icon svgIcon="plus" @slideInFadeOut *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>
+          <mat-icon @slideInFadeOut svgIcon="plus" *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>
         </div>
         <div class="right">
-          <mat-icon svgIcon="plus-circle" *ngIf="options && options['isEditable']" (click)="addChild(node.key)"></mat-icon> 
-          <mat-icon svgIcon="content-copy" *ngIf="options && options['isEditable']" (click)="copyNode(node)"></mat-icon> 
-          <mat-icon svgIcon="delete" *ngIf="options && options['isDeletable']" (click)="delete(node)"></mat-icon> 
+          <mat-icon @slideInFadeOut svgIcon="plus-circle" *ngIf="options && options['isEditable']" (click)="addChild(node)"></mat-icon> 
+          <mat-icon @slideInFadeOut svgIcon="content-copy" *ngIf="options && options['isEditable']" (click)="copyNode(node)"></mat-icon> 
+          <mat-icon @slideInFadeOut svgIcon="delete" *ngIf="options && options['isDeletable']" (click)="delete(node)"></mat-icon> 
         </div>
   </div>
   <div class="bottom">
     <div *ngIf="node.children">
       <app-tracker-node *ngFor="let childKey of node.children" 
         [nodeKey]="childKey"
-        [tracker]="trackerName">
+        [tracker]="trackerName"
+        [options]="options">
       </app-tracker-node>
     </div>
   </div>

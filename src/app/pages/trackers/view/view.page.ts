@@ -6,6 +6,7 @@ import { TrackerNode } from '../trackers.model';
 import { from } from 'rxjs';
 import { map, withLatestFrom, take } from 'rxjs/operators';
 import { listFade } from '../../../animations/listFade.animation';
+import { OptionsService } from '../options/options.service';
 
 @Component({
   selector: 'view',
@@ -15,42 +16,57 @@ import { listFade } from '../../../animations/listFade.animation';
 })
 export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   currentTrackerName = "";
+  currentTrackerKey = "";
   userKey;
   parentNodesView;
   parentNodes;
   parentNodes$;
-  showOptions;
+  showOptions = false;
   elems = [];
   counter = 1;
   frameworkTweetsObservable;
+  test$;
+  options;
   
   constructor(
     private actRoute: ActivatedRoute,
     private trackerService: TrackersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private optionsService: OptionsService
   ) { 
     this.elems = ["test", "another test", "one more test"]
     this.frameworkTweetsObservable = from(['Backbone', 'Angular'])
   }
 
   ngOnInit() {
+    
+
+  }
+
+  ngAfterViewInit() {
     this.actRoute.params.subscribe(params => {
       this.authService.user.subscribe(user => {
         this.currentTrackerName = params['id'];
         this.userKey = user.authID
 
+        this.optionsService.getTrackerOptions(this.currentTrackerName, user.authID).valueChanges().subscribe(x => {
+          this.options = x[0].options;
+          this.userKey = user.authID
+        });
+
         this.parentNodes$ = this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
+        this.parentNodes$
           .pipe(take(1)).subscribe(parentNodes => {
             // gets initial view of nodes, then do everything locally
             this.parentNodes = parentNodes
           });
+
+        this.trackerService.getTrackerByName(this.currentTrackerName, user.authID).valueChanges().subscribe(trackers => {
+          this.currentTrackerKey = trackers[0].key;
+        })
+
       })
     });
-
-  }
-
-  ngAfterViewInit() {
-    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -83,9 +99,14 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     this.trackerService.copyTrackerNode(this.currentTrackerName, node, this.userKey).then(nodeRef => {
       let newNode = this.trackerService.createEmptyNode();
       newNode.key = nodeRef.id;
-      console.log('refy', newNode)
       this.parentNodes.push(newNode);
     });
+  }
+
+  addChild(node: TrackerNode) {
+    this.trackerService.getNodeByKey(node.key, this.currentTrackerName, this.userKey).valueChanges().pipe(take(1)).subscribe(node => {
+      this.parentNodes[this.parentNodes.indexOf(node)] =  node
+    })
   }
 
   delNode(node: TrackerNode) {

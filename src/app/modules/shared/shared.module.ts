@@ -8,6 +8,7 @@ import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule
 import { MenuWheelComponent } from './menu-wheel/menu-wheel.component';
 import { Menu } from '@ionic/angular';
 import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
+import { NumberPickerComponent } from './number-picker/number-picker.component';
 
 @NgModule({
   imports: [
@@ -25,10 +26,12 @@ import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
   declarations: [
     MenuWheelComponent
     , FormDynamicComponent
+    , NumberPickerComponent
   ],
   exports: [ 
     MenuWheelComponent 
     , FormDynamicComponent
+    , NumberPickerComponent
   ]
 })
 export class SharedModule { }

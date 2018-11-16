@@ -28,8 +28,8 @@ import { trigger, state, style, transition, animate} from '@angular/animations';
 export class OptionsComponent implements OnInit, AfterViewInit {
   @Input('tracker') trackerName: string;
   @Input('isShown') isShown: string;
-  options;
-  trackerKey;
+  @Input('options') options;
+  @Input('trackerKey') trackerKey;
   
   constructor(
     private optionsService: OptionsService,
@@ -38,18 +38,10 @@ export class OptionsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    
   }
 
   ngAfterViewInit() {
-    this.authService.user.subscribe(user => {
-      let test$ = this.optionsService.getTrackerOptions(this.trackerName, user.authID).valueChanges().subscribe(x => {
-        if(x) {
-          this.options = x[0].options;
-          this.trackerKey = x[0].key;
-        }
-      });
-    })
+    
   }
 
   saveOptions(ev) {

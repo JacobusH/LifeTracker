@@ -1,7 +1,10 @@
 <div class="view-cont">
   <div class="top">
     <div class="top-left">
-      <app-tracker-options [tracker]="currentTrackerName" [isShown]="showOptions"></app-tracker-options>
+      <app-tracker-options *ngIf="options" [tracker]="currentTrackerName" 
+      [isShown]="showOptions" [options]="options"
+      [trackerKey]="currentTrackerKey">
+      </app-tracker-options>
     </div>
     <div class="top-right">
         <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new>
@@ -12,8 +15,7 @@
   <div [@listFade]="parentNodes?.length" class="node-cont">
     <!-- <div *ngFor="let node of parentNodes$ | async">
       <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key"></app-tracker-node>
-    </div>
-  -->
+    </div> -->
     <!-- <div [@listFade]="elems.length" class="cont">
       <div *ngFor="let elem of elems">
         <div style="border: 2px solid pink; background: blue;" (click)="delElem(elem)">{{elem}}</div>
@@ -21,7 +23,9 @@
     </div> -->
     <div @listFade *ngFor="let node of parentNodes">
       <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key" 
-      (onDelete)="delNode($event)" (onCopy)="copyNode($event)"></app-tracker-node>
+      (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
+      (onAddChild)="addChild($event)"
+      [options]="options"></app-tracker-node>
     </div>
   </div>
   

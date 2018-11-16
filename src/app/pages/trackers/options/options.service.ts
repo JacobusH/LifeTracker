@@ -35,6 +35,7 @@ export class OptionsService {
 
   getTrackerOptions(curTrackerName: string, userKey: string) {
     this.verifyUserKey(userKey);
+
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers,
