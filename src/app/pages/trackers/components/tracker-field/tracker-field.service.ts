@@ -21,6 +21,7 @@ export class TrackerFieldService {
   colAllTrackers = "allTrackers";
   colBase = 'tracker';
   colFields = 'fields';
+  colOrder = "!order"
 
   emptyField: TrackerField = {
     nodeKey: undefined,
@@ -62,6 +63,7 @@ export class TrackerFieldService {
         .add(field);
 
         promise.then(x => {
+          this.addFieldToOrder(trackerName, nodeKey, userKey, x.id) // add to order array
           return x.update({key: x.id}); // set the field key
         })  
     }
@@ -124,10 +126,50 @@ export class TrackerFieldService {
       .collection(this.colFields);
   } 
   
+  getFieldOrder(curTrackerName: string, nodeKey, userKey: string) {
+    this.verifyUserKey(userKey);
+
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + curTrackerName,
+        ref => ref.where('name', '==', curTrackerName)
+      )
+      .doc(nodeKey)
+      .collection(this.colFields)
+      .doc(this.colOrder);
+  }
+
+  changeFieldOrder(curTrackerName: string, nodeKey: string, userKey: string, newOrder: Array<string>) {
+    this.verifyUserKey(userKey);
+
+    this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + curTrackerName,
+        ref => ref.where('name', '==', curTrackerName)
+      )
+      .doc(nodeKey)
+      .collection(this.colFields)
+      .doc(this.colOrder).update({"order": newOrder})
+  }
+
+  addFieldToOrder(curTrackerName: string, nodeKey: string, userKey: string, toAdd: string) {
+    this.verifyUserKey(userKey);
+
+    return this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + curTrackerName,
+      ref => ref.where('name', '==', curTrackerName)
+    )
+    .doc(nodeKey)
+    .collection(this.colFields)
+    .doc(this.colOrder).update({"order": firebase.firestore.FieldValue.arrayUnion(toAdd)})// add to order array
+  }
+
   verifyUserKey(userKey: string) {
     if(!this.currentUserKey) {
       this.currentUserKey = userKey
     }
   }
+
 
 }

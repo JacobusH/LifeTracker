@@ -105,7 +105,7 @@ export class TrackersService {
       this.emptyField.nodeKey = nodeRef.id;
       fieldPromise = nodeRef.collection('fields').add(this.emptyField) // set a blank field
       return fieldPromise.then(fieldRef => {
-        console.log("field key created")
+        nodeRef.collection('fields').doc("!order").set({'order': [fieldRef.id]}) // create the ordering array
         return fieldRef.update({key: fieldRef.id}); // set the field key
       })
 
@@ -136,6 +136,7 @@ export class TrackersService {
       this.emptyField.nodeKey = emptyNode.key;
       innerPromise = nodeRef.collection('fields').add(this.emptyField) // set a blank field
       innerPromise.then(fieldRef => {
+        nodeRef.collection('fields').doc("!order").set({'order': [fieldRef.id]}) // create the ordering array
         fieldRef.update({key: fieldRef.id}); // set the field key
         fieldRef.update({nodeKey: nodeRef.id}) // set the field's node key
       })

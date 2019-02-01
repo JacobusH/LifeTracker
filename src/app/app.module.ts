@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
 import { CommonModule, registerLocaleData } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -36,17 +37,18 @@ registerLocaleData(en);
   declarations: [AppComponent ],
   entryComponents: [],
   imports: [
-    AngularFireModule
+    SharedModule
+    , AngularFireModule
     , AngularFirestoreModule
     , AngularFireStorageModule
     , AngularFireAuthModule
     , AngularFireModule.initializeApp(environment.firebase)
-    , BrowserModule
-    , BrowserAnimationsModule
     , IonicModule.forRoot()
     , AppRoutingModule
-    , SharedModule
+    , BrowserModule
+    , BrowserAnimationsModule
     , CommonModule
+    , DragDropModule
     , FormsModule
     , ReactiveFormsModule
     , MatIconModule

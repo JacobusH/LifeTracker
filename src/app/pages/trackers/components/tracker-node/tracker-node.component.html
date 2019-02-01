@@ -1,7 +1,7 @@
 <div *ngIf="node" class="node">
   <div class="top">
-      <div class="left" *ngIf="nodeFields">
-          <div *ngFor="let field of nodeFields">
+      <div class="left" *ngIf="orderedFieldsObjs" (cdkDropListDropped)="drop($event)"  cdkDropList>
+          <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
             <app-tracker-field [field]="field" [nodeKey]="node.key" 
             [userKey]="userKey" [trackerName]="trackerName"
             [options]="options">
@@ -24,6 +24,19 @@
       </app-tracker-node>
     </div>
   </div>
+
+  <!-- <div class="field-ord" (cdkDropListDropped)="drop($event)" cdkDropList>
+    <div *ngFor="let ord of fieldOrderArr" cdkDrag>
+      {{ord}}
+    </div>
+  </div>
+
+  <div class="field-ord" (cdkDropListDropped)="drop($event)" cdkDropList>
+      <div *ngFor="let ord of orderedFieldsArr" cdkDrag>
+        {{ord}}
+      </div>
+    </div> -->
+
  
 </div>
 
