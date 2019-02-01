@@ -5,11 +5,10 @@ import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule
   , MatTabsModule, MatMenuModule } from '@angular/material';

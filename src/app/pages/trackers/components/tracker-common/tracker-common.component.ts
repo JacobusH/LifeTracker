@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from '../../../../services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { TrackerPopoverComponent } from './tracker-popover/tracker-popover.component';
