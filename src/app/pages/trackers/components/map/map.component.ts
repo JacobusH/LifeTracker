@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ElementRef, NgZone,ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { } from 'googlemaps';
+// import { } from 'googlemaps';
 import { MapsAPILoader, AgmMarker, MarkerManager } from '@agm/core';
 
 @Component({
