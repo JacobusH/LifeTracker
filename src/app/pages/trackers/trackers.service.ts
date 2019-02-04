@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
 import { 
-  TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker, TrackerField
+  TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker, TrackerField, TrackerFieldOption
 } from './trackers.model';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
@@ -38,7 +38,8 @@ export class TrackersService {
     nodeKey: undefined,
     label: "Name",
     value: "",
-    type: TrackerFieldTypeEnum.text
+    type: TrackerFieldTypeEnum.text,
+    options: new Array<TrackerFieldOption>({'optName': 'newName', 'optValue': 'newValue'})
   }
 
   createEmptyNode() {

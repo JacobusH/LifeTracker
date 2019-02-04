@@ -1,0 +1,23 @@
+.rating-cont {
+  display: flex;
+  flex-flow: row nowrap;
+
+  .name {
+    flex: 80%;
+  }
+  .rating {
+    flex: 20%;
+  }
+
+  input {
+    background-color: inherit;
+    border: none;
+    // font-size: 1.3em;
+    // font-weight: 500;
+    // display: flex;
+    // flex-flow: row nowrap;
+    // align-self: center;
+    // text-align: center;
+  }
+}
+

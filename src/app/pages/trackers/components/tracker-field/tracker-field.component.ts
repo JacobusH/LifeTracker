@@ -37,6 +37,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // this.optionsService.getTrackerOptions(this.trackerName, this.userKey).valueChanges().subscribe(x => {
     //   this.options = x[0].options;
     // })
+    // console.log('field', this.field)
 
   }
 
@@ -54,7 +55,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
    this.field$.subscribe(f => {
       this.fieldType = f['type'];
       this.fieldTypeString = this.translateType(this.fieldType)
-      console.log("logged", f['type'])
+      // console.log("logged", f['type'])
    })
   }
 
@@ -79,10 +80,22 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
+  saveOptName(eventVal) {
+    console.log('evvyName', event)
+    this.field.options[0].optName = eventVal;
+    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+  }
+
+  saveOptVal(eventVal) {
+    this.field.options[0].optValue = eventVal;
+    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+  }
+
   saveNumber(strVal) {
     this.field.value = strVal;
     this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
+
 
   changeLabel(event) {
     this.field.label = event.target.value;

@@ -8,17 +8,25 @@ export interface TrackerField {
   label: string;
   value: string; 
   type: TrackerFieldTypeEnum;
+  options: Array<TrackerFieldOption>
 }
 
 export enum TrackerFieldTypeEnum {
-  'empty',
-  'text',
-  'textarea',
-  'number',
-  'select',
-  'date',
-  'datetime-local',
-  'radio'
+  'empty' = 0,
+  'text' = 1,
+  'textarea' = 2,
+  'number' = 3,
+  'select' = 4,
+  'date' = 5,
+  'datetime-local' = 6,
+  'radio' = 7,
+  'rater' = 8,
+  'title' = 9
+}
+
+export interface TrackerFieldOption {
+  optName: string;
+  optValue: string;
 }
 
 export enum ActivityInterval {
@@ -86,13 +94,13 @@ export interface TrackerQuestion {
   noEdits: boolean
 }
 
-export const TrackerFieldOptions = [
-  { label: 'text', value: 'text'},
-  { label: 'number', value: 'number'},
-  { label: 'select list', value: 'select'},
-  { label: 'date', value: 'date'},
-  { label: 'datetime', value: 'datetime-local'},
-]
+// export const TrackerFieldOptions = [
+//   { label: 'text', value: 'text'},
+//   { label: 'number', value: 'number'},
+//   { label: 'select list', value: 'select'},
+//   { label: 'date', value: 'date'},
+//   { label: 'datetime', value: 'datetime-local'},
+// ]
 
 export const BaseQuestions: Array<TrackerQuestion> = [
   {

@@ -10,7 +10,7 @@
         <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new>
         <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
       </div>
-      <button (click)="addElem()">Add</button>
+      <!-- <button (click)="addElem()">Add</button> -->
   </div>
   <div [@listFade]="parentNodes?.length" class="node-cont">
     <!-- <div *ngFor="let node of parentNodes$ | async">

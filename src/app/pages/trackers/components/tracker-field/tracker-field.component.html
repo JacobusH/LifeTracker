@@ -1,4 +1,62 @@
 <div class="field-cont">
+    <!-- Edit Section -->
+    <mat-icon @slideInFadeOut svgIcon="square-edit-outline"  nz-popover
+    nzPlacement="right"
+    nzTrigger="click"
+    [nzTitle]="titleTemplate"
+    [nzContent]="contentTemplate"class="right" 
+    [(nzVisible)]="editVisible"
+    (nzVisibleChange)="onEditChange($event)"
+    *ngIf="options && options['isEditable']" (click)="editField()">
+    </mat-icon>
+    <!-- Text -->
+    <mat-form-field class="left" style="width: 100%" *ngIf="fieldType == '1'" >
+      <mat-label [attr.for]="field">{{field.label}}</mat-label>
+      <input matInput 
+        (change)="save($event)"
+        [id]="field.label" type="text" [value]="field.value">
+    </mat-form-field>
+    <!-- Number -->
+    <app-number-picker *ngIf="fieldType == '3'" 
+      [value]="field.value" (onChangeEvent)="saveNumber($event)">
+    </app-number-picker>
+    <!-- Date Input -->
+    <!-- <app-date-picker *ngif="fieldType == '5'"
+      (change)="save($event)" [value]="field.value"
+      [id]="field.label" [type]="date"></app-date-picker> -->
+    <!-- Rater -->
+      <app-rater *ngIf="fieldType == '8'" 
+      [name]="field.options[0].optName" [rating]="field.options[0].optValue"
+      (onChangeNameEvent)="saveOptName($event)" (onChangeRatingEvent)="saveOptVal($event)">
+    </app-rater>
+    <!-- Title -->
+    <div class="title-cont">
+      <input type="text" class="title" *ngIf="fieldType =='9'" 
+      (change)="save($event)" [value]="field.value" 
+      [id]="field.label">
+    </div>
+
+</div>
+
+<ng-template #titleTemplate><i nz-icon type="close"></i> Change Field</ng-template>
+<ng-template #contentTemplate>
+  <div class="flex-column">
+    <mat-form-field>
+        <mat-label [attr.for]="field">Label</mat-label>
+        <input matInput
+        (change)="changeLabel($event)" [value]="field.label"
+        [id]="field.label" [type]="string">
+    </mat-form-field> 
+    <mat-form-field>
+    <mat-select [placeholder]="fieldTypeString">
+        <mat-option *ngFor="let item of typeOptions | keyvalue" [value]="item.value" (click)="changeType(item.key)">
+          {{ item.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+
   <!-- <mat-form-field class="left" style="width: 100%">
     <mat-label [attr.for]="field">{{field.label}}</mat-label>
       <div [ngSwitch]="fieldType">
@@ -49,54 +107,3 @@
 <!-- 
       </div>
     </mat-form-field> -->
-
-    <!-- Edit Section -->
-    <mat-icon @slideInFadeOut svgIcon="square-edit-outline"  nz-popover
-    nzPlacement="right"
-    nzTrigger="click"
-    [nzTitle]="titleTemplate"
-    [nzContent]="contentTemplate"class="right" 
-    [(nzVisible)]="editVisible"
-    (nzVisibleChange)="onEditChange($event)"
-    *ngIf="options && options['isEditable']" (click)="editField()">
-    </mat-icon> 
-
-    <mat-form-field class="left" style="width: 100%" *ngIf="fieldType == '1'" >
-      <mat-label [attr.for]="field">{{field.label}}</mat-label>
-      <input matInput 
-          (change)="save($event)"
-          [id]="field.label" type="text" [value]="field.value">
-    </mat-form-field>
-    <!-- <mat-form-field class="left" style="width: 100%" *ngIf="fieldType == '3'">
-      <mat-label [attr.for]="field">{{field.label}} and {{field.type}}</mat-label>
-      <input matInput
-          (change)="save($event)" [value]="field.value"
-          [id]="field.label" type="number">
-      </mat-form-field> -->
-
-      <app-number-picker *ngIf="fieldType == '3'" [value]="field.value" (onChangeEvent)="saveNumber($event)"></app-number-picker>
-      
-
-    
-</div>
-
-<ng-template #titleTemplate><i nz-icon type="close"></i> Change Field</ng-template>
-<ng-template #contentTemplate>
-  <div class="flex-column">
-    <mat-form-field>
-        <mat-label [attr.for]="field">Label</mat-label>
-        <input matInput
-        (change)="changeLabel($event)" [value]="field.label"
-        [id]="field.label" [type]="string">
-    </mat-form-field> 
-    <mat-form-field>
-    <mat-select [placeholder]="fieldTypeString">
-        <mat-option *ngFor="let item of typeOptions | keyvalue" [value]="item.value" (click)="changeType(item.key)">
-          {{ item.key }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-  </div>
-    
-  </ng-template>

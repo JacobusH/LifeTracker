@@ -29,7 +29,7 @@ export class FormNewTrackerComponent implements OnInit {
       }
     );
 
-    this.fieldOptions = TrackerFieldOptions;
+    // this.fieldOptions = TrackerFieldOptions;
   }
 
   addEmptyQuestion() {

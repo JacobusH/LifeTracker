@@ -9,6 +9,8 @@ import { MenuWheelComponent } from './menu-wheel/menu-wheel.component';
 import { Menu } from '@ionic/angular';
 import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
 import { NumberPickerComponent } from './number-picker/number-picker.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { RaterComponent } from './rater/rater.component';
 
 @NgModule({
   imports: [
@@ -26,12 +28,14 @@ import { NumberPickerComponent } from './number-picker/number-picker.component';
   declarations: [
     MenuWheelComponent
     , FormDynamicComponent
-    , NumberPickerComponent
+    , NumberPickerComponent, DatePickerComponent, RaterComponent
   ],
   exports: [ 
-    MenuWheelComponent 
+    DatePickerComponent
     , FormDynamicComponent
+    , MenuWheelComponent 
     , NumberPickerComponent
+    , RaterComponent
   ]
 })
 export class SharedModule { }
