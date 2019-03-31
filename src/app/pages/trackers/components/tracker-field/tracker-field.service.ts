@@ -12,6 +12,7 @@ import { User } from '../../../../models/user.model';
 import { map, filter, catchError, mergeMap, switchMap, take } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as firebase from 'firebase/app';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +24,7 @@ export class TrackerFieldService {
   colFields = 'fields';
   colOrder = "!order"
 
-  emptyField: TrackerField = {
-    nodeKey: undefined,
-    label: "Name",
-    value: "",
-    type: TrackerFieldTypeEnum.text,
-    options: new Array<TrackerFieldOption>({'optName': 'newName', 'optValue': 'newValue'})
-  }
+  
 
   constructor( 
     private afs: AngularFirestore,
@@ -42,8 +37,31 @@ export class TrackerFieldService {
     })
   }
 
-  createEmptyField() {
-    return this.emptyField;
+  createEmptyField(nodeKey: string) {
+    let newField : TrackerField = {
+      key: uuid(),
+      nodeKey: nodeKey,
+      label: "Name",
+      value: "",
+      type: TrackerFieldTypeEnum.text,
+      options: new Array<TrackerFieldOption>({'optName': 'newName', 'optValue': 'newValue'})
+    }
+    newField.nodeKey = nodeKey;
+    newField.key = uuid();
+    return newField;
+  }
+
+  saveTrackerField_NEW(trackerName: string, userKey: string, nodeKey: string, field: TrackerField) {
+    this.verifyUserKey(userKey);
+
+    this.userService
+        .getByUserKey(this.currentUserKey)
+        .collection(this.colBase + trackerName,
+          ref => ref.where('name', '==', trackerName))
+        .doc(nodeKey)
+        .collection(this.colFields)
+        .doc(field.key)
+        .set(field);
   }
 
   saveTrackerField(trackerName: string, userKey: string, nodeKey: string, field: TrackerField = undefined) {
@@ -52,7 +70,14 @@ export class TrackerFieldService {
     // new field
     let promise: Promise<any>; 
     if(field == undefined) {
-      field = this.emptyField;
+      let field: TrackerField = {
+        key: uuid(),
+        nodeKey: nodeKey,
+        label: "Name",
+        value: "",
+        type: TrackerFieldTypeEnum.text,
+        options: new Array<TrackerFieldOption>({'optName': 'newName', 'optValue': 'newValue'})
+      }
       field.nodeKey = nodeKey;
       
       promise = this.userService
@@ -140,8 +165,14 @@ export class TrackerFieldService {
       .doc(this.colOrder);
   }
 
-  changeFieldOrder(curTrackerName: string, nodeKey: string, userKey: string, newOrder: Array<string>) {
+  changeFieldOrder(curTrackerName: string, nodeKey: string, userKey: string, newOrder: Array<TrackerField>) {
     this.verifyUserKey(userKey);
+
+    // get the order of keys
+    let ord: Array<string> = new Array<string>();
+    newOrder.forEach(field => {
+      ord.push(field.key);
+    })
 
     this.userService
       .getByUserKey(this.currentUserKey)
@@ -150,7 +181,7 @@ export class TrackerFieldService {
       )
       .doc(nodeKey)
       .collection(this.colFields)
-      .doc(this.colOrder).update({"order": newOrder})
+      .doc(this.colOrder).update({"order": ord})
   }
 
   addFieldToOrder(curTrackerName: string, nodeKey: string, userKey: string, toAdd: string) {

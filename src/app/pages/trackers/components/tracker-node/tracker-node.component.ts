@@ -25,7 +25,6 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
 
   node: TrackerNode;
   userKey;
-  orderedFieldsKeys: Array<string>;
   orderedFieldsObjs: Array<any>;
 
   constructor(
@@ -36,7 +35,7 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.orderedFieldsObjs = new Array<any>();
+    this.orderedFieldsObjs = new Array<TrackerField>();
   }
 
   ngAfterViewInit() {
@@ -52,6 +51,7 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
         this.node = node;
         this.getFieldOrders(user.authID)
       })
+
     })
   }
 
@@ -62,11 +62,9 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
   }
 
   displayFields(orderArr: any, userKey: string) {
-    console.log('fieldord', orderArr.order)
-    this.orderedFieldsKeys = orderArr.order
-    let bleh = orderArr.order as Array<string>
-    this.orderedFieldsObjs = new Array<any>();
-    bleh.forEach(fieldKey => {
+    console.log('fieldord', orderArr.order);
+    let fieldInOrder = orderArr.order as Array<string>;
+    fieldInOrder.forEach(fieldKey => {
       let tmp$ = this.fieldService.getField(this.trackerName, fieldKey, this.nodeKey, userKey).valueChanges().subscribe(x => {
         this.orderedFieldsObjs.push(x)
         tmp$.unsubscribe()
@@ -81,13 +79,10 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
   }
 
   addField(nodeKey: string) {
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, nodeKey).then(fieldRef => {
-      let newField = this.fieldService.createEmptyField()
-      newField.key = fieldRef.id; 
-      this.fieldService.addFieldToOrder(this.trackerName, this.nodeKey, this.userKey, newField.key).then(x => {
-        this.getFieldOrders(this.userKey) // re-render the fields
-      })
-    });
+    let newField = this.fieldService.createEmptyField(nodeKey);
+    this.orderedFieldsObjs.push(newField);
+    this.fieldService.saveTrackerField_NEW(this.trackerName, this.userKey, nodeKey, newField);
+    this.fieldService.changeFieldOrder(this.trackerName, nodeKey, this.userKey, this.orderedFieldsObjs)
   }
 
   copyNode(node) {
@@ -104,8 +99,7 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
         event.previousIndex, event.currentIndex)
     } else {
       moveItemInArray(this.orderedFieldsObjs, event.previousIndex, event.currentIndex); // move for view
-      moveItemInArray(this.orderedFieldsKeys, event.previousIndex, event.currentIndex); // move for db
-      this.fieldService.changeFieldOrder(this.trackerName, this.nodeKey, this.userKey, this.orderedFieldsKeys)
+      this.fieldService.changeFieldOrder(this.trackerName, this.nodeKey, this.userKey, this.orderedFieldsObjs)
     }
   }
 
