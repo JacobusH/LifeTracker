@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
 
 import { User } from '../models/user.model';
+import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.afs.doc<User>(`!Users/${user.uid}`).valueChanges()
+          return this.afs.doc<User>(`Users/${user.uid}`).valueChanges()
         } else {
           return of(null)
         }
@@ -45,26 +46,26 @@ export class AuthService {
 
   signInWithGoogle() {
     const provider = new auth.GoogleAuthProvider()
-    return this.oAuthLogin(provider);
+    return this.oAuthLogin(provider, "Google");
   }
   
   signInWithFacebook() {
     const provider = new auth.FacebookAuthProvider()
-    return this.oAuthLogin(provider);
+    return this.oAuthLogin(provider, "Facebook");
   }
 
-  private oAuthLogin(provider) {
+  private oAuthLogin(provider, place) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.updateUserData(credential.user)
+        this.updateUserData(credential.user, place)
       })
   }
 
 
-  private updateUserData(user) {
+  private updateUserData(user, place) {
     // Sets user data to firestore on login
 
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`!Users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`Users/${user.uid}`);
 
     const data: User = {
       authID: user.uid,
@@ -73,7 +74,7 @@ export class AuthService {
       authDisplayName: user.displayName,
       name: user.displayName,
       authPhotoUrl: user.photoURL,
-      authMethod: user.authMethod,
+      authMethod: place,
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()

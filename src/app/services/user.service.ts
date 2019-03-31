@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserService {
-  colUSERS: string = '!Users';
+  colUSERS: string = 'Users';
   users: AngularFirestoreCollection<User>;
   
   constructor(private afs: AngularFirestore) { 

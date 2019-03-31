@@ -39,20 +39,20 @@ export class LoginPage implements OnInit {
 		};
 		this.authService.signInWithEmail(credentials)
 			.then(
-				() => { this.router.navigate(['/profile']) },
+				() => { this.router.navigate(['/']) },
 				error => this.loginError = error.message
 			);
 	}
 	
 	loginWithFacebook() {
 		this.authService.signInWithFacebook().then(user => {
-			this.router.navigate(['/profile']);
+			this.router.navigate(['/']);
 		});
 	}
 
 	loginWithGoogle() {
 		this.authService.signInWithGoogle().then(user => {
-			this.router.navigate(['/profile']);
+			this.router.navigate(['/']);
 		});
 	}
 

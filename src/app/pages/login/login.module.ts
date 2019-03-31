@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { NgxErrorsModule } from '@ultimate/ngxerrors'
 import { SharedModule } from '../../modules/shared/shared.module';
 
 import { IonicModule } from '@ionic/angular';
@@ -23,7 +22,6 @@ const routes: Routes = [
     , ReactiveFormsModule
     , IonicModule
     , RouterModule.forChild(routes)
-    , NgxErrorsModule
     , SharedModule
   ],
   declarations: [LoginPage]

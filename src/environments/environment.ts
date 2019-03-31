@@ -5,14 +5,15 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDvq-x-CLBHIDaIQcVXz6BKtMFEdgsLt8o",
-    authDomain: "crawl-63a5c.firebaseapp.com",
-    databaseURL: "https://crawl-63a5c.firebaseio.com",
-    projectId: "crawl-63a5c",
-    storageBucket: "crawl-63a5c.appspot.com",
-    messagingSenderId: "604192062922"
+    apiKey: "AIzaSyCHDun8wba1HYj2A5kQ1FZhFAWlpWsjYvQ",
+    authDomain: "lifetracker-61c7e.firebaseapp.com",
+    databaseURL: "https://lifetracker-61c7e.firebaseio.com",
+    projectId: "lifetracker-61c7e",
+    storageBucket: "",
+    messagingSenderId: "800324188552"
   }
 };
+
 
 /*
  * In development mode, to ignore zone related error stack frames such as

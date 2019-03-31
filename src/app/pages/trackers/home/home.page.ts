@@ -21,5 +21,5 @@ export class HomePage implements OnInit {
       this.allTrackers$ = this.trackerService.getAllTrackersByLastViewed(user.authID).valueChanges()
     })
   }
-
+  
 }
