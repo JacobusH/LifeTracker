@@ -19,8 +19,7 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   currentTrackerKey = "";
   userKey;
   parentNodesView;
-  parentNodes;
-  parentNodes$;
+  parentNodes: Array<TrackerNode>;
   showOptions = false;
   elems = [];
   counter = 1;
@@ -54,8 +53,7 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
           this.userKey = user.authID
         });
 
-        this.parentNodes$ = this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
-        this.parentNodes$
+        this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
           .pipe(take(1)).subscribe(parentNodes => {
             // gets initial view of nodes, then do everything locally
             this.parentNodes = parentNodes
@@ -76,15 +74,12 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
 
   }
 
-  addElem() {
-    this.elems.push("ahhh")
-  }
-
-  delElem(elem) {
-    this.elems.slice(this.elems.indexOf(elem), 1)
-  }
-
   addNode() {
+    // NOTE: not sure we do it fully local since we need to add fields via db
+    // let newNode = this.trackerService.createEmptyNode();
+    // this.parentNodes.push(newNode);
+    // this.trackerService.addNode(this.currentTrackerName, this.userKey, newNode);
+
     this.trackerService.createNode(this.currentTrackerName, this.userKey).then(nodeRef => {
       // get our new node that was created 
       let nodeKey = nodeRef.id;
@@ -96,6 +91,18 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   }
 
   copyNode(node: TrackerNode) {
+    // this.parentNodes.push(node);
+    // this.trackerService.copyTrackerNodeLocal(node);
+
+    // let newNode = JSON.parse(JSON.stringify(node))
+    // console.log('old', node);
+    // newNode.key = 'asdf';
+    // console.log('new', newNode)
+    // console.log('old', node);
+
+    // this.parentNodes.push(newNode);
+    // this.trackerService.addNode(this.currentTrackerName, this.userKey, newNode);
+
     this.trackerService.copyTrackerNode(this.currentTrackerName, node, this.userKey).then(nodeRef => {
       let newNode = this.trackerService.createEmptyNode();
       newNode.key = nodeRef.id;

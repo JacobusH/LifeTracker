@@ -10,17 +10,8 @@
         <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new>
         <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
       </div>
-      <!-- <button (click)="addElem()">Add</button> -->
   </div>
   <div [@listFade]="parentNodes?.length" class="node-cont">
-    <!-- <div *ngFor="let node of parentNodes$ | async">
-      <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key"></app-tracker-node>
-    </div> -->
-    <!-- <div [@listFade]="elems.length" class="cont">
-      <div *ngFor="let elem of elems">
-        <div style="border: 2px solid pink; background: blue;" (click)="delElem(elem)">{{elem}}</div>
-      </div> 
-    </div> -->
     <div @listFade *ngFor="let node of parentNodes">
       <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key" 
       (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
@@ -30,6 +21,3 @@
   </div>
   
 </div>
-
-
-<!-- <graph-horiz></graph-horiz> -->

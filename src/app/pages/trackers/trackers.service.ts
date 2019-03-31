@@ -13,6 +13,7 @@ import { map, filter, catchError, mergeMap, switchMap, take } from 'rxjs/operato
 import { of, forkJoin } from 'rxjs';
 import * as firebase from 'firebase/app';
 import { TrackerFieldService } from './components/tracker-field/tracker-field.service';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +46,11 @@ export class TrackersService {
   createEmptyNode() {
     // make initial empty node
     let emptyNode: TrackerNode = {
-      key: 'zzz',
+      key: uuid(),
       userKey: this.currentUserKey,
       name: 'New Act Node',
       parent: null,
       children: [],
-      // fields: [
-      //   this.emptyField
-      // ],
       options: {
         points: -1,
         decayRate: {
@@ -61,7 +59,6 @@ export class TrackersService {
         }
       }
     };
-
     return emptyNode;
   }
   
@@ -117,6 +114,15 @@ export class TrackersService {
     // return Promise.all([trackesrPromise, nodePromise, fieldPromise]);
   }
 
+  addNode(trackerName: string, userKey: string, node: TrackerNode): Promise<any> {
+    this.verifyUserKey(userKey);
+    
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .add(node);
+  }
+
   createNode(trackerName: string, userKey: string, parentNodeKey: string = undefined) {
     this.verifyUserKey(userKey);
     let emptyNode = this.createEmptyNode();
@@ -170,6 +176,25 @@ export class TrackersService {
       });
 
       return promise;
+  }
+
+  copyTrackerNodeLocal(node: TrackerNode) {
+    // let newNode = this.createEmptyNode();
+    // newNode.children = []; // TODO: copy children
+    // newNode.key = uuid();
+    // newNode.name = node.name;
+    // newNode.options = node.options;
+    // newNode.
+
+    // newNode.key = uuid();
+    // newNode.fields.forEach(field => {
+    //   field.key = uuid();
+    //   field.nodeKey = newNode.key;
+    // })
+
+    let tmp = 'tmp';
+
+
   }
 
   checkTrackerIsNew(newTracker: Tracker) {
