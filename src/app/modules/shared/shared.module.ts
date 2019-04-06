@@ -6,7 +6,7 @@ import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule
   , matFormFieldAnimations, MatOptionModule, MatSelectModule, MatButtonToggleModule, MatMenuModule } from '@angular/material';
 
 import { MenuWheelComponent } from './menu-wheel/menu-wheel.component';
-import { Menu } from '@ionic/angular';
+// import { Menu } from '@ionic/angular';
 import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
 import { NumberPickerComponent } from './number-picker/number-picker.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';

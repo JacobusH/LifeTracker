@@ -1,5 +1,5 @@
 import { GeoPoint } from "@firebase/firestore-types";
-import { Datetime } from "@ionic/angular";
+// import { Datetime } from "@ionic/angular";
 
 // TODO: finish other models
 export interface TrackerField {

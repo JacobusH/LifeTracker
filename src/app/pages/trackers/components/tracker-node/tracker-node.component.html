@@ -5,7 +5,7 @@
       <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
         <app-tracker-field [field]="field" [nodeKey]="node.key" 
         [userKey]="userKey" [trackerName]="trackerName"
-        [options]="options">
+        [options]="options"> 
         </app-tracker-field>
       </div>
       <mat-icon @slideInFadeOut svgIcon="plus" *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>

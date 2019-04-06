@@ -42,7 +42,7 @@ export class TrackerCommonComponent implements OnInit {
   async presentPopover(ev: any, currentTrackerKey: string) {
     const popover = await this.popoverController.create({
       component: TrackerPopoverComponent,
-      ev: ev,
+      // ev: ev,
       translucent: true,
       componentProps: { 
         'currentTrackerKey': currentTrackerKey, 
