@@ -30,7 +30,8 @@ export class SpotifyService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Get the auth token from the service.
-        const authToken = this.auth.getAuthorizationToken();
+        // const authToken = this.auth.getAuthorizationToken();
+        const authToken = "token";
  
         // Clone the request and replace the original headers with
         // cloned headers, updated with the authorization.

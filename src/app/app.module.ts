@@ -30,6 +30,7 @@ import { CFService } from './services/CFService.service';
 import { environment } from '../environments/environment';
 
 import en from '@angular/common/locales/en';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 
 registerLocaleData(en);
 
@@ -58,7 +59,7 @@ registerLocaleData(en);
     , MatSelectModule
     , MatTabsModule
     , MatMenuModule
-    , HttpClientModule
+    , HttpClientModule, NgZorroAntdModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
@@ -67,7 +68,7 @@ registerLocaleData(en);
     , SplashScreen
     , AuthService
     , AuthGuard
-    , UserService
+    , UserService, { provide: NZ_I18N, useValue: en_US }
   ],
   bootstrap: [AppComponent]
 })

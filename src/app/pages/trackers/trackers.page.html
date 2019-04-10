@@ -4,10 +4,11 @@
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item routerLink='/trackers/new'><span><i class="anticon anticon-plus-circle"></i><span class="nav-text">New</span></span></li>
-      <li nz-menu-item routerLink='/profile'><span><i class="anticon anticon-user"></i><span class="nav-text">User</span></span></li>
+      <li nz-menu-item routerLink='/trackers/new'><span><mat-icon svgIcon="plus-circle"></mat-icon><span class="nav-text">New</span></span></li>
+      <li nz-menu-item routerLink='/profile'><span><mat-icon svgIcon="account"></mat-icon><span class="nav-text">User</span></span></li>
       <li nz-submenu>
-        <span title routerLink='/trackers/home'><i class="anticon anticon-line-chart"></i><span class="nav-text">Trackers</span></span>
+        <span title routerLink='/trackers/home'><mat-icon svgIcon="chart-areaspline"></mat-icon><span class="nav-text">Trackers</span></span>
+        
         <ul>
           <li nz-menu-item class="flex-vcenter" 
           *ngFor="let tracker of trackersByLastViewed$ | async" routerLink='/trackers/view/{{tracker.name}}'>
@@ -21,8 +22,6 @@
     <div>
       <i class="anticon trigger" 
       style="color: #d3d3d3;"
-      [class.anticon-menu-fold]="!isCollapsed" 
-      [class.anticon-menu-unfold]="isCollapsed" 
       (click)="isCollapsed=!isCollapsed">
       </i>
       <span (click)="isCollapsed=!isCollapsed">Collapse</span>
@@ -34,4 +33,8 @@
   
 </nz-layout>
 
-
+<!-- <i class="anticon trigger" 
+      style="color: #d3d3d3;"
+      [class.anticon-menu-fold]="!isCollapsed" 
+      [class.anticon-menu-unfold]="isCollapsed" 
+      (click)="isCollapsed=!isCollapsed"> -->
