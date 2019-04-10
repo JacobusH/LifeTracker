@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { OptionsService } from './options.service';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, OptionsService } from 'app/services';
 import { trigger, state, style, transition, animate} from '@angular/animations';
 
 @Component({

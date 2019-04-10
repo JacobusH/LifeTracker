@@ -1,12 +1,10 @@
 import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TrackersService } from '../trackers.service';
-import { AuthService } from '../../../services/auth.service';
-import { TrackerNode } from '../trackers.model';
+import { AuthService, OptionsService, TrackersService } from 'app/services';
+import { TrackerNode } from 'app/models';
+import { listFade } from 'app/animations';
 import { from } from 'rxjs';
 import { map, withLatestFrom, take } from 'rxjs/operators';
-import { listFade } from '../../../animations/listFade.animation';
-import { OptionsService } from '../options/options.service';
 
 @Component({
   selector: 'view',

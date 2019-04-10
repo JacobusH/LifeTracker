@@ -15,8 +15,7 @@ import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-import { TrackersService } from './trackers.service'; 
-import { OptionsService } from './options/options.service'; 
+import { OptionsService, TrackersService } from 'app/services';
 
 import { MapComponent } from './components/map/map.component';
 import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';

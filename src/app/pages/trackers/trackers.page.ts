@@ -1,9 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Route, ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { CFService } from '../../services/CFService.service';
-import { TrackersService } from './trackers.service';
-import { AuthService } from '../../services/auth.service';
-
+import { AuthService, CFService, TrackersService } from 'app/services';
 @Component({
   selector: 'trackers',
   templateUrl: './trackers.page.html',

@@ -1,11 +1,8 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
-import { TrackersService } from '../../trackers.service';
-import { AuthService } from '../../../../services/auth.service'
-import { OptionsService } from '../../options/options.service';
-import { TrackerFieldService } from '../tracker-field/tracker-field.service';
-import { TrackerNode, TrackerField } from '../../trackers.model';
-import { slideInFadeOut } from '../../../../animations/slideInFadeOut.animation';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { AuthService, OptionsService, TrackersService, TrackerFieldService } from 'app/services';
+import { TrackerNode, TrackerField } from 'app/models';
+import { slideInFadeOut } from 'app/animations';
 import { take } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 

@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AuthService } from '../../../../services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { TrackerPopoverComponent } from './tracker-popover/tracker-popover.component';
-import { TrackerCommon } from '../../trackers.model';
-import { UserService } from '../../../../services/user.service';
-
-@Component({
+import { AuthService } from 'app/services/auth.service';  
+import { TrackerCommon } from 'app/models/trackers.model';  
+import { UserService } from 'app/services/user.service';    
+   
+@Component({  
   selector: 'app-tracker-common',
-  templateUrl: './tracker-common.component.html',
-  styleUrls: ['./tracker-common.component.scss']
+  templateUrl: './tracker-common.component.html', 
+  styleUrls: ['./tracker-common.component.scss']  
 })
 export class TrackerCommonComponent implements OnInit {
   @Input('trackerType') trackerType: any;  

@@ -5,10 +5,10 @@ import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
 import { 
   TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker
-} from '../trackers.model';
-import { UserService } from '../../../services/user.service';
-import { AuthService } from '../../../services/auth.service';
-import { User } from '../../../models/user.model';
+} from '../models/trackers.model';
+import { UserService } from './user.service';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
 import { map, filter, catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as firebase from 'firebase/app';

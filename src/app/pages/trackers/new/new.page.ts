@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackersService } from '../trackers.service'
-import { TrackerNode, Tracker } from '../trackers.model';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, TrackersService } from 'app/services';
+import { TrackerNode, Tracker } from 'app/models';
 
 @Component({
   selector: 'new',

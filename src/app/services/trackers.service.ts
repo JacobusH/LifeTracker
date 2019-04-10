@@ -5,14 +5,14 @@ import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
 import { 
   TrackerFieldTypeEnum, TrackerNode, ActivityInterval, Tracker, TrackerField, TrackerFieldOption
-} from './trackers.model';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../models/user.model';
+} from '../models/trackers.model';
+import { UserService } from './user.service';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
 import { map, filter, catchError, mergeMap, switchMap, take } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
 import * as firebase from 'firebase/app';
-import { TrackerFieldService } from './components/tracker-field/tracker-field.service';
+import { TrackerFieldService } from './tracker-field.service';
 import { v4 as uuid } from 'uuid';
 
 @Injectable({

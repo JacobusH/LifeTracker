@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './guards/authGuard.service';
+import { AuthGuard } from 'app/guards';
 
 const routes: Routes = [
   { path: '', redirectTo: 'trackers', pathMatch: 'full' },

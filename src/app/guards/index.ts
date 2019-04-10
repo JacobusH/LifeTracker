@@ -1,0 +1,1 @@
+export { AuthGuard } from 'app/guards/authGuard.service';

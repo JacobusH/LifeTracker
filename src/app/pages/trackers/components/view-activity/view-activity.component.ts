@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TrackersService } from '../../trackers.service';
+import { TrackersService } from 'app/services';
 
 @Component({
   selector: 'app-view-activity',

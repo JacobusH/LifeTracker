@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { TrackerFieldTypeEnum, TrackerField } from '../../trackers.model';
-import { TrackersService } from '../../trackers.service';
-import { OptionsService } from '../../options/options.service';
-import { TrackerFieldService } from './tracker-field.service';
-import { slideInFadeOut } from '../../../../animations/slideInFadeOut.animation';
+import { TrackerFieldTypeEnum, TrackerField } from '../../../../models/trackers.model';
+import { TrackersService, OptionsService, TrackerFieldService } from 'app/services';
+import { slideInFadeOut } from 'app/animations/slideInFadeOut.animation';
 import { Options } from 'selenium-webdriver/chrome';
 
 @Component({

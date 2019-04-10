@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { UserService } from '../../../../../services/user.service';
+import { UserService } from 'app/services';
 import { 
   TrackerCommon
-} from '../../../trackers.model';
-import { AuthService } from '../../../../../services/auth.service';
+} from 'app/models/trackers.model';
+import { AuthService } from 'app/services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({

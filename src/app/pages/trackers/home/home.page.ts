@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackersService } from '../trackers.service';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, TrackersService } from 'app/services';
 
 @Component({
   selector: 'home',

@@ -22,10 +22,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { AuthService } from './services/auth.service';
-import { AuthGuard } from './guards/authGuard.service';
-import { UserService } from './services/user.service';
-import { CFService } from './services/CFService.service';
+import { AuthGuard } from 'app/guards';
+import { AuthService, UserService, CFService } from 'app/services';
 
 import { environment } from '../environments/environment';
 

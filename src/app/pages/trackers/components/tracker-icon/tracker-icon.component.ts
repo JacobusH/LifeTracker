@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tracker } from '../../trackers.model'
+import { Tracker } from '../../../../models/trackers.model'
 
 @Component({
   selector: 'app-tracker-icon',
