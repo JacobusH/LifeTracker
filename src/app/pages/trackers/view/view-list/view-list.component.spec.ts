@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LtComponentsComponent } from './lt-components.component';
+import { ViewListComponent } from './view-list.component';
 
-describe('LtComponentsComponent', () => {
-  let component: LtComponentsComponent;
-  let fixture: ComponentFixture<LtComponentsComponent>;
+describe('ViewListComponent', () => {
+  let component: ViewListComponent;
+  let fixture: ComponentFixture<ViewListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LtComponentsComponent ]
+      declarations: [ ViewListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LtComponentsComponent);
+    fixture = TestBed.createComponent(ViewListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

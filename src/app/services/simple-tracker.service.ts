@@ -1,0 +1,181 @@
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Router } from '@angular/router'
+import { Observable } from 'rxjs/Observable';
+import { SimpleTrackerNode, SimpleTrackerField } from 'app/models/trackers.model';
+import { UserService } from './user.service';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
+import { map, filter, catchError, mergeMap, switchMap, take } from 'rxjs/operators';
+import { of, forkJoin } from 'rxjs';
+import * as firebase from 'firebase/app';
+import { TrackerFieldService } from './tracker-field.service';
+import { v4 as uuid } from 'uuid';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SimpleTrackerService {
+  currentUserKey: string;
+  colAllTrackers = "allTrackers"
+  colBase = 'tracker';
+
+  constructor( 
+    private afs: AngularFirestore,
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private fieldService: TrackerFieldService
+  ) { 
+     this.authService.user.subscribe(x => {
+      this.currentUserKey = x.authID
+    })
+  }
+
+  // Node operations
+  getTopLevelNodesByTrackerName(trackerName: string): AngularFirestoreCollection<SimpleTrackerNode> {
+    trackerName = trackerName.replace(/\s/g, '');
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName, 
+        ref => ref.where('parent', '==', null));
+  }
+
+  nodeAdd(trackerName: string, nodeToAdd: SimpleTrackerNode) {
+    // always add the node to our collection
+    this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(nodeToAdd.key)
+      .set(nodeToAdd)
+    // and add as child to appropriate parent if necessary
+    if(nodeToAdd.parent) {
+      this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(nodeToAdd.parent)
+      .update({
+        fields: firebase.firestore.FieldValue.arrayUnion( [nodeToAdd.key] )
+      });
+    }
+  }
+
+  nodeRemove(trackerName: string, node: SimpleTrackerNode) {
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(node.key)
+      .delete()
+  }
+
+  nodeCopy(trackerName: string, nodeToCopy: SimpleTrackerNode) {
+    let newNode: SimpleTrackerNode = JSON.parse(JSON.stringify(nodeToCopy)); // deep copy node
+    newNode.key = uuid(); // replace node key
+    // replace field keys
+    let keyMap: Array<{'oldKey': string, 'newKey': string}>;
+    for(let i = 0; i < newNode.fields.length; i++) {
+      let newKey = uuid();
+      let oldKey = newNode.fields[i].key;
+      keyMap.push({'oldKey': oldKey, 'newKey': newKey});
+      newNode.fields[i].key = newKey;
+    }
+    // replace field key order
+    for(let i = 0; i < keyMap.length; i++) {
+      for(let j = 0; j < newNode.fieldOrder.length; j++) {
+        if(newNode.fieldOrder[j] == keyMap[i].oldKey) {
+          newNode.fieldOrder[j] = keyMap[i].newKey;
+        }
+      }
+    }
+    // add copied node to collection
+    this.nodeAdd(trackerName, newNode);
+  }
+
+  // Field operations
+  fieldAdd(trackerName: string, nodeKey: string, newField: SimpleTrackerField) {
+    // add to fields arr
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey)
+    .update({
+      fields: firebase.firestore.FieldValue.arrayUnion( newField )
+    });
+    // add to field ordering
+    this.fieldOrderAdd(trackerName, nodeKey, newField.key);
+  }
+
+  fieldRemove(trackerName: string, nodeKey: string, newField: SimpleTrackerField) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey)
+    .update({
+      fields: firebase.firestore.FieldValue.arrayRemove( [newField] )
+    });
+  }
+
+  fieldUpdate(trackerName: string, nodeKey: string, fieldToUpdate: SimpleTrackerField) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey).valueChanges().subscribe(n => {
+      let node: SimpleTrackerNode = n[0];
+      node.fields.forEach(field => {
+        if(field.key == fieldToUpdate.key) {
+          field = fieldToUpdate;
+        }
+      })
+      this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName,
+        ref => ref.where('name', '==', trackerName)
+      )
+      .doc(nodeKey).update({'fields': node.fields})
+    })
+  }
+
+  // Field Order operations
+  fieldOrderAdd(trackerName: string, nodeKey: string, keyToAdd: string) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey)
+    .update({
+      fieldOrder: firebase.firestore.FieldValue.arrayUnion(keyToAdd)
+    });
+  }
+
+  fieldOrderRemove(trackerName: string, nodeKey: string, newOrder: Array<string>) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey)
+    .update({
+      fieldOrder: firebase.firestore.FieldValue.arrayRemove(newOrder)
+    });
+  }
+
+  fieldOrderReplace(trackerName: string, nodeKey: string, newOrder: Array<string>) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(nodeKey)
+    .update({fieldOrder: newOrder})
+  }
+
+}

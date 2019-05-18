@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { TrackerFieldTypeEnum, TrackerField } from '../../../../models/trackers.model';
 import { TrackersService, OptionsService, TrackerFieldService } from 'app/services';
+import { SimpleTrackerField } from 'app/models/trackers.model';
 import { slideInFadeOut } from 'app/animations/slideInFadeOut.animation';
 import { Options } from 'selenium-webdriver/chrome';
+import { SimpleTrackerService } from '@services/simple-tracker.service';
 
 @Component({
   selector: 'app-tracker-field',
@@ -11,24 +13,28 @@ import { Options } from 'selenium-webdriver/chrome';
   animations: [ slideInFadeOut ]
 })
 export class TrackerFieldComponent implements OnInit, AfterViewInit {
-  @Input('trackerName') trackerName: string;
-  @Input('nodeKey') nodeKey: string;
-  @Input('userKey') userKey: string;
-  @Input('field') field: TrackerField;
-  @Input('options') options;
-  editVisible: boolean = false;
+  @Input() trackerName: string;
+  @Input() nodeKey: string;
+  @Input() userKey: string;
+  @Input() field: SimpleTrackerField;
+  @Input() options;
   field$;
   fieldType;
   fieldTypeString; 
   typeOptions = {}
   numFieldValue: number;
+  isHovered: boolean = false;
+
+  
 
   constructor(
     private trackerService: TrackersService,
     private optionsService: OptionsService,
-    private fieldService: TrackerFieldService
+    private fieldService: TrackerFieldService,
+    private stService: SimpleTrackerService
   ) { 
-
+    // TODO: make options
+    this.options = {'isEditable': true}
   }
 
   ngOnInit() {
@@ -40,64 +46,56 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log(this.field)
     let i = 0
     for(var enumMember in TrackerFieldTypeEnum) {
       var isValueProperty = parseInt(enumMember, 10) >= 0
       if (isValueProperty) {
-          // console.log("enum member: ", TrackerFieldTypeEnum[enumMember]);
           this.typeOptions[TrackerFieldTypeEnum[enumMember]] = i++;
       }
    }
+  }
 
-   this.field$ = this.fieldService.getField(this.trackerName, this.field.key, this.field.nodeKey, this.userKey).valueChanges();
-   this.field$.subscribe(f => {
-      this.fieldType = f['type'];
-      this.fieldTypeString = this.translateType(this.fieldType)
-      // console.log("logged", f['type'])
-   })
+  onFieldHoverLeave() {
+    this.isHovered = false;
+  }
+
+  onFieldHover() {
+    this.isHovered = true;
   }
 
   translateType(type: string) {
-    return TrackerFieldTypeEnum[type]
-  }
-
-  editField(event) {
-    // console.log(event.target.value)
-  }
-
-  showEdit(): void {
-    this.editVisible = !this.editVisible;
+    return TrackerFieldTypeEnum[type];
   }
 
   onEditChange(event) {
-    // console.log(event)
+    console.log(event)
   }
 
   save(event) {
     this.field.value = event.target.value;
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
   saveOptName(eventVal) {
-    console.log('evvyName', event)
-    this.field.options[0].optName = eventVal;
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    // console.log('evvyName', event)
+    // this.field.options[0].optName = eventVal;
+    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
   saveOptVal(eventVal) {
-    this.field.options[0].optValue = eventVal;
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    // this.field.options[0].optValue = eventVal;
+    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
   saveNumber(strVal) {
     this.field.value = strVal;
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
 
   changeLabel(event) {
     this.field.label = event.target.value;
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
   changeType(selectedType: string) {
@@ -105,7 +103,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     if(this.field.type == 3) {
       this.field.value = "0"
     }
-    this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
 }

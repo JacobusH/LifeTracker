@@ -172,6 +172,7 @@ export class TrackersService {
 
       promise.then(nodeRef => {
         this.fieldService.copyFields(trackerName, userKey, node, nodeRef.id);
+        this.fieldService.copyOrder(trackerName, userKey, node, nodeRef.id);
         return nodeRef.update({key: nodeRef.id});
       });
 
@@ -192,7 +193,7 @@ export class TrackersService {
     //   field.nodeKey = newNode.key;
     // })
 
-    let tmp = 'tmp';
+    let newNode = JSON.parse(JSON.stringify(Object));
 
 
   }

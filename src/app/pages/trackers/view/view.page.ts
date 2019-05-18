@@ -1,10 +1,24 @@
 import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, OptionsService, TrackersService } from 'app/services';
+import { SimpleTrackerService } from 'app/services/simple-tracker.service';
+import { SimpleTrackerField, SimpleTrackerNode } from 'app/models/trackers.model';
 import { TrackerNode } from 'app/models';
 import { listFade } from 'app/animations';
 import { from } from 'rxjs';
 import { map, withLatestFrom, take } from 'rxjs/operators';
+import { SimpleTrackerLocalService } from '@services/simple-tracker-local.service';
+
+interface ModelQuestion {
+  name: string,
+  type: ModelTypeEnum
+}
+
+enum ModelTypeEnum {
+  text,
+  number,
+  date
+}
 
 @Component({
   selector: 'view',
@@ -19,25 +33,39 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   parentNodesView;
   parentNodes: Array<TrackerNode>;
   showOptions = false;
+  listView = true;
   elems = [];
   counter = 1;
-  frameworkTweetsObservable;
+  frameworkTweetsObservable; 
   test$;
   options;
+
+  modelForm: Array<ModelQuestion>;
+  modelNode: TrackerNode;
+
+  curNodeList: Array<SimpleTrackerNode>;
   
   constructor(
     private actRoute: ActivatedRoute,
+    private simpleTrackerLocalService: SimpleTrackerLocalService,
     private trackerService: TrackersService,
+    private simpleTrackerService: SimpleTrackerService,
     private authService: AuthService,
     private optionsService: OptionsService
   ) { 
     this.elems = ["test", "another test", "one more test"]
-    this.frameworkTweetsObservable = from(['Backbone', 'Angular'])
+    // this.frameworkTweetsObservable = from(['Backbone', 'Angular'])
   }
 
   ngOnInit() {
-    
+    this.modelForm = new Array<ModelQuestion>({
+      name: 'name', 
+      type: ModelTypeEnum.text
+    });
 
+    this.listView = true;
+
+    
   }
 
   ngAfterViewInit() {
@@ -51,14 +79,19 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
           this.userKey = user.authID
         });
 
-        this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
-          .pipe(take(1)).subscribe(parentNodes => {
-            // gets initial view of nodes, then do everything locally
-            this.parentNodes = parentNodes
-          });
+        // this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
+        //   .pipe(take(1)).subscribe(parentNodes => {
+        //     // gets initial view of nodes, then do everything locally
+        //     this.parentNodes = parentNodes
+        //   });
 
         this.trackerService.getTrackerByName(this.currentTrackerName, user.authID).valueChanges().subscribe(trackers => {
           this.currentTrackerKey = trackers[0].key;
+        })
+
+        // SIMPLE
+        this.simpleTrackerService.getTopLevelNodesByTrackerName(this.currentTrackerName).valueChanges().pipe(take(1)).subscribe(topLevelNodes => {
+          this.curNodeList = topLevelNodes;
         })
 
       })
@@ -72,52 +105,17 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
 
   }
 
-  addNode() {
-    // NOTE: not sure we do it fully local since we need to add fields via db
-    // let newNode = this.trackerService.createEmptyNode();
-    // this.parentNodes.push(newNode);
-    // this.trackerService.addNode(this.currentTrackerName, this.userKey, newNode);
-
-    this.trackerService.createNode(this.currentTrackerName, this.userKey).then(nodeRef => {
-      // get our new node that was created 
-      let nodeKey = nodeRef.id;
-      let newNode = this.trackerService.getNodeByKey(nodeKey, this.currentTrackerName, this.userKey).valueChanges()
-        .pipe(take(1)).subscribe(newNode => {
-          this.parentNodes.push(newNode)
-        });
-    });
+  // SIMPLE STUFF
+  simpleAddNode() {
+    let toAdd: SimpleTrackerNode = this.simpleTrackerLocalService.createDefaultItem();
+    this.simpleTrackerLocalService.nodeAdd(this.curNodeList, toAdd);
+    this.simpleTrackerService.nodeAdd(this.currentTrackerName, toAdd);
   }
 
-  copyNode(node: TrackerNode) {
-    // this.parentNodes.push(node);
-    // this.trackerService.copyTrackerNodeLocal(node);
+  simpleCopyNode(node: SimpleTrackerNode) {
 
-    // let newNode = JSON.parse(JSON.stringify(node))
-    // console.log('old', node);
-    // newNode.key = 'asdf';
-    // console.log('new', newNode)
-    // console.log('old', node);
-
-    // this.parentNodes.push(newNode);
-    // this.trackerService.addNode(this.currentTrackerName, this.userKey, newNode);
-
-    this.trackerService.copyTrackerNode(this.currentTrackerName, node, this.userKey).then(nodeRef => {
-      let newNode = this.trackerService.createEmptyNode();
-      newNode.key = nodeRef.id;
-      this.parentNodes.push(newNode);
-    });
   }
 
-  addChild(node: TrackerNode) {
-    this.trackerService.getNodeByKey(node.key, this.currentTrackerName, this.userKey).valueChanges().pipe(take(1)).subscribe(node => {
-      this.parentNodes[this.parentNodes.indexOf(node)] =  node
-    })
-  }
-
-  delNode(node: TrackerNode) {
-    this.parentNodes.splice(this.elems.indexOf(node), 1);
-    this.trackerService.deleteNode(node.key, this.currentTrackerName, this.userKey);
-  }
 
 
 }

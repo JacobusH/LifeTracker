@@ -1,6 +1,22 @@
 import { GeoPoint } from "@firebase/firestore-types";
 // import { Datetime } from "@ionic/angular";
 
+export interface SimpleTrackerNode {
+  key: string,
+  userKey: string,
+  parent?: string,
+  children?: Array<string>,
+  fields?: Array<SimpleTrackerField>,
+  fieldOrder?: Array<string>
+}
+
+export interface SimpleTrackerField {
+  key: string, // needed for ordering
+  label: string, 
+  value: string, 
+  type: TrackerFieldTypeEnum
+}
+
 // TODO: finish other models
 export interface TrackerField {
   key?: string;

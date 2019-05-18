@@ -1,0 +1,14 @@
+<div class="node">
+  <div class="top">
+    <!-- Fields -->
+    <div class="left" *ngIf="fields" (cdkDropListDropped)="drop($event)" cdkDropList>
+      <div *ngFor="let field of fields" cdkDrag>
+        <input type="text"> 
+        <select>
+          <option *ngFor="let ty of fieldTypes" [value]="ty">{{ty}}</option>
+        </select>
+      </div>
+      <mat-icon svgIcon="plus" (click)="addField(node.key)"></mat-icon>
+    </div>
+  </div>
+</div>

@@ -109,7 +109,8 @@ export class TrackerFieldService {
   }
 
   copyFields(trackerName: string, userKey: string, oldNode: TrackerNode, newNodeId: string) {
-    console.log('fieldy', oldNode, newNodeId)
+    let tmpKeyMap = new Array<{'old': string, 'new': string}>();
+
       this.getFields(trackerName, oldNode.key, userKey).valueChanges().pipe(take(1)).subscribe(fields => {
         fields.forEach(field => {
           let f = field as TrackerField;
@@ -126,9 +127,22 @@ export class TrackerFieldService {
 
           promise.then(x => {
             x.update({key: x.id}); // set the field key
-          }) 
+            // tmpKeyMap.push({'old': f.key, 'new': x.id});
+          })
       });
     });
+
+  }
+
+  copyOrder(trackerName: string, userKey: string, oldNode: TrackerNode, newNodeId: string) {
+    this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName,
+        ref => ref.where('name', '==', trackerName)
+      )
+      .doc(oldNode.key)
+      .collection(this.colFields)
+      .doc(this.colOrder);
   }
 
   getField(curTrackerName: string, fieldKey: string, nodeKey: string, userKey: string) {

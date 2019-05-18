@@ -205,6 +205,76 @@
           }
         }
       }
+    },
+    "bleh": {
+      "root": "/bleh",
+      "sourceRoot": "/bleh/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "/bleh/tsconfig.lib.json",
+            "project": "/bleh/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "/bleh/src/test.ts",
+            "tsConfig": "/bleh/tsconfig.spec.json",
+            "karmaConfig": "/bleh/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "/bleh/tsconfig.lib.json",
+              "/bleh/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "pubs": {
+      "root": "/pubs",
+      "sourceRoot": "/pubs/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "/pubs/tsconfig.lib.json",
+            "project": "/pubs/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "/pubs/src/test.ts",
+            "tsConfig": "/pubs/tsconfig.spec.json",
+            "karmaConfig": "/pubs/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "/pubs/tsconfig.lib.json",
+              "/pubs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

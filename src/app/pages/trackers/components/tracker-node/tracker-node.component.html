@@ -1,6 +1,6 @@
+<!-- <div *ngIf="oldNode">
 <div *ngIf="node" class="node">
   <div class="top">
-    <!-- Fields -->
     <div class="left" *ngIf="orderedFieldsObjs" (cdkDropListDropped)="drop($event)" cdkDropList>
       <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
         <app-tracker-field [field]="field" [nodeKey]="node.key" 
@@ -10,14 +10,12 @@
       </div>
       <mat-icon @slideInFadeOut svgIcon="plus" *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>
     </div>
-    <!-- Icons -->
     <div class="right">
       <mat-icon @slideInFadeOut svgIcon="plus-circle" *ngIf="options && options['isEditable']" (click)="addChild(node)"></mat-icon> 
       <mat-icon @slideInFadeOut svgIcon="content-copy" *ngIf="options && options['isEditable']" (click)="copyNode(node)"></mat-icon> 
       <mat-icon @slideInFadeOut svgIcon="delete" *ngIf="options && options['isDeletable']" (click)="delete(node)"></mat-icon> 
     </div>
   </div>
-  <!-- Children Nodes -->
   <div class="bottom">
     <div *ngIf="node.children">
       <app-tracker-node *ngFor="let childKey of node.children" 
@@ -26,6 +24,33 @@
         [options]="options">
       </app-tracker-node>
     </div>
+  </div>
+</div>
+</div> -->
+
+<div *ngIf="!oldNode">
+  <div *ngIf="node" class="node">
+      <div class="left" *ngIf="orderedFieldsObjs?.length > 0" (cdkDropListDropped)="drop($event)" cdkDropList>
+        <!-- Should do with order.... -->
+        <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
+          <app-tracker-field  [field]="field" 
+          [nodeKey]="node.key" [userKey]="userKey" 
+          [trackerName]="trackerName"[options]="options"> 
+          </app-tracker-field>
+        </div>
+        <!-- <div *ngFor="let field of node.fields" cdkDrag>
+          <app-tracker-field  [field]="field" 
+          [nodeKey]="node.key" [userKey]="userKey" 
+          [trackerName]="trackerName"[options]="options"> 
+          </app-tracker-field>
+        </div> -->
+        <mat-icon svgIcon="plus" (click)="simpleAddField(node)"></mat-icon>
+      </div>
+      <!-- ICONS -->
+      <div class="right">
+        <mat-icon svgIcon="content-copy" (click)="simpleCopyNode(node)"></mat-icon> 
+        <mat-icon svgIcon="delete" (click)="simpleDeleteNode(node)"></mat-icon> 
+      </div>
   </div>
 </div>
 

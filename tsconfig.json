@@ -23,8 +23,24 @@
       "lt-components/*": [
         "dist/lt-components/*"
       ],
-      "@services/*": ["app/services/*"],
-      "@models/*": ["app/models/*"]
+      "@services/*": [
+        "app/services/*"
+      ],
+      "@models/*": [
+        "app/models/*"
+      ],
+      "bleh": [
+        "dist/bleh"
+      ],
+      "bleh/*": [
+        "dist/bleh/*"
+      ],
+      "pubs": [
+        "dist/pubs"
+      ],
+      "pubs/*": [
+        "dist/pubs/*"
+      ]
     }
   }
 }

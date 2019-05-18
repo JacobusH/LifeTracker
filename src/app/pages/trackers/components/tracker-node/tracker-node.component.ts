@@ -2,9 +2,13 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AuthService, OptionsService, TrackersService, TrackerFieldService } from 'app/services';
 import { TrackerNode, TrackerField } from 'app/models';
+import { SimpleTrackerNode, SimpleTrackerField } from 'app/models/trackers.model';
+import { SimpleTrackerLocalService } from 'app/services/simple-tracker-local.service';
+import { SimpleTrackerService } from 'app/services/simple-tracker.service';
 import { slideInFadeOut } from 'app/animations';
 import { take } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-tracker-node',
@@ -13,26 +17,33 @@ import { throwError } from 'rxjs';
   animations: [ slideInFadeOut ]
 })
 export class TrackerNodeComponent implements OnInit, AfterViewInit {
-  @Input('nodeKey') nodeKey: string;
-  @Input('tracker') trackerName: string;
-  @Input('options') options: string;
+  @Input() node: SimpleTrackerNode;
+  @Input() trackerName: string;
+  @Input() options: string;
   @Output('onDelete') deleteEvent = new EventEmitter<TrackerNode>();
   @Output('onCopy') copyEvent = new EventEmitter<TrackerNode>();
   @Output('onAddChild') addChildEvent = new EventEmitter<TrackerNode>();
 
-  node: TrackerNode;
+  oldNode = false;
   userKey;
-  orderedFieldsObjs: Array<any>;
+  orderedFieldsObjs: Array<SimpleTrackerField>;
+  fuckers: Observable<SimpleTrackerField[]>;
+
+  testArr; 
+  testArrObj; 
 
   constructor(
-    private trackerService: TrackersService,
-    private fieldService: TrackerFieldService,
+    private stLocalService: SimpleTrackerLocalService,
+    private stService: SimpleTrackerService,
     private authService: AuthService,
     private optionsService: OptionsService
   ) { }
 
   ngOnInit() {
-    this.orderedFieldsObjs = new Array<TrackerField>();
+    this.orderedFieldsObjs = new Array<SimpleTrackerField>();
+    for(let i = 0; i < this.node.fieldOrder.length; i++) {
+      this.orderedFieldsObjs.push(this.getFieldByKey(this.node.fieldOrder[i]));
+    }
   }
 
   ngAfterViewInit() {
@@ -41,62 +52,56 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
       //   this.options = x[0].options;
       //   this.userKey = user.authID
       // });
-
-      // this.nodeKey = this.nodeKey;
-      this.userKey = user.authID;
-      this.trackerService.getNodeByKey(this.nodeKey, this.trackerName, user.authID).valueChanges().pipe(take(1)).subscribe(node => {
-        this.node = node;
-        this.getFieldOrders(user.authID)
-      })
-
     })
   }
 
-  getFieldOrders(userKey: string) {
-    this.fieldService.getFieldOrder(this.trackerName, this.node.key, userKey).valueChanges().pipe(take(1)).subscribe(fieldOrderArr => {
-      this.displayFields(fieldOrderArr, userKey)
+  getFieldByKey(fieldKey: string) {
+    for(let i = 0; i < this.node.fields.length; i++) {
+      if(this.node.fields[i].key == fieldKey) {
+        return this.node.fields[i];
+      }
+    }
+  }
+
+
+  addChild(node: SimpleTrackerNode) {
+    // TODO: db add child
+    this.stLocalService.addChild(node, this.stLocalService.createDefaultItem());
+  }
+
+  simpleAddField(node: SimpleTrackerNode) {
+    let newField = this.stLocalService.createDefaultField();
+    this.stLocalService.fieldAdd(node, newField); // add locally to node
+    this.orderedFieldsObjs.push(newField); // add to order for display
+    this.stService.fieldAdd(this.trackerName, this.node.key, newField); // add to db
+  }
+
+  simpleCopyNode(node: SimpleTrackerNode) {
+    this.stLocalService.nodeCopy(node);
+    this.stService.nodeCopy(this.trackerName, node);
+  }
+
+  simpleDeleteNode(node: SimpleTrackerNode) {
+    this.stLocalService.nodeRemove(node);
+    this.stService.nodeRemove(this.trackerName, node);
+  }
+
+  simpleChangeOrder() {
+    let orderedKeys = new Array<string>();
+    this.orderedFieldsObjs.forEach(field => {
+      orderedKeys.push(field.key);
     })
-  }
-
-  displayFields(orderArr: any, userKey: string) {
-    console.log('fieldord', orderArr.order);
-    let fieldInOrder = orderArr.order as Array<string>;
-    fieldInOrder.forEach(fieldKey => {
-      let tmp$ = this.fieldService.getField(this.trackerName, fieldKey, this.nodeKey, userKey).valueChanges().subscribe(x => {
-        this.orderedFieldsObjs.push(x)
-        tmp$.unsubscribe()
-      })
-    })
-  }
-
-  addChild(node: TrackerNode) {
-    this.trackerService.createNode(this.trackerName, this.userKey, node.key).then(nodeRef => {
-      this.addChildEvent.emit(node);
-    });
-  }
-
-  addField(nodeKey: string) {
-    let newField = this.fieldService.createEmptyField(nodeKey);
-    this.orderedFieldsObjs.push(newField);
-    this.fieldService.saveTrackerField_NEW(this.trackerName, this.userKey, nodeKey, newField);
-    this.fieldService.changeFieldOrder(this.trackerName, nodeKey, this.userKey, this.orderedFieldsObjs)
-  }
-
-  copyNode(node) {
-    this.copyEvent.emit(node);
-  }
-
-  delete(node: TrackerNode) {
-    this.deleteEvent.emit(node);
+    this.stService.fieldOrderReplace(this.trackerName, this.node.key, orderedKeys);
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer !== event.container) {
+    if (event.previousContainer !== event.container) { // between containers
       transferArrayItem(event.previousContainer.data,event.container.data, 
         event.previousIndex, event.currentIndex)
-    } else {
-      moveItemInArray(this.orderedFieldsObjs, event.previousIndex, event.currentIndex); // move for view
-      this.fieldService.changeFieldOrder(this.trackerName, this.nodeKey, this.userKey, this.orderedFieldsObjs)
+    } 
+    else { // same container
+      moveItemInArray(this.orderedFieldsObjs, event.previousIndex, event.currentIndex); // this moves it locally
+      this.simpleChangeOrder(); // this moves it in db
     }
   }
 

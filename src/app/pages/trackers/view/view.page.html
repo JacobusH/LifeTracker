@@ -1,23 +1,36 @@
+<div class="top-buttons">
+  <button (click)="listView = true">List</button> 
+  <button (click)="listView = false">Node</button>
+</div>
+
 <div class="view-cont">
   <div class="top">
     <div class="top-left">
       <app-tracker-options *ngIf="options" [tracker]="currentTrackerName" 
       [isShown]="showOptions" [options]="options"
       [trackerKey]="currentTrackerKey">
-      </app-tracker-options>
+    </app-tracker-options>
     </div>  
     <div class="top-right">
-        <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new>
-        <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
-      </div>
-  </div>
-  <div [@listFade]="parentNodes?.length" class="node-cont">
-    <div @listFade *ngFor="let node of parentNodes">
-      <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key" 
-      (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
-      (onAddChild)="addChild($event)"
-      [options]="options"></app-tracker-node>
+      <!-- SIMPLE ADD -->
+      <button (click)="simpleAddNode()">Simple Add Node</button>
+      <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new>
+      <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
     </div>
   </div>
-  
+  <!-- NODE VIEW -->
+  <div *ngIf="!listView" class="node-cont">
+    <app-view-node [trackerName]="currentTrackerName" [curNodeList]="curNodeList"></app-view-node>
+  </div>
+  <!-- SIMPLE LIST VIEW -->
+  <div *ngIf="listView">
+    <div *ngFor="let item of curNodeList">
+      <div *ngFor="let field of item.fields">
+        Value: {{field.value}}
+      </div>
+    </div>
+  </div>
+
 </div>
+
+
