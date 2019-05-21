@@ -7,9 +7,11 @@ import { SharedModule } from '../../modules/shared/shared.module';
 import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule, NzPopoverModule } from 'ng-zorro-antd';
 import { D3Module } from '../../modules/d3/d3.module'
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
-  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
-import { } from '@angular/material';
+  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule, MatDatepickerModule } from '@angular/material';
+  import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, SatDatepickerModule } from 'saturn-datepicker'
+  import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MatMomentDateModule } from '@angular/material-moment-adapter'
+  import { HttpClientModule } from '@angular/common/http';
+
 
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
@@ -79,8 +81,11 @@ const routes: Routes = [
     , MatTabsModule
     , MatButtonToggleModule
     , MatMenuModule
+    , MatDatepickerModule
     , MatDividerModule
+    , MatMomentDateModule
     , HttpClientModule
+    , SatDatepickerModule
   ],
   declarations: [
     TrackerTitleBarComponent
@@ -95,7 +100,9 @@ const routes: Routes = [
     , MarkerManager
     , OptionsService
     , TrackersService
-    ,  { provide: NZ_I18N, useValue: en_US }
+    , { provide: NZ_I18N, useValue: en_US }
+    , { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }
+    , { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
   ]
 })
 export class TrackersPageModule {}

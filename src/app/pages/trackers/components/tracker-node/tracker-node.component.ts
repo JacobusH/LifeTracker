@@ -27,7 +27,6 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
   oldNode = false;
   userKey;
   orderedFieldsObjs: Array<SimpleTrackerField>;
-  fuckers: Observable<SimpleTrackerField[]>;
 
   testArr; 
   testArrObj; 
@@ -69,29 +68,35 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
     this.stLocalService.addChild(node, this.stLocalService.createDefaultItem());
   }
 
-  simpleAddField(node: SimpleTrackerNode) {
+  addField(node: SimpleTrackerNode) {
     let newField = this.stLocalService.createDefaultField();
     this.stLocalService.fieldAdd(node, newField); // add locally to node
     this.orderedFieldsObjs.push(newField); // add to order for display
     this.stService.fieldAdd(this.trackerName, this.node.key, newField); // add to db
   }
 
-  simpleCopyNode(node: SimpleTrackerNode) {
-    this.stLocalService.nodeCopy(node);
-    this.stService.nodeCopy(this.trackerName, node);
+  copyNode(node: SimpleTrackerNode) {
+    let nodes = this.stLocalService.nodeCopy(node);
+    this.stService.nodeCopy(this.trackerName, nodes.oldNode, nodes.newNode);
   }
 
-  simpleDeleteNode(node: SimpleTrackerNode) {
+  deleteNode(node: SimpleTrackerNode) {
     this.stLocalService.nodeRemove(node);
     this.stService.nodeRemove(this.trackerName, node);
   }
 
-  simpleChangeOrder() {
+  changeFieldOrder() {
     let orderedKeys = new Array<string>();
     this.orderedFieldsObjs.forEach(field => {
       orderedKeys.push(field.key);
     })
     this.stService.fieldOrderReplace(this.trackerName, this.node.key, orderedKeys);
+  }
+
+  onFieldRemove(field: SimpleTrackerField) {
+    this.node.fields.splice(this.node.fields.indexOf(field), 1);
+    this.node.fieldOrder.splice(this.node.fieldOrder.indexOf(field.key), 1);
+    this.orderedFieldsObjs.splice(this.orderedFieldsObjs.indexOf(field), 1)
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -101,7 +106,7 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
     } 
     else { // same container
       moveItemInArray(this.orderedFieldsObjs, event.previousIndex, event.currentIndex); // this moves it locally
-      this.simpleChangeOrder(); // this moves it in db
+      this.changeFieldOrder(); // this moves it in db
     }
   }
 

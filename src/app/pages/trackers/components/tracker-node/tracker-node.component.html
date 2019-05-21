@@ -34,22 +34,17 @@
         <!-- Should do with order.... -->
         <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
           <app-tracker-field  [field]="field" 
-          [nodeKey]="node.key" [userKey]="userKey" 
-          [trackerName]="trackerName"[options]="options"> 
+          [node]="node" [userKey]="userKey" 
+          [trackerName]="trackerName" [options]="options"
+          (onFieldRemove)="onFieldRemove($event)"> 
           </app-tracker-field>
         </div>
-        <!-- <div *ngFor="let field of node.fields" cdkDrag>
-          <app-tracker-field  [field]="field" 
-          [nodeKey]="node.key" [userKey]="userKey" 
-          [trackerName]="trackerName"[options]="options"> 
-          </app-tracker-field>
-        </div> -->
-        <mat-icon svgIcon="plus" (click)="simpleAddField(node)"></mat-icon>
+        <mat-icon svgIcon="plus" (click)="addField(node)"></mat-icon>
       </div>
       <!-- ICONS -->
       <div class="right">
-        <mat-icon svgIcon="content-copy" (click)="simpleCopyNode(node)"></mat-icon> 
-        <mat-icon svgIcon="delete" (click)="simpleDeleteNode(node)"></mat-icon> 
+        <mat-icon svgIcon="content-copy" (click)="copyNode(node)"></mat-icon> 
+        <mat-icon svgIcon="delete" (click)="deleteNode(node)"></mat-icon> 
       </div>
   </div>
 </div>

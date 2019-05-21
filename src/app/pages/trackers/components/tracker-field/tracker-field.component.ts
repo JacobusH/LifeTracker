@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { TrackerFieldTypeEnum, TrackerField } from '../../../../models/trackers.model';
-import { TrackersService, OptionsService, TrackerFieldService } from 'app/services';
+import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { TrackerFieldTypeEnum, TrackerField, SimpleTrackerNode } from '../../../../models/trackers.model';
+import { TrackersService, OptionsService, TrackerFieldService, SimpleTrackerLocalService } from 'app/services';
 import { SimpleTrackerField } from 'app/models/trackers.model';
 import { slideInFadeOut } from 'app/animations/slideInFadeOut.animation';
 import { Options } from 'selenium-webdriver/chrome';
 import { SimpleTrackerService } from '@services/simple-tracker.service';
+import { SatDatepickerRangeValue } from 'saturn-datepicker'
 
 @Component({
   selector: 'app-tracker-field',
@@ -14,24 +15,23 @@ import { SimpleTrackerService } from '@services/simple-tracker.service';
 })
 export class TrackerFieldComponent implements OnInit, AfterViewInit {
   @Input() trackerName: string;
-  @Input() nodeKey: string;
+  @Input() node: SimpleTrackerNode;
   @Input() userKey: string;
   @Input() field: SimpleTrackerField;
   @Input() options;
-  field$;
-  fieldType;
-  fieldTypeString; 
-  typeOptions = {}
-  numFieldValue: number;
+  @Output() onFieldRemove = new EventEmitter<SimpleTrackerField>();
+  dateRangeDisp = null; 
+  typeOptions = {};
+  fieldTypeString: string; 
   isHovered: boolean = false;
-
-  
+  TrackerFieldTypeEnum = TrackerFieldTypeEnum; // needed so we can use enum in template
 
   constructor(
     private trackerService: TrackersService,
     private optionsService: OptionsService,
     private fieldService: TrackerFieldService,
-    private stService: SimpleTrackerService
+    private stService: SimpleTrackerService,
+    private stLocalService: SimpleTrackerLocalService
   ) { 
     // TODO: make options
     this.options = {'isEditable': true}
@@ -43,19 +43,36 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // })
     // console.log('field', this.field)
 
+    if(this.field.type == TrackerFieldTypeEnum.daterange) {
+      this.dateRangeDisp = {'begin': Date, 'end': Date};
+      this.dateRangeDisp.begin = new Date(this.field.value.substring(0, this.field.value.indexOf("|")));
+      this.dateRangeDisp.end = new Date(this.field.value.substring(this.field.value.indexOf("|") + 1, this.field.value.length));
+     }
+
   }
 
   ngAfterViewInit() {
-    console.log(this.field)
     let i = 0
     for(var enumMember in TrackerFieldTypeEnum) {
       var isValueProperty = parseInt(enumMember, 10) >= 0
       if (isValueProperty) {
           this.typeOptions[TrackerFieldTypeEnum[enumMember]] = i++;
       }
+    }
+    // get field type string
+    for (let key in this.typeOptions) {
+      let value = this.typeOptions[key]
+      if(value == this.field.type) {
+        this.fieldTypeString = key;
+        console.log('fieldtypestring', this.fieldTypeString)
+      }
    }
+
   }
 
+  /////
+  // FIELD
+  /////
   onFieldHoverLeave() {
     this.isHovered = false;
   }
@@ -74,6 +91,20 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
 
   save(event) {
     this.field.value = event.target.value;
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+  }
+
+  saveNumber(strVal) {
+    this.field.value = strVal;
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+  }
+
+  saveDate(event: any) {
+    // change in view
+    this.field.value = event.target.value;
+    // save date range as string value
+    this.field.value = new Date(event.target.value.begin) + "|" + new Date(event.target.value.end);
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
   }
 
   saveOptName(eventVal) {
@@ -87,15 +118,18 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
-  saveNumber(strVal) {
-    this.field.value = strVal;
-    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+  fieldRemove() {
+    // this.stLocalService.fieldRemove(this.node, this.field);
+    this.onFieldRemove.emit(this.field);
+    this.stService.fieldRemove(this.trackerName, this.node.key, this.field);
   }
 
-
+  /////
+  // LABEL
+  /////
   changeLabel(event) {
     this.field.label = event.target.value;
-    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
   }
 
   changeType(selectedType: string) {
@@ -103,7 +137,12 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     if(this.field.type == 3) {
       this.field.value = "0"
     }
-    // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+  }
+
+  toggleLabelVis() {
+    this.field.labelHidden = !this.field.labelHidden;
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
   }
 
 }

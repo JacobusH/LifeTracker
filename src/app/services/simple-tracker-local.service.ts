@@ -26,7 +26,8 @@ export class SimpleTrackerLocalService {
       parent: null,
       children: null,
       fields: [ defField ],
-      fieldOrder: [ defField.key ]
+      fieldOrder: [ defField.key ],
+      templateNodeKey: null
     };
     return def;
   }
@@ -36,7 +37,8 @@ export class SimpleTrackerLocalService {
       key: uuid(),
       label: label,   
       value: value,
-      type: TrackerFieldTypeEnum.text
+      type: TrackerFieldTypeEnum.text,
+      labelHidden: false
     }
     return def;
   }
@@ -57,18 +59,47 @@ export class SimpleTrackerLocalService {
   }
 
   nodeCopy(nodeToCopy: SimpleTrackerNode) {
-    let newNode = JSON.parse(JSON.stringify(nodeToCopy));
+    let newNode: SimpleTrackerNode = JSON.parse(JSON.stringify(nodeToCopy)); // deep copy node
+    newNode.key = uuid(); // replace node key
+    // replace field keys
+    let keyMap: Array<{'oldKey': string, 'newKey': string}> = [];
+    for(let i = 0; i < newNode.fields.length; i++) {
+      let newKey = uuid();
+      let oldKey = newNode.fields[i].key;
+      keyMap.push({'oldKey': oldKey, 'newKey': newKey});
+      newNode.fields[i].key = newKey;
+    }
+    // replace field key order
+    for(let i = 0; i < keyMap.length; i++) {
+      for(let j = 0; j < newNode.fieldOrder.length; j++) {
+        if(newNode.fieldOrder[j] == keyMap[i].oldKey) {
+          newNode.fieldOrder[j] = keyMap[i].newKey;
+        }
+      }
+    }
+    // put in the template key on both nodes
+    newNode.templateNodeKey = nodeToCopy.templateNodeKey;
+    if(!nodeToCopy.templateNodeKey) {
+      nodeToCopy.templateNodeKey = nodeToCopy.key;
+    }
+    // add to correct list
     if(!nodeToCopy.parent) {
       this.curNodeList.push(newNode);
     }
-    else {
-      nodeToCopy.children.push(newNode);
-    }
+    // else { // TODO: need to figure out children
+    //   nodeToCopy.children.push(newNode);
+    // }
+
+    return {'oldNode': nodeToCopy, 'newNode': newNode};
   }
 
   nodeRemove(nodeToRemove: SimpleTrackerNode) {
-    // TODO: need to implement way to remove child references
-    nodeToRemove = null;
+    // TODO: need to implement way to remove child references and nested nodes
+    for(let i = 0; i < this.curNodeList.length; i++) {
+      if(this.curNodeList[i].key == nodeToRemove.key) {
+        this.curNodeList.splice(i, 1);
+      }
+    }
   }
 
   // recursiveRemove(nodeToRemove: SimpleTrackerNode, curList: Array<SimpleTrackerNode>) {
@@ -91,8 +122,8 @@ export class SimpleTrackerLocalService {
   }
 
   fieldRemove(node: SimpleTrackerNode, field: SimpleTrackerField) {
-    node.fields.splice(node.fields.indexOf(field), node.fields.indexOf(field) + 1);
-    node.fieldOrder.splice(node.fieldOrder.indexOf(field.key), node.fieldOrder.indexOf(field.key) + 1);
+    node.fields.splice(node.fields.indexOf(field), 1);
+    node.fieldOrder.splice(node.fieldOrder.indexOf(field.key), 1);
   }
 
   saveField() {

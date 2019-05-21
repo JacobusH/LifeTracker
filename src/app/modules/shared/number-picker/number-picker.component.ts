@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { curveBasis } from 'd3';
+import { SimpleTrackerField } from 'app/models/trackers.model';
 
 @Component({
   selector: 'app-number-picker',
@@ -7,14 +7,14 @@ import { curveBasis } from 'd3';
   styleUrls: ['./number-picker.component.scss']
 })
 export class NumberPickerComponent implements OnInit {
-  @Input('value') curValue: string;
+  @Input() field;
   @Output() onChangeEvent = new EventEmitter<string>();
   numValue: number;
 
   constructor() { }
 
   ngOnInit() {
-    this.numValue = parseInt(this.curValue)
+    this.numValue = parseInt(this.field.value)
   }
 
   onChange(event) {

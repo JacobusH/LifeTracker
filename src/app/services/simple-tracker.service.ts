@@ -70,27 +70,18 @@ export class SimpleTrackerService {
       .delete()
   }
 
-  nodeCopy(trackerName: string, nodeToCopy: SimpleTrackerNode) {
-    let newNode: SimpleTrackerNode = JSON.parse(JSON.stringify(nodeToCopy)); // deep copy node
-    newNode.key = uuid(); // replace node key
-    // replace field keys
-    let keyMap: Array<{'oldKey': string, 'newKey': string}>;
-    for(let i = 0; i < newNode.fields.length; i++) {
-      let newKey = uuid();
-      let oldKey = newNode.fields[i].key;
-      keyMap.push({'oldKey': oldKey, 'newKey': newKey});
-      newNode.fields[i].key = newKey;
-    }
-    // replace field key order
-    for(let i = 0; i < keyMap.length; i++) {
-      for(let j = 0; j < newNode.fieldOrder.length; j++) {
-        if(newNode.fieldOrder[j] == keyMap[i].oldKey) {
-          newNode.fieldOrder[j] = keyMap[i].newKey;
-        }
-      }
-    }
-    // add copied node to collection
-    this.nodeAdd(trackerName, newNode);
+  nodeUpdate(trackerName: string, node: SimpleTrackerNode) {
+    this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(node.key)
+      .set(node)
+  }
+
+  nodeCopy(trackerName: string, nodeCopiedFrom: SimpleTrackerNode, newNode: SimpleTrackerNode) {
+    // NOTE: the copy logic happen in the local service. Then the resultings nodes are passed ehre
+    this.nodeUpdate(trackerName, nodeCopiedFrom); // update our old node since template key may have been updated
+    this.nodeAdd(trackerName, newNode); // add copied node to collection
   }
 
   // Field operations
@@ -109,7 +100,7 @@ export class SimpleTrackerService {
     this.fieldOrderAdd(trackerName, nodeKey, newField.key);
   }
 
-  fieldRemove(trackerName: string, nodeKey: string, newField: SimpleTrackerField) {
+  fieldRemove(trackerName: string, nodeKey: string, fieldToRemove: SimpleTrackerField) {
     this.userService
     .getByUserKey(this.currentUserKey)
     .collection(this.colBase + trackerName,
@@ -117,8 +108,10 @@ export class SimpleTrackerService {
     )
     .doc(nodeKey)
     .update({
-      fields: firebase.firestore.FieldValue.arrayRemove( [newField] )
+      fields: firebase.firestore.FieldValue.arrayRemove(fieldToRemove)
     });
+    // and remove from order
+    this.fieldOrderRemove(trackerName, nodeKey, fieldToRemove.key);
   }
 
   fieldUpdate(trackerName: string, nodeKey: string, fieldToUpdate: SimpleTrackerField) {
@@ -128,12 +121,13 @@ export class SimpleTrackerService {
       ref => ref.where('name', '==', trackerName)
     )
     .doc(nodeKey).valueChanges().subscribe(n => {
-      let node: SimpleTrackerNode = n[0];
-      node.fields.forEach(field => {
-        if(field.key == fieldToUpdate.key) {
-          field = fieldToUpdate;
+      // let node: SimpleTrackerNode = n[0];
+      let node = n as SimpleTrackerNode;
+      for(let i = 0; i < node.fields.length; i++) {
+        if(node.fields[i].key == fieldToUpdate.key) {
+          node.fields[i] = fieldToUpdate;
         }
-      })
+      }
       this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colBase + trackerName,
@@ -156,7 +150,7 @@ export class SimpleTrackerService {
     });
   }
 
-  fieldOrderRemove(trackerName: string, nodeKey: string, newOrder: Array<string>) {
+  fieldOrderRemove(trackerName: string, nodeKey: string, fieldKey: string) {
     this.userService
     .getByUserKey(this.currentUserKey)
     .collection(this.colBase + trackerName,
@@ -164,7 +158,7 @@ export class SimpleTrackerService {
     )
     .doc(nodeKey)
     .update({
-      fieldOrder: firebase.firestore.FieldValue.arrayRemove(newOrder)
+      fieldOrder: firebase.firestore.FieldValue.arrayRemove(fieldKey)
     });
   }
 

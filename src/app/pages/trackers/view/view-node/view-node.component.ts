@@ -12,13 +12,13 @@ export class ViewNodeComponent implements OnInit {
   @Input() trackerName: string;
   @Input() curNodeList: Array<SimpleTrackerNode>;
 
-  constructor(private stNodelocalService: SimpleTrackerLocalService
-    , private stNodeService: SimpleTrackerService) { 
+  constructor(private stLocalService: SimpleTrackerLocalService
+    , private stService: SimpleTrackerService) { 
 
   }
 
   ngOnInit() {
-    
+    this.stLocalService.curNodeList = this.curNodeList;
   }
 
 }

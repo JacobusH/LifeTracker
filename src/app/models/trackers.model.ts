@@ -7,14 +7,16 @@ export interface SimpleTrackerNode {
   parent?: string,
   children?: Array<string>,
   fields?: Array<SimpleTrackerField>,
-  fieldOrder?: Array<string>
+  fieldOrder?: Array<string>,
+  templateNodeKey: string // if copied then this is the key of the node copied from (same across all copies)
 }
 
 export interface SimpleTrackerField {
   key: string, // needed for ordering
   label: string, 
   value: string, 
-  type: TrackerFieldTypeEnum
+  type: TrackerFieldTypeEnum,
+  labelHidden: boolean
 }
 
 // TODO: finish other models
@@ -34,10 +36,11 @@ export enum TrackerFieldTypeEnum {
   'number' = 3,
   'select' = 4,
   'date' = 5,
-  'datetime-local' = 6,
+  'daterange' = 6,
   'radio' = 7,
   'rater' = 8,
-  'title' = 9
+  'title' = 9,
+  'list' = 10
 }
 
 export interface TrackerFieldOption {
