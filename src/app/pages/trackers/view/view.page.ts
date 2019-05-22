@@ -39,11 +39,17 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   frameworkTweetsObservable; 
   test$;
   options;
+  filtertedItems: Array<SimpleTrackerNode>;
+  filterTermPH: string = "";
+  filterPH: string = "Filter";
+  lastFilterTerm: string = "";
 
   modelForm: Array<ModelQuestion>;
   modelNode: TrackerNode;
 
   curNodeList: Array<SimpleTrackerNode>;
+  curLabelList: Array<string>;
+  labelsToFilter: Array<string> = new Array<string>();
   
   constructor(
     private actRoute: ActivatedRoute,
@@ -53,8 +59,7 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     private authService: AuthService,
     private optionsService: OptionsService
   ) { 
-    this.elems = ["test", "another test", "one more test"]
-    // this.frameworkTweetsObservable = from(['Backbone', 'Angular'])
+    
   }
 
   ngOnInit() {
@@ -64,8 +69,6 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     });
 
     this.listView = true;
-
-    
   }
 
   ngAfterViewInit() {
@@ -78,13 +81,6 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
           this.options = x[0].options;
           this.userKey = user.authID
         });
-
-        // this.trackerService.getParentNodesByTrackerName(this.currentTrackerName, user.authID).valueChanges()
-        //   .pipe(take(1)).subscribe(parentNodes => {
-        //     // gets initial view of nodes, then do everything locally
-        //     this.parentNodes = parentNodes
-        //   });
-
         this.trackerService.getTrackerByName(this.currentTrackerName, user.authID).valueChanges().subscribe(trackers => {
           this.currentTrackerKey = trackers[0].key;
         })
@@ -92,6 +88,10 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
         // SIMPLE
         this.simpleTrackerService.getTopLevelNodesByTrackerName(this.currentTrackerName).valueChanges().pipe(take(1)).subscribe(topLevelNodes => {
           this.curNodeList = topLevelNodes;
+          this.filtertedItems = this.curNodeList;
+        })
+        this.simpleTrackerService.labelListGet(this.currentTrackerName).valueChanges().pipe(take(1)).subscribe(labelList => {
+          this.curLabelList = labelList.labels;
         })
 
       })
@@ -102,7 +102,39 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     if(changes['currentTracker']) {
       // this.currentTracker = this.currentTracker
     }
+  }
+  
+  // FILTERING
+  filterItems(filterTerm: string) {
+    this.lastFilterTerm = filterTerm;
+    this.filtertedItems = this.curNodeList.filter(item => {
+        let node = item as SimpleTrackerNode;
+        let foundMatch = false;
+        node.fields.forEach(field => {
+          if(
+            (this.labelsToFilter.length == 0 || this.labelsToFilter.indexOf(field.label.toLowerCase()) !== -1) // empty list or label in list
+            && field.value.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1 ) // value matches
+          {
+            foundMatch = true;
+          }
+        })
+        return foundMatch
+      }
+    );
+  }
 
+  onChangeFilterLabels(event: any, labelToChange: string) {
+    event.stopPropagation();
+    if(this.labelsToFilter.indexOf(labelToChange) == -1) { // not in list
+      this.labelsToFilter.push(labelToChange.toLowerCase())
+    }
+    else {
+      this.labelsToFilter.splice(this.labelsToFilter.indexOf(labelToChange, 1));
+    }
+    // do a refilter too
+    if(this.lastFilterTerm != "") {
+      this.filterItems(this.lastFilterTerm);
+    }
   }
 
   // SIMPLE STUFF
@@ -111,11 +143,6 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     this.simpleTrackerLocalService.nodeAdd(this.curNodeList, toAdd);
     this.simpleTrackerService.nodeAdd(this.currentTrackerName, toAdd);
   }
-
-  simpleCopyNode(node: SimpleTrackerNode) {
-
-  }
-
 
 
 }

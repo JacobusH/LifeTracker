@@ -11,6 +11,10 @@
     <app-number-picker *ngIf="field.type == TrackerFieldTypeEnum.number" 
       [field]="field" (onChangeEvent)="saveNumber($event)">
     </app-number-picker>
+    <!-- Checkbox -->
+    <mat-checkbox *ngIf="field.type == TrackerFieldTypeEnum.checkbox"
+      [checked]="field.value"
+      (change)="onCheckboxChange($event)">{{field.labelHidden ? "" : field.label}}</mat-checkbox>
     <!-- Date -->
     <mat-form-field  *ngIf="field.type == TrackerFieldTypeEnum.date">
       <input matInput [matDatepicker]="picker" [placeholder]="field.label">

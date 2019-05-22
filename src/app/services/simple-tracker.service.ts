@@ -21,13 +21,12 @@ export class SimpleTrackerService {
   currentUserKey: string;
   colAllTrackers = "allTrackers"
   colBase = 'tracker';
+  docLabels = '!docLabels';
 
-  constructor( 
+  constructor(
     private afs: AngularFirestore,
     private userService: UserService,
-    private authService: AuthService,
-    private router: Router,
-    private fieldService: TrackerFieldService
+    private authService: AuthService
   ) { 
      this.authService.user.subscribe(x => {
       this.currentUserKey = x.authID
@@ -135,6 +134,39 @@ export class SimpleTrackerService {
       )
       .doc(nodeKey).update({'fields': node.fields})
     })
+  }
+
+  // FIELD LABEL LIST MANAGEMENT
+  labelListGet(trackerName: string): AngularFirestoreDocument<{labels: Array<string>}> {
+    trackerName = trackerName.replace(/\s/g, '');
+    return this.userService
+      .getByUserKey(this.currentUserKey)
+      .collection(this.colBase + trackerName)
+      .doc(this.docLabels);
+  }
+
+  labelListAdd(trackerName: string, labelToAdd: string) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(this.docLabels)
+    .update({
+      labels: firebase.firestore.FieldValue.arrayUnion(labelToAdd)
+    });
+  }
+
+  labelListRemove(trackerName: string, labelToRemove: string) {
+    this.userService
+    .getByUserKey(this.currentUserKey)
+    .collection(this.colBase + trackerName,
+      ref => ref.where('name', '==', trackerName)
+    )
+    .doc(this.docLabels)
+    .update({
+      labels: firebase.firestore.FieldValue.arrayRemove(labelToRemove)
+    });
   }
 
   // Field Order operations

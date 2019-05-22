@@ -1,12 +1,6 @@
-<!-- <div @listFade *ngFor="let node of parentNodes">
-  <app-tracker-node [tracker]="currentTrackerName" [nodeKey]="node.key" 
-  (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
-  (onAddChild)="addChild($event)"
-  [options]="options"></app-tracker-node>
-</div> -->
 <!-- SIMPLE NODE VIEW -->
-<div *ngFor="let node of curNodeList">
-  <app-tracker-node [trackerName]="trackerName" [node]="node" 
+<div class="node-cont">
+  <app-tracker-node *ngFor="let node of curNodeList" [trackerName]="trackerName" [node]="node" 
   (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
   (onAddChild)="addChild($event)"
   [options]="options"></app-tracker-node>

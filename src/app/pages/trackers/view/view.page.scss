@@ -1,3 +1,13 @@
+.top-cont {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+.filter-menu {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 .view-cont {
   position:relative;
 

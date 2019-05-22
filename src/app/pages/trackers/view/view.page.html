@@ -1,6 +1,15 @@
-<div class="top-buttons">
-  <button (click)="listView = true">List</button> 
-  <button (click)="listView = false">Node</button>
+<div class="top-cont">
+  <div>
+    <mat-icon svgIcon="view-list" (click)="listView = true"></mat-icon>
+    <mat-icon svgIcon="graphql" (click)="listView = false"></mat-icon>
+  </div>
+  <div class="search-sec">
+    <mat-form-field>
+      <input matInput [placeholder]="filterPH" [value]="filterTermPH" (keyup)="filterItems($event.target.value)"> 
+    </mat-form-field>
+    <mat-icon svgIcon="magnify" (click)="filterItems($event.target.value)"></mat-icon>
+    <mat-icon svgIcon="filter-variant" [matMenuTriggerFor]="appMenu"></mat-icon>
+  </div>
 </div>
 
 <div class="view-cont">
@@ -20,17 +29,23 @@
   </div>
   <!-- NODE VIEW -->
   <div *ngIf="!listView" class="node-cont">
-    <app-view-node [trackerName]="currentTrackerName" [curNodeList]="curNodeList"></app-view-node>
+    <app-view-node [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-node>
   </div>
   <!-- SIMPLE LIST VIEW -->
   <div *ngIf="listView">
-    <div *ngFor="let item of curNodeList">
+    <div *ngFor="let item of filtertedItems">
       <div *ngFor="let field of item.fields">
         Value: {{field.value}}
       </div>
     </div>
   </div>
-
 </div>
 
 
+<!-- FILTER MENU -->
+<mat-menu #appMenu="matMenu">
+  <div class="filter-menu">
+    <mat-checkbox *ngFor="let label of curLabelList" 
+    (click)="onChangeFilterLabels($event, label)">{{label}}</mat-checkbox>
+  </div>
+</mat-menu>

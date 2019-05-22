@@ -64,7 +64,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
       let value = this.typeOptions[key]
       if(value == this.field.type) {
         this.fieldTypeString = key;
-        console.log('fieldtypestring', this.fieldTypeString)
+        // console.log('fieldtypestring', this.fieldTypeString)
       }
    }
 
@@ -86,7 +86,12 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   }
 
   onEditChange(event) {
-    console.log(event)
+    // console.log(event)
+  }
+
+  onCheckboxChange(event: any) {
+    this.field.value = !this.field.value;
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
   }
 
   save(event) {
@@ -128,8 +133,13 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   // LABEL
   /////
   changeLabel(event) {
-    this.field.label = event.target.value;
+    let oldLabel: string = this.field.label;
+    let newLabel: string = event.target.value;
+    this.field.label = newLabel;
     this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+    // deal with label list
+    this.stService.labelListAdd(this.trackerName, newLabel.toLowerCase());
+    this.stService.labelListRemove(this.trackerName, oldLabel.toLowerCase());
   }
 
   changeType(selectedType: string) {

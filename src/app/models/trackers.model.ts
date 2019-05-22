@@ -14,7 +14,7 @@ export interface SimpleTrackerNode {
 export interface SimpleTrackerField {
   key: string, // needed for ordering
   label: string, 
-  value: string, 
+  value: any, 
   type: TrackerFieldTypeEnum,
   labelHidden: boolean
 }
@@ -40,7 +40,8 @@ export enum TrackerFieldTypeEnum {
   'radio' = 7,
   'rater' = 8,
   'title' = 9,
-  'list' = 10
+  'list' = 10,
+  'checkbox' = 11
 }
 
 export interface TrackerFieldOption {
