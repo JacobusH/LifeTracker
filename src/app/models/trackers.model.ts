@@ -41,7 +41,8 @@ export enum TrackerFieldTypeEnum {
   'rater' = 8,
   'title' = 9,
   'list' = 10,
-  'checkbox' = 11
+  'checkbox' = 11,
+  'wikiSummary' = 12
 }
 
 export interface TrackerFieldOption {

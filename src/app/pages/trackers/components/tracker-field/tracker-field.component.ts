@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { TrackerFieldTypeEnum, TrackerField, SimpleTrackerNode } from '../../../../models/trackers.model';
 import { TrackersService, OptionsService, TrackerFieldService, SimpleTrackerLocalService } from 'app/services';
-import { SimpleTrackerField } from 'app/models/trackers.model';
 import { slideInFadeOut } from 'app/animations/slideInFadeOut.animation';
-import { Options } from 'selenium-webdriver/chrome';
-import { SimpleTrackerService } from '@services/simple-tracker.service';
-import { SatDatepickerRangeValue } from 'saturn-datepicker'
+import { SimpleTrackerField } from 'app/models/trackers.model';
+import { WikiSummary } from 'app/models/wiki.model';
+import { SimpleTrackerService } from 'app/services/simple-tracker.service';
+import { WikipediaService } from 'app/services/wikipedia.service';
 
 @Component({
   selector: 'app-tracker-field',
@@ -25,13 +25,16 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   fieldTypeString: string; 
   isHovered: boolean = false;
   TrackerFieldTypeEnum = TrackerFieldTypeEnum; // needed so we can use enum in template
+  wikiSum: string;
+  wikiShort = true;
 
   constructor(
     private trackerService: TrackersService,
     private optionsService: OptionsService,
     private fieldService: TrackerFieldService,
     private stService: SimpleTrackerService,
-    private stLocalService: SimpleTrackerLocalService
+    private stLocalService: SimpleTrackerLocalService,
+    private wikiService: WikipediaService
   ) { 
     // TODO: make options
     this.options = {'isEditable': true}
@@ -67,22 +70,26 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
         // console.log('fieldtypestring', this.fieldTypeString)
       }
    }
+   // get wiki summary if needed
+   if(this.field.type == TrackerFieldTypeEnum.wikiSummary) {
+     this.getWikiSummary();
+   }
 
   }
 
   /////
   // FIELD
   /////
+  translateType(type: string) {
+    return TrackerFieldTypeEnum[type];
+  }
+
   onFieldHoverLeave() {
     this.isHovered = false;
   }
 
   onFieldHover() {
     this.isHovered = true;
-  }
-
-  translateType(type: string) {
-    return TrackerFieldTypeEnum[type];
   }
 
   onEditChange(event) {
@@ -123,14 +130,26 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
+  saveWikiVal(event: any) {
+    this.field.value = event.target.value;
+    this.getWikiSummary();
+    // if value is attached to another field change it
+  }
+
   fieldRemove() {
     // this.stLocalService.fieldRemove(this.node, this.field);
     this.onFieldRemove.emit(this.field);
     this.stService.fieldRemove(this.trackerName, this.node.key, this.field);
   }
 
+  getWikiSummary() {
+    this.wikiService.summaryGet(this.field.value).subscribe(summary => {
+      this.wikiSum =  this.wikiShort ? summary.extract_html.slice(0, 100) + "..." : summary.extract_html;
+    })
+  }
+
   /////
-  // LABEL
+  // LABEL & VALUE
   /////
   changeLabel(event) {
     let oldLabel: string = this.field.label;
@@ -144,10 +163,10 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
 
   changeType(selectedType: string) {
     this.field.type = TrackerFieldTypeEnum[selectedType];
-    if(this.field.type == 3) {
-      this.field.value = "0"
-    }
     this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+    if(this.field.type == TrackerFieldTypeEnum.wikiSummary) {
+      this.getWikiSummary();
+    }
   }
 
   toggleLabelVis() {
