@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule
-  , matFormFieldAnimations, MatOptionModule, MatSelectModule, MatButtonToggleModule, MatMenuModule } from '@angular/material';
+import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
+  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule, MatDatepickerModule, MatCheckboxModule } from '@angular/material';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MatMomentDateModule } from '@angular/material-moment-adapter'
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, SatDatepickerModule } from 'saturn-datepicker'
+
 
 import { MenuWheelComponent } from './menu-wheel/menu-wheel.component';
 // import { Menu } from '@ionic/angular';
@@ -18,12 +21,19 @@ import { RaterComponent } from './rater/rater.component';
     , FormsModule
     , ReactiveFormsModule
     , IonicModule
+    , MatCheckboxModule
+    , MatIconModule
     , MatFormFieldModule
     , MatInputModule
-    , MatSelectModule
     , MatOptionModule
+    , MatSelectModule
+    , MatTabsModule
     , MatButtonToggleModule
     , MatMenuModule
+    , MatDatepickerModule
+    , MatDividerModule
+    , MatMomentDateModule
+    , SatDatepickerModule
   ],
   declarations: [
     MenuWheelComponent
@@ -36,6 +46,23 @@ import { RaterComponent } from './rater/rater.component';
     , MenuWheelComponent 
     , NumberPickerComponent
     , RaterComponent
+    , MatCheckboxModule
+    , MatIconModule
+    , MatFormFieldModule
+    , MatInputModule
+    , MatOptionModule
+    , MatSelectModule
+    , MatTabsModule
+    , MatButtonToggleModule
+    , MatMenuModule
+    , MatDatepickerModule
+    , MatDividerModule
+    , MatMomentDateModule
+    , SatDatepickerModule
+  ],
+  providers: [
+    , { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }
+    , { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
   ]
 })
 export class SharedModule { }

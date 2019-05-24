@@ -44,7 +44,7 @@
     </div>
     <!-- Wiki Summary -->
     <div class="wiki-cont"  *ngIf="field.type == TrackerFieldTypeEnum.wikiSummary">
-      <input type="text" (change)="saveWikiVal($event)" [value]="field.val">
+      <!-- <input type="text" (change)="saveWikiVal($event)" [value]="field.value"> -->
       <div *ngIf="wikiSum" [innerHTML]="wikiSum"></div>
     </div>
   </div>
@@ -67,7 +67,8 @@
 <ng-template #editTemplateTitle><i nz-icon type="close"></i>Change Field</ng-template>
 <ng-template #editTemplate>
   <div>
-    <div>
+    <!-- Label -->
+    <div *ngIf="field.type != TrackerFieldTypeEnum.wikiSummary">
       <mat-form-field>
         <mat-label [attr.for]="field">Label</mat-label>
         <input matInput
@@ -77,6 +78,17 @@
       <mat-icon *ngIf="!field.labelHidden" svgIcon="eye" (click)="toggleLabelVis()"></mat-icon>
       <mat-icon *ngIf="field.labelHidden" svgIcon="eye-off" (click)="toggleLabelVis()"></mat-icon>
     </div>
+    <!-- Wiki Label Link-->
+    <div *ngIf="field.type == TrackerFieldTypeEnum.wikiSummary">
+      <mat-form-field>
+        <mat-select [placeholder]="'Link To'">
+          <mat-option *ngFor="let label of wikiLinkOptions" [value]="label" (click)="wikiLinkTo(label)">
+            {{ label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- Field Type -->
     <div>
       <mat-form-field>
         <mat-select [placeholder]="fieldTypeString">

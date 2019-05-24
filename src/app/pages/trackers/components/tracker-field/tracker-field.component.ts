@@ -25,8 +25,10 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   fieldTypeString: string; 
   isHovered: boolean = false;
   TrackerFieldTypeEnum = TrackerFieldTypeEnum; // needed so we can use enum in template
+  
   wikiSum: string;
   wikiShort = true;
+  wikiLinkOptions = new Array<string>();
 
   constructor(
     private trackerService: TrackersService,
@@ -37,7 +39,8 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     private wikiService: WikipediaService
   ) { 
     // TODO: make options
-    this.options = {'isEditable': true}
+    this.options = {'isEditable': true};
+    this.wikiSum = "Wiki: Choose a field to link to";
   }
 
   ngOnInit() {
@@ -51,7 +54,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
       this.dateRangeDisp.begin = new Date(this.field.value.substring(0, this.field.value.indexOf("|")));
       this.dateRangeDisp.end = new Date(this.field.value.substring(this.field.value.indexOf("|") + 1, this.field.value.length));
      }
-
+     this.setWikiLinkOptions();
   }
 
   ngAfterViewInit() {
@@ -74,7 +77,6 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
    if(this.field.type == TrackerFieldTypeEnum.wikiSummary) {
      this.getWikiSummary();
    }
-
   }
 
   /////
@@ -130,21 +132,43 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // this.fieldService.saveTrackerField(this.trackerName, this.userKey, this.nodeKey, this.field)
   }
 
+  
+  fieldRemove() {
+    // this.stLocalService.fieldRemove(this.node, this.field);
+    this.onFieldRemove.emit(this.field);
+    this.stService.fieldRemove(this.trackerName, this.node.key, this.field);
+    this.setWikiLinkOptions();
+  }
+  
+  /// WIKI STUFF
   saveWikiVal(event: any) {
     this.field.value = event.target.value;
     this.getWikiSummary();
     // if value is attached to another field change it
   }
 
-  fieldRemove() {
-    // this.stLocalService.fieldRemove(this.node, this.field);
-    this.onFieldRemove.emit(this.field);
-    this.stService.fieldRemove(this.trackerName, this.node.key, this.field);
-  }
-
   getWikiSummary() {
     this.wikiService.summaryGet(this.field.value).subscribe(summary => {
-      this.wikiSum =  this.wikiShort ? summary.extract_html.slice(0, 100) + "..." : summary.extract_html;
+      this.wikiSum =  this.wikiShort 
+        ? summary.extract_html.slice(0, 100) + "..." 
+        : summary.extract_html;
+    })
+  }
+
+  setWikiLinkOptions() {
+    this.wikiLinkOptions = new Array<string>();
+    this.node.fields.forEach(field => {
+      this.wikiLinkOptions.push(field.label);
+    })
+  }
+
+  wikiLinkTo(labelToLinkTo: string) {
+    this.node.fields.forEach(field => {
+      if(field.label == labelToLinkTo) {
+        this.field.value = field.value;
+        this.getWikiSummary();
+        this.field.label = "Wiki " + this.field.value;
+      }
     })
   }
 
@@ -159,6 +183,7 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     // deal with label list
     this.stService.labelListAdd(this.trackerName, newLabel.toLowerCase());
     this.stService.labelListRemove(this.trackerName, oldLabel.toLowerCase());
+    this.setWikiLinkOptions();
   }
 
   changeType(selectedType: string) {

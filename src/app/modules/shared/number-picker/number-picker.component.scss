@@ -16,3 +16,13 @@
     cursor: pointer
   }
 }
+
+.mat-cont {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: baseline;
+
+  input {
+    text-align: center;
+  }
+}

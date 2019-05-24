@@ -1,6 +1,14 @@
-<div class="cont">
-  <mat-label *ngIf="labelHidden" [attr.for]="field">{{field.label}}</mat-label>
+<!-- <div class="cont">
+  <mat-label *ngIf="!field.labelHidden" [attr.for]="field">{{field.label}}</mat-label>
   <i class="anticon anticon-minus-square" (click)="dec()"></i>
   <input type="number" (change)="onChange($event)" [value]="numValue">
   <i class="anticon anticon-plus-square" (click)="inc()"></i>
+</div> -->
+
+<div class="mat-cont">
+  <mat-icon svgIcon="minus-circle-outline" (click)="dec()"></mat-icon>
+  <mat-form-field class="example-full-width">
+    <input matInput type="number" [placeholder]="field.label" [value]="numValue">
+  </mat-form-field>
+  <mat-icon svgIcon="plus-circle-outline" (click)="inc()"></mat-icon>
 </div>

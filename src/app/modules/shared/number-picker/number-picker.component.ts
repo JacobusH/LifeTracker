@@ -7,14 +7,21 @@ import { SimpleTrackerField } from 'app/models/trackers.model';
   styleUrls: ['./number-picker.component.scss']
 })
 export class NumberPickerComponent implements OnInit {
-  @Input() field;
+  @Input() field: SimpleTrackerField;
   @Output() onChangeEvent = new EventEmitter<string>();
-  numValue: number;
+  numValue: number = 0;
 
-  constructor() { }
+  constructor() { 
+
+  }
 
   ngOnInit() {
-    this.numValue = parseInt(this.field.value)
+    if(parseInt(this.field.value)) {
+      this.numValue = parseInt(this.field.value)
+    }
+    else {
+      this.numValue = 0;
+    }
   }
 
   onChange(event) {
