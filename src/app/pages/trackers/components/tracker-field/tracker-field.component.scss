@@ -17,6 +17,13 @@
   margin-top: 5px;
 }
 
+/deep/ .mde-popover-content {
+  background: white;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
 
 .field-cont {
   display: flex;

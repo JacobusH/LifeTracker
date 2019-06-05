@@ -17,6 +17,8 @@ export class FormNewTrackerComponent implements OnInit {
   position = 0;
   fieldOptions; 
 
+  trackerName = "ahhhh";
+
   constructor() { 
     
   }

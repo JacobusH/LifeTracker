@@ -54,7 +54,7 @@
     </div> -->
 <!-- Node Menu -->
 <mat-menu #appMenu="matMenu">
-  <button mat-menu-item (click)="addChild(node.key)">Add Child</button>
+  <button mat-menu-item (click)="addChild(node)">Add Child</button>
   <mat-divider></mat-divider>
-  <button mat-menu-item (click)="delete(node.key)">Delete</button>
+  <button mat-menu-item (click)="deleteNode(node)">Delete</button>
 </mat-menu>  

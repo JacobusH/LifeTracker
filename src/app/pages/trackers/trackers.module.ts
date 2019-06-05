@@ -5,9 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../modules/shared/shared.module';
 import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule, NzPopoverModule } from 'ng-zorro-antd';
-import { D3Module } from '../../modules/d3/d3.module'
 import { HttpClientModule } from '@angular/common/http';
-
 
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
@@ -25,10 +23,7 @@ import { ListPage } from './list/list.page';
 import { ViewPage } from './view/view.page';
 
 import { routing } from './trackers.routing';
-import { TrackerPopoverComponent } from './components/tracker-common/tracker-popover/tracker-popover.component';
-import { TrackerCommonComponent } from './components/tracker-common/tracker-common.component';
 import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
-import { ViewActivityComponent } from './components/view-activity/view-activity.component';
 import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
 import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
 import { TrackerNodeNewComponent } from './components/tracker-node-new/tracker-node-new.component';
@@ -48,14 +43,13 @@ const routes: Routes = [
 
 @NgModule({
   entryComponents: [
-    TrackerPopoverComponent
+    
   ],
   imports: [
     routing
     , SharedModule
-    , D3Module
     , NgZorroAntdModule
-    , NzPopoverModule
+    // , NzPopoverModule
     , NzLayoutModule
     , NzCheckboxModule
     , CommonModule
@@ -75,9 +69,19 @@ const routes: Routes = [
     TrackerTitleBarComponent
     , MapComponent
     , TrackersPage
-    , NewPage, HomePage, TrackerPopoverComponent, TrackerCommonComponent, FormNewTrackerComponent
-    , ListPage, ViewPage, ViewActivityComponent, TrackerNodeComponent
-    , TrackerIconComponent, TrackerNodeNewComponent, OptionsComponent, TrackerFieldComponent, ModelNodeComponent, ViewNodeComponent, ViewListComponent
+    , NewPage
+    , HomePage
+    , FormNewTrackerComponent
+    , ListPage
+    , ViewPage
+    , TrackerNodeComponent
+    , TrackerIconComponent
+    , TrackerNodeNewComponent
+    , OptionsComponent
+    , TrackerFieldComponent
+    , ModelNodeComponent,
+     ViewNodeComponent
+    , ViewListComponent
   ],
   providers: [
     GoogleMapsAPIWrapper
@@ -85,8 +89,6 @@ const routes: Routes = [
     , OptionsService
     , TrackersService
     , { provide: NZ_I18N, useValue: en_US }
-    // , { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }
-    // , { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
   ]
 })
 export class TrackersPageModule {}

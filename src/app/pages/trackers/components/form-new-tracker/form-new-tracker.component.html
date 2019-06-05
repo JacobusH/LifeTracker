@@ -1,7 +1,7 @@
 <h1 class="flex-center">Make a new Tracker</h1>
 
 <mat-form-field style="width: 100%">
-    <mat-label [attr.for]="prop">What do you want to track?</mat-label>
+    <mat-label>What do you want to track?</mat-label>
     <input id="trackerName" matInput [(ngModel)]="trackerName" (keyup.enter)="showQuestions = true" />
   </mat-form-field>
 <ion-button class="flex-center" (click)="showQuestions = true">Next</ion-button>

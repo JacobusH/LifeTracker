@@ -56,11 +56,10 @@
     nzTrigger="click"
     [nzTitle]="editTemplateTitle"
     [nzContent]="editTemplate" class="right" 
-    [(nzVisible)]="editVisible"
     (nzVisibleChange)="onEditChange($event)"
     [style.visibility]="isHovered ? 'visible' : 'hidden'">
     </mat-icon>
-  </div>
+    <!-- [(nzVisible)]="editVisible" -->
 </div>
 
 <!-- Template for Editing Field -->

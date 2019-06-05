@@ -11,6 +11,7 @@ import { MapsAPILoader, AgmMarker, MarkerManager } from '@agm/core';
 export class MapComponent implements OnInit {
   @ViewChild("search")
   public searchElementRef: ElementRef;
+  mapHidden = false;
 
   lat: number = 51.678418;
   lng: number = 7.809007;

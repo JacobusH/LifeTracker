@@ -192,6 +192,10 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     if(this.field.type == TrackerFieldTypeEnum.wikiSummary) {
       this.getWikiSummary();
     }
+
+    this.dateRangeDisp = {'begin': Date, 'end': Date};
+      this.dateRangeDisp.begin = new Date(this.field.value.substring(0, this.field.value.indexOf("|")));
+      this.dateRangeDisp.end = new Date(this.field.value.substring(this.field.value.indexOf("|") + 1, this.field.value.length));
   }
 
   toggleLabelVis() {

@@ -1,6 +1,6 @@
 
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed">
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
@@ -22,9 +22,9 @@
     <div>
       <i class="anticon trigger" 
       style="color: #d3d3d3;"
-      (click)="isCollapsed=!isCollapsed">
+      (click)="isCollapsed = !isCollapsed">
       </i>
-      <span (click)="isCollapsed=!isCollapsed">Collapse</span>
+      <span (click)="isCollapsed = !isCollapsed">Collapse</span>
   </div>
   </nz-sider>
   <nz-content>

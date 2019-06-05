@@ -8,6 +8,7 @@ import { AuthService, CFService, TrackersService } from 'app/services';
   encapsulation: ViewEncapsulation.None
 })
 export class TrackersPage implements OnInit, AfterViewInit {
+  isCollapsed = false;
   currentPage;
   showCenterFab;
   subtitle;

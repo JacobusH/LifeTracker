@@ -29,6 +29,7 @@ import { environment } from '../environments/environment';
 
 import en from '@angular/common/locales/en';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(en);
 
@@ -57,7 +58,7 @@ registerLocaleData(en);
     , MatSelectModule
     , MatTabsModule
     , MatMenuModule
-    , HttpClientModule, NgZorroAntdModule
+    , HttpClientModule, NgZorroAntdModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
