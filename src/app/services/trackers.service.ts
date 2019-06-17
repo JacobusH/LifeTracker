@@ -242,6 +242,9 @@ export class TrackersService {
 
   getAllTrackersByLastViewed(userKey: string): AngularFirestoreCollection<Tracker> {
     this.verifyUserKey(userKey);
+    
+    return this.userService.getByUserKey(userKey).collection(this.colAllTrackers);
+
     return this.userService
       .getByUserKey(this.currentUserKey)
       .collection(this.colAllTrackers, 

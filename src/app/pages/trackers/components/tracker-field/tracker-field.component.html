@@ -17,7 +17,11 @@
       (change)="onCheckboxChange($event)">{{field.labelHidden ? "" : field.label}}</mat-checkbox>
     <!-- Date -->
     <mat-form-field  *ngIf="field.type == TrackerFieldTypeEnum.date">
-      <input matInput [matDatepicker]="picker" [placeholder]="field.label">
+      <input matInput 
+        [matDatepicker]="picker" 
+        [placeholder]="field.label" 
+        [value]="field.value"
+        (dateChange)="saveDate($event)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>      
@@ -27,7 +31,7 @@
           [placeholder]="field.labelHidden ? '' : field.label"
           [satDatepicker]="picker"
           [value]="dateRangeDisp"
-          (dateChange)="saveDate($event)">
+          (dateChange)="saveDateRange($event)">
       <sat-datepicker #picker [rangeMode]="true"></sat-datepicker>
       <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
     </mat-form-field>

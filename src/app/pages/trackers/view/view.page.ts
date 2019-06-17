@@ -91,7 +91,7 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
           this.filtertedItems = this.curNodeList;
         })
         this.simpleTrackerService.labelListGet(this.currentTrackerName).valueChanges().pipe(take(1)).subscribe(labelList => {
-          this.curLabelList = labelList.labels;
+          // this.curLabelList = labelList.labels;
         })
 
       })

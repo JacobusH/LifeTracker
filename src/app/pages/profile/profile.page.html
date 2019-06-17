@@ -1,13 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Hello <span *ngIf="currentUser">{{currentUser.name}}</span></ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content padding>
-    <ion-item tappable (click)="logout()">logout</ion-item>
-
-</ion-content>
+<h1>Hello <span *ngIf="currentUser">{{currentUser.name}}</span></h1>
+<button (click)="logout()">Logout</button>

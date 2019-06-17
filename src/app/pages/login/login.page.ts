@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'app/services';
 import { Router } from '@angular/router';
@@ -15,7 +15,8 @@ export class LoginPage implements OnInit {
 	constructor(
 		private authService: AuthService,
 		fb: FormBuilder,
-		private router: Router
+    private router: Router,
+    private ngZone: NgZone
 	) {
 		this.loginForm = fb.group({
 			email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -52,7 +53,7 @@ export class LoginPage implements OnInit {
 
 	loginWithGoogle() {
 		this.authService.signInWithGoogle().then(user => {
-			this.router.navigate(['/']);
+			this.ngZone.run(() => this.router.navigate(['/']));
 		});
   }
   

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import {FormControl} from '@angular/forms';
 import { TrackerFieldTypeEnum, TrackerField, SimpleTrackerNode } from '../../../../models/trackers.model';
 import { TrackersService, OptionsService, TrackerFieldService, SimpleTrackerLocalService } from 'app/services';
 import { slideInFadeOut } from 'app/animations/slideInFadeOut.animation';
@@ -6,6 +7,8 @@ import { SimpleTrackerField } from 'app/models/trackers.model';
 import { WikiSummary } from 'app/models/wiki.model';
 import { SimpleTrackerService } from 'app/services/simple-tracker.service';
 import { WikipediaService } from 'app/services/wikipedia.service';
+import * as _moment from 'moment';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-tracker-field',
@@ -53,6 +56,9 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
       this.dateRangeDisp = {'begin': Date, 'end': Date};
       this.dateRangeDisp.begin = new Date(this.field.value.substring(0, this.field.value.indexOf("|")));
       this.dateRangeDisp.end = new Date(this.field.value.substring(this.field.value.indexOf("|") + 1, this.field.value.length));
+     }
+     if(this.field.type == TrackerFieldTypeEnum.date) {
+      this.field.value = new firebase.firestore.Timestamp(this.field.value.seconds, this.field.value.nanoseconds).toDate();
      }
      this.setWikiLinkOptions();
   }
@@ -114,6 +120,12 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
   }
 
   saveDate(event: any) {
+    console.log("date", event.target.value);
+    this.field.value = event.target.value._d;
+    this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
+  }
+
+  saveDateRange(event: any) {
     // change in view
     this.field.value = event.target.value;
     // save date range as string value
@@ -181,8 +193,8 @@ export class TrackerFieldComponent implements OnInit, AfterViewInit {
     this.field.label = newLabel;
     this.stService.fieldUpdate(this.trackerName, this.node.key, this.field);
     // deal with label list
-    this.stService.labelListAdd(this.trackerName, newLabel.toLowerCase());
-    this.stService.labelListRemove(this.trackerName, oldLabel.toLowerCase());
+    // this.stService.labelListAdd(this.trackerName, newLabel.toLowerCase());
+    // this.stService.labelListRemove(this.trackerName, oldLabel.toLowerCase());
     this.setWikiLinkOptions();
   }
 
