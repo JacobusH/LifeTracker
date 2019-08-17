@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { AuthService, OptionsService, TrackersService, TrackerFieldService } from 'app/services';
 import { TrackerNode, TrackerField } from 'app/models';
 import { SimpleTrackerNode, SimpleTrackerField } from 'app/models/trackers.model';
@@ -62,6 +63,9 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  showSettings(node: SimpleTrackerNode) {
+    
+  }
 
   addChild(node: SimpleTrackerNode) {
     // TODO: db add child
@@ -109,5 +113,21 @@ export class TrackerNodeComponent implements OnInit, AfterViewInit {
       this.changeFieldOrder(); // this moves it in db
     }
   }
+
+
+  darkTheme: NgxMaterialTimepickerTheme = {
+    container: {
+        bodyBackgroundColor: '#424242',
+        buttonColor: '#fff'
+    },
+    dial: {
+        dialBackgroundColor: '#555',
+    },
+    clockFace: {
+        clockFaceBackgroundColor: '#555',
+        clockHandColor: '#9fbd90',
+        clockFaceTimeInactiveColor: '#fff'
+    }
+}
 
 }

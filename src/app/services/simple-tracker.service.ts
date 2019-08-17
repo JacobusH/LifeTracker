@@ -22,6 +22,7 @@ export class SimpleTrackerService {
   colAllTrackers = "allTrackers"
   colBase = 'tracker';
   docLabels = '!docLabels';
+  recorderCol = "!recorders";
 
   constructor(
     private afs: AngularFirestore,
@@ -202,6 +203,17 @@ export class SimpleTrackerService {
     )
     .doc(nodeKey)
     .update({fieldOrder: newOrder})
+  }
+
+  // RECORDER NODE OPERATIONS
+  recorderAdd(trackerName: string, nodeToAdd: SimpleTrackerNode) {
+    nodeToAdd.recorder.isRecorder = true;
+    // nodeToAdd.key = uuid();
+    this.nodeAdd(this.recorderCol, nodeToAdd);
+  }
+
+  recorderRemove(nodeToRemove: SimpleTrackerNode) {
+    this.nodeRemove(this.recorderCol, nodeToRemove);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SimpleTrackerNode, SimpleTrackerField, TrackerFieldTypeEnum } from 'app/models/trackers.model';
+import { SimpleTrackerNode, SimpleTrackerField, TrackerFieldTypeEnum, SimpleRecorder } from 'app/models/trackers.model';
 import { AuthService } from './auth.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { v4 as uuid } from 'uuid';
@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 export class SimpleTrackerLocalService {
   curNodeList: Array<SimpleTrackerNode>;
   curUserKey: string;
+  colUSERS: string = 'Users';
 
   constructor(private authService: AuthService) { 
     this.authService.user.subscribe(user => {
@@ -20,6 +21,7 @@ export class SimpleTrackerLocalService {
   // Default operations
   createDefaultItem() {
     let defField = this.createDefaultField();
+    let defRec = this.createDefaultRecorder();
     let def: SimpleTrackerNode  = {
       key: uuid(),
       userKey: this.curUserKey,
@@ -27,6 +29,7 @@ export class SimpleTrackerLocalService {
       children: null,
       fields: [ defField ],
       fieldOrder: [ defField.key ],
+      recorder: defRec,
       templateNodeKey: null
     };
     return def;
@@ -41,6 +44,16 @@ export class SimpleTrackerLocalService {
       labelHidden: false
     }
     return def;
+  }
+
+  createDefaultRecorder() {
+    let rec: SimpleRecorder = {
+      isRecorder: false,
+      lastRecordedAt: new Date(),
+      recorderTimeD: 1,
+      recorderTimeT: '5:00'
+    }
+    return rec;
   }
 
   // List operations

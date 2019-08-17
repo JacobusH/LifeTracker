@@ -8,6 +8,7 @@ export interface SimpleTrackerNode {
   children?: Array<string>,
   fields?: Array<SimpleTrackerField>,
   fieldOrder?: Array<string>,
+  recorder?: SimpleRecorder,
   templateNodeKey: string // if copied then this is the key of the node copied from (same across all copies)
 }
 
@@ -17,6 +18,13 @@ export interface SimpleTrackerField {
   value: any, 
   type: TrackerFieldTypeEnum,
   labelHidden: boolean
+}
+
+export interface SimpleRecorder {
+  isRecorder: boolean,
+  recorderTimeD: number,
+  recorderTimeT: string
+  lastRecordedAt: Date
 }
 
 // TODO: finish other models

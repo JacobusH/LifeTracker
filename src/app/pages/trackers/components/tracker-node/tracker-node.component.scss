@@ -27,3 +27,18 @@
   }
   
 }
+
+.recorder-cont {
+	display: flex;
+	flex-flow: column;
+  align-items: center;
+
+  mat-form-field {
+    margin-top: 8px; 
+  }
+  
+  .time-picker {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+}

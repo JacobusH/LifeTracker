@@ -1,37 +1,6 @@
-<!-- <div *ngIf="oldNode">
-<div *ngIf="node" class="node">
-  <div class="top">
-    <div class="left" *ngIf="orderedFieldsObjs" (cdkDropListDropped)="drop($event)" cdkDropList>
-      <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
-        <app-tracker-field [field]="field" [nodeKey]="node.key" 
-        [userKey]="userKey" [trackerName]="trackerName"
-        [options]="options"> 
-        </app-tracker-field>
-      </div>
-      <mat-icon @slideInFadeOut svgIcon="plus" *ngIf="options && options['isEditable']" (click)="addField(node.key)"></mat-icon>
-    </div>
-    <div class="right">
-      <mat-icon @slideInFadeOut svgIcon="plus-circle" *ngIf="options && options['isEditable']" (click)="addChild(node)"></mat-icon> 
-      <mat-icon @slideInFadeOut svgIcon="content-copy" *ngIf="options && options['isEditable']" (click)="copyNode(node)"></mat-icon> 
-      <mat-icon @slideInFadeOut svgIcon="delete" *ngIf="options && options['isDeletable']" (click)="delete(node)"></mat-icon> 
-    </div>
-  </div>
-  <div class="bottom">
-    <div *ngIf="node.children">
-      <app-tracker-node *ngFor="let childKey of node.children" 
-        [nodeKey]="childKey"
-        [tracker]="trackerName"
-        [options]="options">
-      </app-tracker-node>
-    </div>
-  </div>
-</div>
-</div> -->
-
 <div *ngIf="!oldNode">
   <div *ngIf="node" class="node">
       <div class="left" *ngIf="orderedFieldsObjs?.length > 0" (cdkDropListDropped)="drop($event)" cdkDropList>
-        <!-- Should do with order.... -->
         <div *ngFor="let field of orderedFieldsObjs" cdkDrag>
           <app-tracker-field  [field]="field" 
           [node]="node" [userKey]="userKey" 
@@ -44,17 +13,40 @@
       <!-- ICONS -->
       <div class="right">
         <mat-icon svgIcon="content-copy" (click)="copyNode(node)"></mat-icon> 
+        <mat-icon  nz-popover svgIcon="settings-outline" 
+          nzPlacement="bottom"
+          nzTrigger="click"
+          [nzTitle]="nodeSettingsTemplateTitle"
+          [nzContent]="nodeSettingsTemplate">
+        </mat-icon> 
         <mat-icon svgIcon="delete" (click)="deleteNode(node)"></mat-icon> 
       </div>
   </div>
 </div>
 
-<!-- <div class="options">
-      <mat-icon mat-icon-button [matMenuTriggerFor]="appMenu" svgIcon="arrow-down-drop-circle"></mat-icon> 
-    </div> -->
-<!-- Node Menu -->
-<mat-menu #appMenu="matMenu">
-  <button mat-menu-item (click)="addChild(node)">Add Child</button>
-  <mat-divider></mat-divider>
-  <button mat-menu-item (click)="deleteNode(node)">Delete</button>
-</mat-menu>  
+<!-- Template for Node Settings -->
+<ng-template #nodeSettingsTemplateTitle><i nz-icon type="close"></i>Node Settings</ng-template>
+<ng-template #nodeSettingsTemplate>
+  <div>
+    <!-- is node recorder -->
+    <mat-checkbox class="cb-node-recorder" 
+      [checked]="node.recorder.isRecorder" 
+      (change)="node.recorder.isRecorder = !node.recorder.isRecorder">
+      Recorder
+    </mat-checkbox>
+    <div class="recorder-cont" *ngIf="node.recorder.isRecorder">
+      <mat-form-field class="example-full-width">
+        <input matInput type="number" 
+          placeholder="Record Every {{!node.recorder.recorderTimeD ? 'number of' : node.recorder.recorderTimeD}} Day(s)" 
+          [(ngModel)]="node.recorder.recorderTimeD">
+      </mat-form-field>
+      <div class="time-at"><span>At</span></div>
+      <div class="time-picker">
+        <input [ngxTimepicker]="toggleTimepicker" [format]="24" [disableClick]="false">
+        <ngx-material-timepicker-toggle [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+        <ngx-material-timepicker #toggleTimepicker [defaultTime]="'4:00'"></ngx-material-timepicker>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+</ng-template>

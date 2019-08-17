@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 import { OptionsService, TrackersService } from 'app/services';
 
@@ -64,6 +65,7 @@ const routes: Routes = [
       })
     , AgmSnazzyInfoWindowModule
     , HttpClientModule
+    , NgxMaterialTimepickerModule
   ],
   declarations: [
     TrackerTitleBarComponent
