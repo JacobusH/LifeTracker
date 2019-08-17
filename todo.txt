@@ -1,0 +1,6 @@
+- have list/node/calendar as view bar on each page
+
+- make calendar
+-- add event to calendar
+
+- make list view

@@ -16,6 +16,9 @@
 @import "./fonts.scss";
 // @import "themes.scss";
 
+// calendar
+@import "../../node_modules/angular-calendar/css/angular-calendar.css";
+
 /* DEFAULT OVERRIDES */
 trackers .mat-tab-labels {
   justify-content: center !important;

@@ -18,6 +18,7 @@ export const routes: Routes = [
     { path: 'new', component: NewPage, data: { state: 'tracker-new' }},
     { path: 'view', component: ListPage, data: { state: 'tracker-list' }},
     { path: 'view/:id', component: ViewPage, data: { state: 'tracker-view' }},
+    { path: 'view/:id/calendar', data: { state: 'calendar'}, loadChildren: './modules/calendar/calendar.module#TrackerCalendarModule' },
   ]},
 ];
 

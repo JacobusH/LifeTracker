@@ -36,10 +36,7 @@ import { ViewListComponent } from './view/view-list/view-list.component';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: TrackersPage
-  }
+  { path: '', component: TrackersPage }
 ];
 
 @NgModule({

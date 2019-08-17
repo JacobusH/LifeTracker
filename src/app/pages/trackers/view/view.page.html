@@ -1,7 +1,8 @@
 <div class="top-cont">
   <div>
     <mat-icon svgIcon="view-list" (click)="listView = true"></mat-icon>
-    <mat-icon svgIcon="graphql" (click)="listView = false"></mat-icon>
+		<mat-icon svgIcon="graphql" (click)="listView = false"></mat-icon>
+		<a routerLink="calendar"><mat-icon svgIcon="calendar" (click)="listView = false"></mat-icon></a>
   </div>
   <div class="search-sec">
     <mat-form-field>
