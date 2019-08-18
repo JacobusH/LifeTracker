@@ -34,6 +34,7 @@ import { ModelNodeComponent } from './components/model-node/model-node.component
 import { ViewNodeComponent } from './view/view-node/view-node.component';
 import { ViewListComponent } from './view/view-list/view-list.component';
 
+import { AgGridModule } from 'ag-grid-angular';
 
 const routes: Routes = [
   { path: '', component: TrackersPage }
@@ -49,7 +50,8 @@ const routes: Routes = [
     , NgZorroAntdModule
     // , NzPopoverModule
     , NzLayoutModule
-    , NzCheckboxModule
+		, NzCheckboxModule
+		, AgGridModule.withComponents(null)
     , CommonModule
     , DragDropModule
     , FormsModule

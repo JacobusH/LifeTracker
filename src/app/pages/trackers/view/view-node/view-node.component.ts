@@ -12,7 +12,8 @@ export class ViewNodeComponent implements OnInit {
   @Input() trackerName: string;
   @Input() curNodeList: Array<SimpleTrackerNode>;
 
-  constructor(private stLocalService: SimpleTrackerLocalService
+  constructor(
+		private stLocalService: SimpleTrackerLocalService
     , private stService: SimpleTrackerService) { 
 
   }

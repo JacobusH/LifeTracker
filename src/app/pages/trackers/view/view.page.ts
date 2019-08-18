@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, OptionsService, TrackersService } from 'app/services';
 import { SimpleTrackerService } from 'app/services/simple-tracker.service';
 import { SimpleTrackerField, SimpleTrackerNode } from 'app/models/trackers.model';
@@ -52,7 +52,8 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   labelsToFilter: Array<string> = new Array<string>();
   
   constructor(
-    private actRoute: ActivatedRoute,
+		private actRoute: ActivatedRoute,
+		private router: Router,
     private simpleTrackerLocalService: SimpleTrackerLocalService,
     private trackerService: TrackersService,
     private simpleTrackerService: SimpleTrackerService,
@@ -102,7 +103,20 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
     if(changes['currentTracker']) {
       // this.currentTracker = this.currentTracker
     }
-  }
+	}
+	
+	// View change
+	changeView(to: string) {
+		if(to === 'list') {
+			this.listView = true;
+		}
+		else if(to === 'node') {
+			this.listView = false;
+		}
+		else if(to === 'calendar') {
+			this.router.navigate(['calendar'], {relativeTo: this.actRoute});
+		}
+	}
   
   // FILTERING
   filterItems(filterTerm: string) {

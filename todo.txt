@@ -1,6 +1,13 @@
-- have list/node/calendar as view bar on each page
+
 
 - make calendar
 -- add event to calendar
+-- style calendar page
 
 - make list view
+
+- make expense module
+
+
+Extensions
+- group tabs by extensions (tracker .ts|.scss|.html)

@@ -18,6 +18,9 @@
 
 // calendar
 @import "../../node_modules/angular-calendar/css/angular-calendar.css";
+// ag-grid
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 /* DEFAULT OVERRIDES */
 trackers .mat-tab-labels {

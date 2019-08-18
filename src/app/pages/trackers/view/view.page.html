@@ -1,9 +1,10 @@
 <div class="top-cont">
   <div>
-    <mat-icon svgIcon="view-list" (click)="listView = true"></mat-icon>
+    <!-- <mat-icon svgIcon="view-list" (click)="listView = true"></mat-icon>
 		<mat-icon svgIcon="graphql" (click)="listView = false"></mat-icon>
-		<a routerLink="calendar"><mat-icon svgIcon="calendar" (click)="listView = false"></mat-icon></a>
-  </div>
+		<a routerLink="calendar"><mat-icon svgIcon="calendar" (click)="listView = false"></mat-icon></a> -->
+		<app-view-picker (onChangeView)="changeView($event)"></app-view-picker>
+	</div>
   <div class="search-sec">
     <mat-form-field>
       <input matInput [placeholder]="filterPH" [value]="filterTermPH" (keyup)="filterItems($event.target.value)"> 
@@ -29,16 +30,12 @@
     </div>
   </div>
   <!-- NODE VIEW -->
-  <div *ngIf="!listView" class="node-cont">
+  <div *ngIf="!listView && filtertedItems" class="node-cont">
     <app-view-node [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-node>
   </div>
   <!-- SIMPLE LIST VIEW -->
-  <div *ngIf="listView">
-    <div *ngFor="let item of filtertedItems">
-      <div *ngFor="let field of item.fields">
-        Value: {{field.value}}
-      </div>
-    </div>
+  <div *ngIf="listView && filtertedItems" style="height:100%;">
+		<app-view-list [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-list>
   </div>
 </div>
 

@@ -41,6 +41,8 @@
     "@ionic/ng-toolkit": "1.1.0",
     "@ionic/pro": "2.0.4",
     "@ionic/schematics-angular": "1.0.7",
+    "ag-grid-angular": "^21.1.0",
+    "ag-grid-community": "^21.1.1",
     "angular-calendar": "^0.27.15",
     "antd": "^3.16.1",
     "core-js": "^2.6.5",

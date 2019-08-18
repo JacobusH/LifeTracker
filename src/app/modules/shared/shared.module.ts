@@ -12,6 +12,7 @@ import { FormDynamicComponent } from './form-dynamic/form-dynamic.component';
 import { NumberPickerComponent } from './number-picker/number-picker.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { RaterComponent } from './rater/rater.component';
+import { ViewPickerComponent } from './view-picker/view-picker.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,7 @@ import { RaterComponent } from './rater/rater.component';
     , FormDynamicComponent
     , NumberPickerComponent
     , DatePickerComponent
-    , RaterComponent
+    , RaterComponent, ViewPickerComponent
   ],
   exports: [ 
     DatePickerComponent
@@ -60,7 +61,8 @@ import { RaterComponent } from './rater/rater.component';
     , MatDividerModule
     , MatMomentDateModule
     , SatDatepickerModule
-    , SatNativeDateModule
+		, SatNativeDateModule
+		, ViewPickerComponent
   ],
   providers: [
     // { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }, // breaks with expression form not supported in injection...

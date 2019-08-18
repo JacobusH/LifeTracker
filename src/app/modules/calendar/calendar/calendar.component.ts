@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/services';
 import { Subject } from 'rxjs';
 
@@ -36,18 +36,14 @@ export class CalendarComponent implements OnInit {
 	userKey;
 	
 	// @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-
   view: CalendarView = CalendarView.Month;
-
   CalendarView = CalendarView;
-
   viewDate: Date = new Date();
-
   modalData: {
     action: string;
     event: CalendarEvent;
-  };
-
+	};
+	
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
@@ -109,9 +105,9 @@ export class CalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-
   constructor(
-    private actRoute: ActivatedRoute,
+		private actRoute: ActivatedRoute,
+		private router: Router,
     private authService: AuthService) { 
 
     }
@@ -124,6 +120,18 @@ export class CalendarComponent implements OnInit {
         });
     });
 	};
+
+	changeView(to: string) {
+		if(to === 'list') {
+			this.router.navigate([`/trackers/view/${this.currentTrackerName}`], {relativeTo: this.actRoute});
+		}
+		else if(to === 'node') {
+			this.router.navigate([`/trackers/view/${this.currentTrackerName}`], {relativeTo: this.actRoute});
+		}
+		else if(to === 'calendar') {
+			// this.router.navigate(['calendar'], {relativeTo: this.actRoute});
+		}
+	}
 	
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
