@@ -113,8 +113,9 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
 		else if(to === 'node') {
 			this.listView = false;
 		}
-		else if(to === 'calendar') {
-			this.router.navigate(['calendar'], {relativeTo: this.actRoute});
+		else { // string
+			console.log("to", to);
+			this.router.navigate([to], {relativeTo: this.actRoute});
 		}
 	}
   

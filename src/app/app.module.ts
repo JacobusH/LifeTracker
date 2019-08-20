@@ -30,12 +30,23 @@ import { environment } from '../environments/environment';
 import en from '@angular/common/locales/en';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { TestDirective } from './test.directive';
+import { Example1Component } from './components/example1/example1.component';
+import { Example2Component } from './components/example2/example2.component';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent ],
-  entryComponents: [],
+  declarations: [
+		AppComponent
+		, TestDirective
+		, Example1Component
+		, Example2Component 
+	],
+  entryComponents: [
+		Example1Component
+		, Example2Component 
+	],
   imports: [
     SharedModule
     , AngularFireModule
@@ -49,7 +60,7 @@ registerLocaleData(en);
     , BrowserAnimationsModule
     , CommonModule
     , DragDropModule
-    , FormsModule
+		, FormsModule
     , ReactiveFormsModule
     , MatIconModule
     , MatFormFieldModule

@@ -1,7 +1,23 @@
-<!-- SIMPLE NODE VIEW -->
 <div class="node-cont">
-  <app-tracker-node *ngFor="let node of curNodeList" [trackerName]="trackerName" [node]="node" 
-  (onDelete)="delNode($event)" (onCopy)="copyNode($event)"
-  (onAddChild)="addChild($event)"
-  [options]="options"></app-tracker-node>
-</div>
+		<app-tracker-node *ngFor="let node of curNodeList" [trackerName]="trackerName" [node]="node" 
+		(onDelete)="delNode($event)" (onCopy)="copyNode($event)"
+		(onAddChild)="addChild($event)"
+		[options]="options"></app-tracker-node>
+	</div>
+
+
+<div class="toolbar">
+		<button (click)="layoutService.addItem()">Add Item</button>
+		<div class="draggable" draggable="true" (dragend)="layoutService.dropItem('example1')">Example 1</div>
+		<div class="draggable" draggable="true" (dragend)="layoutService.dropItem('example2')">Example 2</div>
+	</div>
+	<gridster [options]="options">
+		<gridster-item *ngFor="let item of layout"
+			[item]="item"
+			(dragover)="layoutService.setDropId(item.id)"
+		>
+			<ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(item.id)"></ng-container>
+			<button (click)="layoutService.deleteItem(item)">Delete Item</button>
+		</gridster-item>
+	</gridster>
+	

@@ -1,3 +1,4 @@
+// Core modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -7,23 +8,27 @@ import { SharedModule } from '../../modules/shared/shared.module';
 import { NgZorroAntdModule, NZ_I18N, en_US, NzLayoutModule, NzCheckboxModule, NzPopoverModule } from 'ng-zorro-antd';
 import { HttpClientModule } from '@angular/common/http';
 
+// Other modules
+import { GridsterModule } from 'angular-gridster2';
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule, AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
+// services
 import { OptionsService, TrackersService } from 'app/services';
 
-import { MapComponent } from './components/map/map.component';
-import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
-
+// pages
 import { TrackersPage } from './trackers.page';
 import { HomePage } from './home/home.page';
 import { NewPage } from './new/new.page';
 import { ListPage } from './list/list.page';
 import { ViewPage } from './view/view.page';
 
+// components
 import { routing } from './trackers.routing';
+import { MapComponent } from './components/map/map.component';
+import { TrackerTitleBarComponent } from './components/tracker-title-bar/tracker-title-bar.component';
 import { FormNewTrackerComponent } from './components/form-new-tracker/form-new-tracker.component';
 import { TrackerNodeComponent } from './components/tracker-node/tracker-node.component';
 import { TrackerIconComponent } from './components/tracker-icon/tracker-icon.component';
@@ -36,6 +41,8 @@ import { ViewListComponent } from './view/view-list/view-list.component';
 
 import { AgGridModule } from 'ag-grid-angular';
 
+import { LayoutItemDirective } from 'app/directives/layout-item.directive';
+
 const routes: Routes = [
   { path: '', component: TrackersPage }
 ];
@@ -43,7 +50,7 @@ const routes: Routes = [
 @NgModule({
   entryComponents: [
     
-  ],
+	],
   imports: [
     routing
     , SharedModule
@@ -54,7 +61,8 @@ const routes: Routes = [
 		, AgGridModule.withComponents(null)
     , CommonModule
     , DragDropModule
-    , FormsModule
+		, FormsModule
+		, GridsterModule
     , ReactiveFormsModule
     , IonicModule
     , RouterModule.forChild(routes)
@@ -67,7 +75,8 @@ const routes: Routes = [
     , NgxMaterialTimepickerModule
   ],
   declarations: [
-    TrackerTitleBarComponent
+		TrackerTitleBarComponent
+		, LayoutItemDirective
     , MapComponent
     , TrackersPage
     , NewPage
@@ -80,8 +89,8 @@ const routes: Routes = [
     , TrackerNodeNewComponent
     , OptionsComponent
     , TrackerFieldComponent
-    , ModelNodeComponent,
-     ViewNodeComponent
+    , ModelNodeComponent
+    , ViewNodeComponent
     , ViewListComponent
   ],
   providers: [

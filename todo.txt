@@ -1,4 +1,4 @@
-
+- change list and node view to route with modules like calendar and rpg
 
 - make calendar
 -- add event to calendar

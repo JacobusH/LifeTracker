@@ -1,5 +1,7 @@
 export { AuthService } from 'app/services/auth.service';
 export { CFService } from 'app/services/CFService.service';
+export { LayoutService } from 'app/services/layout.service';
+export { IComponent } from 'app/services/layout.service';
 export { OptionsService } from 'app/services/options.service';
 export { SimpleTrackerLocalService } from 'app/services/simple-tracker-local.service';
 export { SimpleTrackerService } from 'app/services/simple-tracker.service';
