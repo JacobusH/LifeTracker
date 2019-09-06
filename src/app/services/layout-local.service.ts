@@ -8,19 +8,18 @@ import { v4 as uuid } from 'uuid';
 @Injectable({
   providedIn: 'root'
 })
-export class SimpleTrackerLocalService {
-	curNodeList: Array<SimpleTrackerNode>;
-	curGridLayout: Array<GridsterItem>;
+export class LayoutLocalService {
+  curNodeList: Array<SimpleTrackerNode>;
   curUserKey: string;
-  colUSERS: string = 'Users';
+	colUSERS: string = 'Users';
+	defaultLayout;
 
   constructor(private authService: AuthService) { 
     this.authService.user.subscribe(user => {
       this.curUserKey = user.key;
     })
-  }
-
-	// Default operations
+	}
+	
 	createDefaultLayout() {
 		let def: Array<GridsterItem> = [
 			{rows: 1, cols: 1, x: 0, y: 0},
@@ -38,75 +37,18 @@ export class SimpleTrackerLocalService {
 		return def;
 	}
 
-	createDefaultLayoutItem() {
+	createDefaultItem() {
 		let def: GridsterItem = {rows: 1, cols: 1, x: 0, y: 0};
 		return def;
 	}
 
-  createDefaultItem(withField: boolean = true) {
-		if(withField) {
-			let defField = this.createDefaultField();
-			let defRec = this.createDefaultRecorder();
-			let def: SimpleTrackerNode  = {
-				key: uuid(),
-				userKey: this.curUserKey,
-				parent: null,
-				children: null,
-				fields: [ defField ],
-				fieldOrder: [ defField.key ],
-				recorder: defRec,
-				templateNodeKey: null
-			};
-			return def;
-		}
-		else { // just node, no default field
-			let def: SimpleTrackerNode  = {
-				key: uuid(),
-				userKey: this.curUserKey,
-				parent: null,
-				children: null,
-				fields: [],
-				fieldOrder: [],
-				recorder: null,
-				templateNodeKey: null
-			};
-			return def;
-		}
-  }
-
-  createDefaultField(label: string = "New Field", value: string = "New Value", type: TrackerFieldTypeEnum = TrackerFieldTypeEnum.text) {
-    let def: SimpleTrackerField = {
-      key: uuid(),
-      label: label,   
-      value: value,
-      type: TrackerFieldTypeEnum.text,
-      labelHidden: false
+  // Layout operations
+  itemAdd(nodeList: Array<SimpleTrackerNode>, gridList: Array<GridsterItem>, item: GridsterItem = null) {
+    if(!item) {
+      item = this.createDefaultItem();
     }
-    return def;
+    // nodeList.push(item);
   }
-
-  createDefaultRecorder() {
-    let rec: SimpleRecorder = {
-      isRecorder: false,
-      lastRecordedAt: new Date(),
-      recorderTimeD: 1,
-      recorderTimeT: '5:00'
-    }
-    return rec;
-  }
-
-	// Layout operations
-
-  // Node operations
-  nodeAdd(node: SimpleTrackerNode = null) {
-    if(!node) {
-      node = this.createDefaultItem();
-    }
-		this.curNodeList.push(node);
-		// list.push(node);
-	}
-	
-	// TODO: figure out what to do with grid layout when adding node outside the grid
 
   addChild(parentNode: SimpleTrackerNode, childNode: SimpleTrackerNode) {
     parentNode.children.push(childNode.key);
@@ -154,15 +96,7 @@ export class SimpleTrackerLocalService {
         this.curNodeList.splice(i, 1);
       }
     }
-	}
-	
-	nodeRemoveByKey(key: string) {
-		for(let i = 0; i < this.curNodeList.length; i++) {
-      if(this.curNodeList[i].key == key) {
-        this.curNodeList.splice(i, 1);
-      }
-    }
-	}
+  }
 
   // recursiveRemove(nodeToRemove: SimpleTrackerNode, curList: Array<SimpleTrackerNode>) {
   //   for(let i = 0; i < curList.length; i++) {
@@ -186,8 +120,8 @@ export class SimpleTrackerLocalService {
   fieldRemove(node: SimpleTrackerNode, field: SimpleTrackerField) {
     node.fields.splice(node.fields.indexOf(field), 1);
     node.fieldOrder.splice(node.fieldOrder.indexOf(field.key), 1);
-	}
-	
+  }
+
   saveField() {
     // NOTE: done locally in traker-field component
   }

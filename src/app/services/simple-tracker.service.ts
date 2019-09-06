@@ -22,7 +22,8 @@ export class SimpleTrackerService {
   colAllTrackers = "allTrackers"
   colBase = 'tracker';
   docLabels = '!docLabels';
-  recorderCol = "!recorders";
+	recorderCol = "!recorders";
+	docGridLayout = "!gridLayout";
 
   constructor(
     private afs: AngularFirestore,
@@ -30,9 +31,12 @@ export class SimpleTrackerService {
     private authService: AuthService
   ) { 
      this.authService.user.subscribe(x => {
-      this.currentUserKey = x.authID
+      this.currentUserKey = x.authID;
     })
-  }
+	}
+	
+	// Layout operations
+
 
   // Node operations
   getTopLevelNodesByTrackerName(trackerName: string): AngularFirestoreCollection<SimpleTrackerNode> {

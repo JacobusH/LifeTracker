@@ -155,8 +155,8 @@ export class ViewPage implements OnInit, OnChanges, AfterViewInit {
   // SIMPLE STUFF
   simpleAddNode() {
     let toAdd: SimpleTrackerNode = this.simpleTrackerLocalService.createDefaultItem();
-    this.simpleTrackerLocalService.nodeAdd(this.curNodeList, toAdd);
-    this.simpleTrackerService.nodeAdd(this.currentTrackerName, toAdd);
+    // this.simpleTrackerLocalService.nodeAdd(this.curNodeList, toAdd);
+    // this.simpleTrackerService.nodeAdd(this.currentTrackerName, toAdd);
   }
 
 

@@ -1,13 +1,33 @@
 - change list and node view to route with modules like calendar and rpg
 
+GENERAL
+- think about "recorder" concept again
+
+VIEWS
 - make calendar
 -- add event to calendar
 -- style calendar page
 
-- make list view
+- enchance node view
+-- put get node/content on the grid
+-- save grid state
+-- drill down into a node
+-- go back a level after drill-down
 
+- enhance list view
+✓ edit item
+-- add item
+-- delete item
+-- row copy
+-- date and date-range edit
+-- add columns
+-- update columns with db
+
+MODULES
 - make expense module
 
+SITE UP N RUNNING
+- fix weird navigation bugs
 
-Extensions
+EXTENSIONS
 - group tabs by extensions (tracker .ts|.scss|.html)

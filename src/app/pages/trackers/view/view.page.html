@@ -2,13 +2,13 @@
   <div>
 		<app-view-picker (onChangeView)="changeView($event)"></app-view-picker>
 	</div>
-  <div class="search-sec">
+  <!-- <div class="search-sec">
     <mat-form-field>
       <input matInput [placeholder]="filterPH" [value]="filterTermPH" (keyup)="filterItems($event.target.value)"> 
     </mat-form-field>
     <mat-icon svgIcon="magnify" (click)="filterItems($event.target.value)"></mat-icon>
     <mat-icon svgIcon="filter-variant" [matMenuTriggerFor]="appMenu"></mat-icon>
-  </div>
+  </div> -->
 </div>
 
 <div class="view-cont">
@@ -20,21 +20,17 @@
     </app-tracker-options>
     </div>  
     <div class="top-right">
-      <!-- SIMPLE ADD -->
       <button (click)="simpleAddNode()">Simple Add Node</button>
-      <!-- <app-tracker-node-new [tracker]="currentTrackerName" (click)="addNode()"></app-tracker-node-new> -->
       <mat-icon svgIcon="settings" (click)="showOptions = !showOptions"></mat-icon>     
     </div>
-  </div>
-  <!-- NODE VIEW -->
-  <div *ngIf="!listView && filtertedItems" class="node-cont">
-    <app-view-node [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-node>
-  </div>
-  <!-- SIMPLE LIST VIEW -->
-  <div *ngIf="listView && filtertedItems" style="height:100%;">
-		<app-view-list [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-list>
-  </div>
-</div>
+		</div>
+		<!-- NODE VIEW -->
+		<app-view-node *ngIf="!listView && filtertedItems" [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-node>
+		<!-- SIMPLE LIST VIEW -->
+		<div *ngIf="listView && filtertedItems" style="height:100%;">
+			<app-view-list [trackerName]="currentTrackerName" [curNodeList]="filtertedItems"></app-view-list>
+		</div>
+	</div>
 
 
 <!-- FILTER MENU -->
