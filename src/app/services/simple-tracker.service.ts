@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
-import { SimpleTrackerNode, SimpleTrackerField } from 'app/models/trackers.model';
+import { SimpleTrackerNode, SimpleTrackerField, TrackerFieldTypeEnum } from 'app/models/trackers.model';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
@@ -38,7 +38,9 @@ export class SimpleTrackerService {
 	// Layout operations
 
 
-  // Node operations
+	//////////
+	// NODE OPERATIONS
+	/////////
   getTopLevelNodesByTrackerName(trackerName: string): AngularFirestoreCollection<SimpleTrackerNode> {
     trackerName = trackerName.replace(/\s/g, '');
     return this.userService
@@ -83,12 +85,14 @@ export class SimpleTrackerService {
   }
 
   nodeCopy(trackerName: string, nodeCopiedFrom: SimpleTrackerNode, newNode: SimpleTrackerNode) {
-    // NOTE: the copy logic happen in the local service. Then the resultings nodes are passed ehre
+    // NOTE: the copy logic happens in the local service. Then the resultings nodes are passed here
     this.nodeUpdate(trackerName, nodeCopiedFrom); // update our old node since template key may have been updated
     this.nodeAdd(trackerName, newNode); // add copied node to collection
   }
 
-  // Field operations
+	//////////
+	// FIELD OPERATIONS
+	/////////
   fieldAdd(trackerName: string, nodeKey: string, newField: SimpleTrackerField) {
     // add to fields arr
     this.userService
@@ -139,9 +143,29 @@ export class SimpleTrackerService {
       )
       .doc(nodeKey).update({'fields': node.fields})
     })
-  }
+	}
+	
+	fieldGetDefaultValue(fieldType: TrackerFieldTypeEnum) {
+		switch(fieldType) {
+			case TrackerFieldTypeEnum.empty: 			return "";
+			case TrackerFieldTypeEnum.text: 			return "new text";
+			case TrackerFieldTypeEnum.textarea: 	return "new text area";
+			case TrackerFieldTypeEnum.number: 		return -1;
+			case TrackerFieldTypeEnum.select: 		return null;
+			case TrackerFieldTypeEnum.date: 			return new Date();
+			case TrackerFieldTypeEnum.daterange: 	return new Date(); // TODO: what is default new daterange?
+			case TrackerFieldTypeEnum.radio: 			return null; 
+			case TrackerFieldTypeEnum.rater: 			return null; 
+			case TrackerFieldTypeEnum.title: 			return "New Title"; 
+			case TrackerFieldTypeEnum.list: 			return null; 
+			case TrackerFieldTypeEnum.checkbox: 	return null; 
+			case TrackerFieldTypeEnum.wikiSummary: return null; 
+		}
+	}
 
-  // FIELD LABEL LIST MANAGEMENT
+	/////////
+	// FIELD LABEL LIST MANAGEMENT
+	/////////
   labelListGet(trackerName: string): AngularFirestoreDocument<{labels: Array<string>}> {
     trackerName = trackerName.replace(/\s/g, '');
     return this.userService
@@ -174,7 +198,9 @@ export class SimpleTrackerService {
     });
   }
 
-  // Field Order operations
+	/////////
+	// FIELD ORDER OPERATIONS
+	/////////
   fieldOrderAdd(trackerName: string, nodeKey: string, keyToAdd: string) {
     this.userService
     .getByUserKey(this.currentUserKey)
@@ -209,7 +235,9 @@ export class SimpleTrackerService {
     .update({fieldOrder: newOrder})
   }
 
-  // RECORDER NODE OPERATIONS
+	/////////
+	// RECORDER NODE OPERATIONS
+	/////////
   recorderAdd(trackerName: string, nodeToAdd: SimpleTrackerNode) {
     nodeToAdd.recorder.isRecorder = true;
     // nodeToAdd.key = uuid();

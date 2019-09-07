@@ -41,16 +41,18 @@ rowData = [];
 				// set special columns
 				this.columnDefs.push({"headerName": "", "field": "", width: 33, checkboxSelection: true, headerCheckboxSelection: true}); // checkbox 
 				this.columnDefs.push({"headerName": "nodeKey", "field": "nodeKey", width: 33, hide: true}); // key
-				this.columnDefs.push({"headerName": "fieldKey", "field": "fieldKey", width: 33, hide: true}); // key
-				// put key in a hidden field
-				singleRow.push({"nodeKey": node.key});
+				// this.columnDefs.push({"headerName": "fieldKeyMap", "field": "fieldKeyMap", width: 33, hide: true}); // key
+				singleRow.push({"nodeKey": node.key}); // put key in a hidden field
 				// populate column defs and data 
+				let fieldKeyMap = {};
 				node.fields.forEach(field => {
-					// columns
-					this.setGridColumns(field);
-					// row data
-					singleRow.push(this.setGridData(field));
+					this.setGridColumns(field); // columns
+					singleRow.push(this.setGridData(field)); // row data
+					fieldKeyMap[field.label.toLowerCase()] = field.key;
 				});
+				let obj = {};
+				// obj["fieldKeyMap"] = fieldKeyMap;
+				singleRow.push(obj)
 				this.rowData.push(Object.assign.apply(Object, singleRow));
 			}
 		});
@@ -59,9 +61,7 @@ rowData = [];
 	onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-
     params.api.sizeColumnsToFit();
-
     window.addEventListener("resize", function() {
       setTimeout(function() {
         params.api.sizeColumnsToFit();
@@ -90,24 +90,43 @@ rowData = [];
 		}
 		let obj = {};
 		obj[field.label.toLowerCase()] = field.value;
-		obj["fieldKey"] = field.key;
 		return obj;
 	}
 	
 	deleteSelection() {
 		const selectedNodes = this.agGrid.api.getSelectedNodes();
-		const selectedData = selectedNodes.map( node => node.data );
-		selectedData.forEach(node => {
-			this.stLocalService.nodeRemoveByKey(node);
+		const selectedData = selectedNodes.map( selnode => selnode.data );
+		this.gridApi.updateRowData({ remove: selectedData }); // remove from view
+		selectedData.forEach(selnode => {
+			this.curNodeList.forEach(node => {
+				if(node.key == selnode.nodeKey) {
+					this.stLocalService.nodeRemoveByKey(selnode.nodeKey); // remove from cur node list
+					this.stService.nodeRemove(this.trackerName, node); // remove from db
+				}
+			})
 		})
 	}
 
 	addItem() {
-		let newRowItem = this.createNewRowData();
-		// let newNode = this.stLocalService.createDefaultItem();
-		// this.stLocalService.nodeAdd()
+		let newNode = null;
+		let newRow = {};
+		if(this.curNodeList.length > 0) {
+			let nodes = this.stLocalService.nodeCopy(this.curNodeList[0]); // copy in cur node list
+			nodes.newNode.fields.forEach(field => { // replace fields in the new node
+				newRow[field.label.toLowerCase()] = this.stService.fieldGetDefaultValue(field.type);
+				field.value = this.stService.fieldGetDefaultValue(field.type);
+			})
+			this.stService.nodeCopy(this.trackerName, nodes.oldNode, nodes.newNode); // put new node in db
+			newNode = nodes.newNode;
+		}
 
-		let res = this.gridApi.updateRowData({ add: [newRowItem] }); // update the actual row
+		let res = {};
+		if(newNode) {
+			res = this.gridApi.updateRowData({ add: [newRow] }); // update the actual row
+		}
+		else {
+			res = this.gridApi.updateRowData({ add: [this.createNewRowData()] }); // blank otherwise
+		}
 		this.printResult(res);
 	}
 
@@ -125,18 +144,19 @@ rowData = [];
     this.printResult(res);
 	}
 	
-	onCellValueChanged(ev) {
+	onCellValueChanged(ev) { // we can't tell which field updated, so update them all
 		this.curNodeList.forEach(node => {
 			if(node.key == ev.data.nodeKey) {
-				node.fields.forEach(field => {
-					if(field.key == ev.data.fieldKey) {
-						field.value = ev.value;
-						this.stService.fieldUpdate(this.trackerName, ev.data.nodeKey, field);
+				Object.keys(ev.data).forEach(function(key) {
+					for(var i = 0; i < node.fields.length; i++) {
+						if(node.fields[i].label.toLowerCase() == key) {
+							node.fields[i].value = ev.data[key];
+						}
 					}
-				})
+				});
+				this.stService.nodeUpdate(this.trackerName, node);
 			}
 		})
-		console.log('evvy', ev);
 	}
 
 	createNewRowData() {

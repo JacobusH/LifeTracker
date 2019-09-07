@@ -16,12 +16,13 @@ VIEWS
 
 - enhance list view
 ✓ edit item
--- add item
--- delete item
+✓ add item
+✓ delete item
+-- add columns
 -- row copy
 -- date and date-range edit
--- add columns
 -- update columns with db
+-- proper ordering on daterange
 
 MODULES
 - make expense module
