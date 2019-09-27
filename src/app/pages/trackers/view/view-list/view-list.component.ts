@@ -107,6 +107,21 @@ rowData = [];
 		})
 	}
 
+	addColumn() {
+		// TODO: make popup to set column/field info
+		this.stService.fieldAddToAllNodes(this.trackerName, this.stLocalService.createDefaultField());
+	}
+
+	removeColumn(fieldLabel: string) {
+		this.curNodeList.forEach(node => {
+			node.fields.forEach(field => {
+				if(field.label === fieldLabel) {
+					this.stService.fieldRemove(this.trackerName, node.key, field);
+				}
+			})
+		})
+	}
+
 	addItem() {
 		let newNode = null;
 		let newRow = {};

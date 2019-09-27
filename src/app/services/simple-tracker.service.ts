@@ -106,7 +106,26 @@ export class SimpleTrackerService {
     });
     // add to field ordering
     this.fieldOrderAdd(trackerName, nodeKey, newField.key);
-  }
+	}
+	
+	fieldAddToAllNodes(trackerName: string, newField: SimpleTrackerField) {
+		// add to fields arr
+		this.userService
+		.getByUserKey(this.currentUserKey)
+		.collection(this.colBase + trackerName).valueChanges().subscribe(n => {
+			let nodes = n as SimpleTrackerNode[];
+			nodes.forEach(node => {
+				this.fieldAdd(trackerName, node.key, newField);
+			})
+		})
+
+		// .doc(nodeKey)
+		// .update({
+		// 	fields: firebase.firestore.FieldValue.arrayUnion( newField )
+		// });
+		// // add to field ordering
+		// this.fieldOrderAdd(trackerName, nodeKey, newField.key);
+	}
 
   fieldRemove(trackerName: string, nodeKey: string, fieldToRemove: SimpleTrackerField) {
     this.userService

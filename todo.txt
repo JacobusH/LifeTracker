@@ -18,6 +18,8 @@ VIEWS
 ✓ edit item
 ✓ add item
 ✓ delete item
+-- fix date saving formatu
+-- edit column name/type
 -- add columns
 -- row copy
 -- date and date-range edit
