@@ -18,9 +18,10 @@ VIEWS
 ✓ edit item
 ✓ add item
 ✓ delete item
--- fix date saving formatu
+-- fix date saving format
 -- edit column name/type
--- add columns
+-- add/remove columns
+--- update node list locally so that the grid refreshes
 -- row copy
 -- date and date-range edit
 -- update columns with db

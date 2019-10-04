@@ -42,6 +42,7 @@ import { ViewListComponent } from './view/view-list/view-list.component';
 import { AgGridModule } from 'ag-grid-angular';
 
 import { LayoutItemDirective } from 'app/directives/layout-item.directive';
+import { DialogFieldDeleteComponent } from './components/dialog-field-delete/dialog-field-delete.component';
 
 const routes: Routes = [
   { path: '', component: TrackersPage }
@@ -49,8 +50,8 @@ const routes: Routes = [
 
 @NgModule({
   entryComponents: [
-    
-	],
+    DialogFieldDeleteComponent
+  ],
   imports: [
     routing
     , SharedModule
@@ -91,7 +92,7 @@ const routes: Routes = [
     , TrackerFieldComponent
     , ModelNodeComponent
     , ViewNodeComponent
-    , ViewListComponent
+    , ViewListComponent, DialogFieldDeleteComponent
   ],
   providers: [
     GoogleMapsAPIWrapper

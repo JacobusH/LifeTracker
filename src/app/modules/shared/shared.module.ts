@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MatIconRegistry, MatIconModule, MatFormFieldModule, MatInputModule, matFormFieldAnimations, MatOptionModule, MatSelectModule
-  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule, MatDatepickerModule, MatCheckboxModule } from '@angular/material';
+  , MatTabsModule, MatButtonToggleModule, MatMenuModule, MatDividerModule, MatDatepickerModule, MatCheckboxModule, MatDialogModule } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MatMomentDateModule } from '@angular/material-moment-adapter'
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker'
 
@@ -14,13 +14,16 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { RaterComponent } from './rater/rater.component';
 import { ViewPickerComponent } from './view-picker/view-picker.component';
 
+import { DialogFieldDeleteComponent } from 'app/pages/trackers/components/dialog-field-delete/dialog-field-delete.component'; 
+
 @NgModule({
   imports: [
     CommonModule
     , FormsModule
     , ReactiveFormsModule
     , IonicModule
-    , MatCheckboxModule
+		, MatCheckboxModule
+		, MatDialogModule
     , MatIconModule
     , MatFormFieldModule
     , MatInputModule
@@ -48,7 +51,8 @@ import { ViewPickerComponent } from './view-picker/view-picker.component';
     , MenuWheelComponent 
     , NumberPickerComponent
     , RaterComponent
-    , MatCheckboxModule
+		, MatCheckboxModule
+		, MatDialogModule
     , MatIconModule
     , MatFormFieldModule
     , MatInputModule
@@ -63,7 +67,10 @@ import { ViewPickerComponent } from './view-picker/view-picker.component';
     , SatDatepickerModule
 		, SatNativeDateModule
 		, ViewPickerComponent
-  ],
+	],
+	// entryComponents: [
+  //   DialogFieldDeleteComponent
+  // ],
   providers: [
     // { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }, // breaks with expression form not supported in injection...
     // {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},

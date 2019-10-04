@@ -136,10 +136,35 @@ export class SimpleTrackerService {
     .doc(nodeKey)
     .update({
       fields: firebase.firestore.FieldValue.arrayRemove(fieldToRemove)
-    });
+		})
+		.then(
+			 value => console.log(),
+			 reason => console.log("failed", reason)
+		)
+		.catch(reason => console.log("fiel delete failed", reason))
+		// .finally(() => console.log("in finally"))
+
     // and remove from order
     this.fieldOrderRemove(trackerName, nodeKey, fieldToRemove.key);
-  }
+	}
+	
+	fieldFromAllNodesByLabel(trackerName: string, label: string) {
+		// add to fields arr
+		this.userService
+		.getByUserKey(this.currentUserKey)
+		.collection(this.colBase + trackerName)
+		.valueChanges().subscribe(n => {
+			let nodes = n as SimpleTrackerNode[];
+			nodes.forEach(node => {
+				node.fields.forEach(field => {
+					if(field.label == label) {
+						// console.log("deleting field: ", node.key, field.key, field.label);
+						this.fieldRemove(trackerName, node.key,	field);
+					}
+				})
+			})
+		})
+	}
 
   fieldUpdate(trackerName: string, nodeKey: string, fieldToUpdate: SimpleTrackerField) {
     this.userService

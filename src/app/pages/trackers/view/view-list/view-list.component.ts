@@ -5,6 +5,8 @@ import { SimpleTrackerField, SimpleTrackerNode, TrackerFieldTypeEnum } from 'app
 import { SimpleTrackerLocalService } from 'app/services/simple-tracker-local.service';
 import { SimpleTrackerService } from 'app/services/simple-tracker.service';
 import { map, withLatestFrom, take } from 'rxjs/operators';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogFieldDeleteComponent } from '../../components/dialog-field-delete/dialog-field-delete.component';
 
 @Component({
   selector: 'app-view-list',
@@ -20,17 +22,41 @@ export class ViewListComponent implements OnInit {
 	pipe = new DatePipe('en-US'); // Use your own locale
 	
 	columnDefs = [];
+	rowData = [];
 
-rowData = [];
+	animal: string;
+  name: string;
 
   constructor(
 		private stLocalService: SimpleTrackerLocalService
 		, private stService: SimpleTrackerService
-		, private simpleTrackerService: SimpleTrackerService) { 
+		, private simpleTrackerService: SimpleTrackerService
+		, private dialog: MatDialog) { 
 
 		}
 
   ngOnInit() {
+		this.setGrid();
+	}
+
+	resetNodeList() {
+		this.simpleTrackerService.getTopLevelNodesByTrackerName(this.trackerName).valueChanges().pipe(take(1)).subscribe(topLevelNodes => {
+			this.curNodeList = topLevelNodes;
+		})
+	}
+
+	onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    params.api.sizeColumnsToFit();
+    window.addEventListener("resize", function() {
+      setTimeout(function() {
+        params.api.sizeColumnsToFit();
+      });
+    });
+	}
+
+	setGrid() {
 		this.columnDefs = [];
 		this.stLocalService.curNodeList = this.curNodeList;
 		this.stLocalService.curNodeList.forEach(node => {
@@ -56,17 +82,6 @@ rowData = [];
 				this.rowData.push(Object.assign.apply(Object, singleRow));
 			}
 		});
-	}
-
-	onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    params.api.sizeColumnsToFit();
-    window.addEventListener("resize", function() {
-      setTimeout(function() {
-        params.api.sizeColumnsToFit();
-      });
-    });
 	}
 
 	setGridColumns(field) {
@@ -110,6 +125,8 @@ rowData = [];
 	addColumn() {
 		// TODO: make popup to set column/field info
 		this.stService.fieldAddToAllNodes(this.trackerName, this.stLocalService.createDefaultField());
+		this.resetNodeList();
+		this.setGrid();
 	}
 
 	removeColumn(fieldLabel: string) {
@@ -120,6 +137,8 @@ rowData = [];
 				}
 			})
 		})
+		this.resetNodeList();
+		this.setGrid();
 	}
 
 	addItem() {
@@ -183,6 +202,24 @@ rowData = [];
 		}
 		return newRow;
 	}
+
+	openDeleteDialog(): void {
+		let fields = [];
+		this.columnDefs.forEach(col => {
+			if(col.headerName !== "nodeKey") {
+				fields.push(col.headerName);
+			}
+		})
+    const dialogRef = this.dialog.open(DialogFieldDeleteComponent, {
+      width: '250px',
+      data: {fields: fields}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+			// console.log('The dialog was closed, Result: ', result);
+			this.simpleTrackerService.fieldFromAllNodesByLabel(this.trackerName, result);
+    });
+  }
 
 	printResult(res) {
 		console.log("---------------------------------------");
